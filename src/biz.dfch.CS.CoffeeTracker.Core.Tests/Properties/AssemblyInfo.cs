@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("biz.dfch.CS.CoffeeTracker")]
+[assembly: AssemblyTitle("biz.dfch.CS.CoffeeTracker.Core.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("biz.dfch.CS.CoffeeTracker")]
+[assembly: AssemblyProduct("biz.dfch.CS.CoffeeTracker.Core.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("35bd2323-e20f-4660-a408-a44d1e494ce3")]
+[assembly: Guid("e668dde4-c7ef-4629-bd7e-80480834ea43")]
 
 // Version information for an assembly consists of the following four values:
 //

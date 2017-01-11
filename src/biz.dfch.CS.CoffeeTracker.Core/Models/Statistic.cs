@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright $year$ d-fens GmbH
+ * Copyright 2016 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,24 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 
-namespace biz.dfch.CS.CoffeeTracker.Core
+namespace biz.dfch.CS.CoffeeTracker.Core.Models
 {
-    public class RouteConfig
+    public class Statistic : BaseEntity
     {
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+        public int UserId { get; set; }
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
-        }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+
+        public int CoffeeMachineId { get; set; }
+
+        [ForeignKey("CoffeeMachineId")]
+        public CoffeeMachine CoffeeMachine { get; set; }
+
+        public int CoffeesCount { get; set; }
     }
 }
