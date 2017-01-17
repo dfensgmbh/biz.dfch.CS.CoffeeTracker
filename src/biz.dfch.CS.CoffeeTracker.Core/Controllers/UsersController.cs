@@ -1,8 +1,24 @@
-﻿using System;
+﻿/**
+ * Copyright 2017 d-fens GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,13 +26,13 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
-using biz.dfch.CS.CoffeeTracker.Core.Models;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
     public class UsersController : ApiController
     {
-        private CoffeeTrackerContext db = new CoffeeTrackerContext();
+        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
 
         // GET: api/Users
         public IQueryable<User> GetUsers()
@@ -26,10 +42,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        public async Task<IHttpActionResult> Get(long id)
         {
             User user = await db.Users.FindAsync(id);
-            if (user == null)
+            if (null == user)
             {
                 return NotFound();
             }
@@ -39,19 +55,21 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> Put(long id, User user)
         {
+            Contract.Requires(null != user, "|400|");
+            Contract.Requires(0 < id, "|400|");
+            Contract.Requires(id == user.Id, "|400|");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
+            var entity = await db.Users.FindAsync(id);
+            Contract.Assert(null != entity, "|400|");
 
-            db.Entry(user).State = EntityState.Modified;
+            entity.Name = user.Name;
 
             try
             {
@@ -69,13 +87,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(entity);
         }
 
         // POST: api/Users
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        public async Task<IHttpActionResult> Post(User user)
         {
+            Contract.Requires(null != user);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -89,10 +109,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        public async Task<IHttpActionResult> Delete(long id)
         {
             User user = await db.Users.FindAsync(id);
-            if (user == null)
+            if (null == user)
             {
                 return NotFound();
             }
@@ -112,7 +132,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(long id)
         {
             return db.Users.Count(e => e.Id == id) > 0;
         }

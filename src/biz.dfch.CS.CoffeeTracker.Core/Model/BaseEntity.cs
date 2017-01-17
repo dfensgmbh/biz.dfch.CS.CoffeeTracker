@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright 2016 d-fens GmbH
+ * Copyright 2017 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Models
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public class CoffeeMachine : BaseEntity
+    public abstract class BaseEntity
     {
-        public string Brand { get; set; }
+        [Key]
+        public long Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
     }
 }

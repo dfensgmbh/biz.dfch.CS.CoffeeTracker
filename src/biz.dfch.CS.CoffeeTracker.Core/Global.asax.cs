@@ -7,7 +7,7 @@ using System.Web.Routing;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class Global : System.Web.HttpApplication
     {
         protected void Application_Start()
         {

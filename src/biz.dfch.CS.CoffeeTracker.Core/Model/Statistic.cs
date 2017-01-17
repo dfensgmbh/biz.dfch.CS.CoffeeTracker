@@ -16,18 +16,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Models
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public abstract class BaseEntity
+    public class Statistic : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
+        public long UserId { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+
+        public long CoffeeMachineId { get; set; }
+
+        [ForeignKey("CoffeeMachineId")]
+        public CoffeeMachine CoffeeMachine { get; set; }
+
+        public long CoffeesCount { get; set; }
     }
 }
