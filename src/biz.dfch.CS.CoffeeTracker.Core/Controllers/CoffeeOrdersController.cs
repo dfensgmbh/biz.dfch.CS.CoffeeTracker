@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -24,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     using biz.dfch.CS.CoffeeTracker.Core.Model;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
     builder.EntitySet<CoffeeOrder>("CoffeeOrders");
-    builder.EntitySet<Coffee>("Statistics"); 
+    builder.EntitySet<Coffee>("Coffees"); 
     builder.EntitySet<User>("Users"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
@@ -36,14 +37,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
-            return db.CoffeeMachines;
+            return db.CoffeeOrders;
         }
 
         // GET: odata/CoffeeOrders(5)
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
-            return SingleResult.Create(db.CoffeeMachines.Where(coffeeOrder => coffeeOrder.Id == key));
+            return SingleResult.Create(db.CoffeeOrders.Where(coffeeOrder => coffeeOrder.Id == key));
         }
 
         // PUT: odata/CoffeeOrders(5)
@@ -56,7 +57,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            CoffeeOrder coffeeOrder = await db.CoffeeMachines.FindAsync(key);
+            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
@@ -91,7 +92,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.CoffeeMachines.Add(coffeeOrder);
+            db.CoffeeOrders.Add(coffeeOrder);
             await db.SaveChangesAsync();
 
             return Created(coffeeOrder);
@@ -108,7 +109,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            CoffeeOrder coffeeOrder = await db.CoffeeMachines.FindAsync(key);
+            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
@@ -138,13 +139,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/CoffeeOrders(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
-            CoffeeOrder coffeeOrder = await db.CoffeeMachines.FindAsync(key);
+            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
             }
 
-            db.CoffeeMachines.Remove(coffeeOrder);
+            db.CoffeeOrders.Remove(coffeeOrder);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -154,14 +155,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
-            return SingleResult.Create(db.CoffeeMachines.Where(m => m.Id == key).Select(m => m.Coffee));
+            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
         }
 
         // GET: odata/CoffeeOrders(5)/User
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
-            return SingleResult.Create(db.CoffeeMachines.Where(m => m.Id == key).Select(m => m.User));
+            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.User));
         }
 
         protected override void Dispose(bool disposing)
@@ -175,7 +176,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         private bool CoffeeOrderExists(long key)
         {
-            return db.CoffeeMachines.Count(e => e.Id == key) > 0;
+            return db.CoffeeOrders.Count(e => e.Id == key) > 0;
         }
     }
 }

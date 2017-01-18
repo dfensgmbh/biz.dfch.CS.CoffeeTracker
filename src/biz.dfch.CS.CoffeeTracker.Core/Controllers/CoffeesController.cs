@@ -34,14 +34,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public IQueryable<Coffee> GetCoffees()
         {
-            return db.Statistics;
+            return db.Coffees;
         }
 
         // GET: odata/Coffees(5)
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
-            return SingleResult.Create(db.Statistics.Where(coffee => coffee.Id == key));
+            return SingleResult.Create(db.Coffees.Where(coffee => coffee.Id == key));
         }
 
         // PUT: odata/Coffees(5)
@@ -54,7 +54,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            Coffee coffee = await db.Statistics.FindAsync(key);
+            Coffee coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
@@ -89,7 +89,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Statistics.Add(coffee);
+            db.Coffees.Add(coffee);
             await db.SaveChangesAsync();
 
             return Created(coffee);
@@ -106,7 +106,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            Coffee coffee = await db.Statistics.FindAsync(key);
+            Coffee coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
@@ -136,13 +136,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/Coffees(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
-            Coffee coffee = await db.Statistics.FindAsync(key);
+            Coffee coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
             }
 
-            db.Statistics.Remove(coffee);
+            db.Coffees.Remove(coffee);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -159,7 +159,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         private bool CoffeeExists(long key)
         {
-            return db.Statistics.Count(e => e.Id == key) > 0;
+            return db.Coffees.Count(e => e.Id == key) > 0;
         }
     }
 }
