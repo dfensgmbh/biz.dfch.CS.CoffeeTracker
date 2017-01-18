@@ -15,25 +15,30 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
-using biz.dfch.CS.CoffeeTracker.Core.Model;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public class CoffeeTrackerDbContext : System.Data.Entity.DbContext
+    public class CoffeeOrder : BaseEntity
     {
-        private const string CONNECTION_STRING_NAME = "name=CoffeeTrackerDbContext";
+        [Required]
+        public long UserId { get; set; }
 
-        public CoffeeTrackerDbContext() : base(CONNECTION_STRING_NAME)
-        {
-            
-        }
+        [Required]
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
-        // Registration of database tables
-        public DbSet<CoffeeOrder> CoffeeMachines { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Coffee> Statistics { get; set; }
+        [Required]
+        public long CoffeeId { get; set; }
+
+        [Required]
+        [ForeignKey("CoffeeId")]
+        public Coffee Coffee { get; set; }
+
+        [Required]
+        public DateTimeOffset Created { get; set; }
     }
 }
