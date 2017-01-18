@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Web;
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("d-fens GmbH")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("The d-fens logo is a registered trademark in the European Union and/or other countries.")]
 [assembly: AssemblyCulture("")]
