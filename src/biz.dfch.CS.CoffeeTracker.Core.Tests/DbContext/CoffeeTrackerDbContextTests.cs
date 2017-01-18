@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 using System;
-using System.IO;
 using System.Linq;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
