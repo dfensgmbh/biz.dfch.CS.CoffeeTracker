@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +14,7 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -62,21 +64,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             patch.Put(coffee);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoffeeExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await db.SaveChangesAsync();
 
             return Updated(coffee);
         }
@@ -84,6 +72,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
+            Logger.Get(Logging.TraceSourceName.COFFEE_TRACKER_CORE)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start insert {0}-{1}-{2}", coffee.Id, coffee.Name, coffee.Brand);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -91,6 +82,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             db.Coffees.Add(coffee);
             await db.SaveChangesAsync();
+
+            Logger.Get(Logging.TraceSourceName.COFFEE_TRACKER_CORE)
+                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, "Stop insert {0}-{1}-{2}", coffee.Id, coffee.Name, coffee.Brand);
 
             return Created(coffee);
         }
@@ -114,21 +108,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             patch.Patch(coffee);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoffeeExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await db.SaveChangesAsync();
 
             return Updated(coffee);
         }
@@ -155,11 +135,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool CoffeeExists(long key)
-        {
-            return db.Coffees.Count(e => e.Id == key) > 0;
         }
     }
 }

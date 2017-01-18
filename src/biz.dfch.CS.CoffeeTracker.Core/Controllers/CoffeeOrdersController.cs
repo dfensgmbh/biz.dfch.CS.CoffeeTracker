@@ -65,21 +65,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             patch.Put(coffeeOrder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoffeeOrderExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await db.SaveChangesAsync();
 
             return Updated(coffeeOrder);
         }
@@ -117,21 +103,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             patch.Patch(coffeeOrder);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoffeeOrderExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await db.SaveChangesAsync();
 
             return Updated(coffeeOrder);
         }
@@ -172,11 +144,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool CoffeeOrderExists(long key)
-        {
-            return db.CoffeeOrders.Count(e => e.Id == key) > 0;
         }
     }
 }
