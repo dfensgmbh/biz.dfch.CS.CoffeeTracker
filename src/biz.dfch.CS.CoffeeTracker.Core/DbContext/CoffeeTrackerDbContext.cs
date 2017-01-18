@@ -15,25 +15,25 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web.Http;
+using System.Web;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 
-namespace biz.dfch.CS.CoffeeTracker.Core
+namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
 {
-    public static class WebApiConfig
+    public class CoffeeTrackerDbContext : System.Data.Entity.DbContext
     {
-        public static void Register(HttpConfiguration config)
+        private const string CONNECTION_STRING_NAME = "name=CoffeeTrackerDbContext";
+
+        public CoffeeTrackerDbContext() : base(CONNECTION_STRING_NAME)
         {
-            // Web API configuration and services
-
-            // Web API routes
-            config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            
         }
+
+        // Registration of database tables
+        public DbSet<CoffeeMachine> CoffeeMachines { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Statistic> Statistics { get; set; }
     }
 }

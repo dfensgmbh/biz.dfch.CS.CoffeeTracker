@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright 2017 d-fens GmbH
+ * Copyright 2016 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web.Http;
+using System.Web;
 
-namespace biz.dfch.CS.CoffeeTracker.Core
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public static class WebApiConfig
+    public class Statistic : BaseEntity
     {
-        public static void Register(HttpConfiguration config)
-        {
-            // Web API configuration and services
+        public long UserId { get; set; }
 
-            // Web API routes
-            config.MapHttpAttributeRoutes();
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-        }
+        public long CoffeeMachineId { get; set; }
+
+        [ForeignKey("CoffeeMachineId")]
+        public CoffeeMachine CoffeeMachine { get; set; }
+
+        public long CoffeesCount { get; set; }
     }
 }

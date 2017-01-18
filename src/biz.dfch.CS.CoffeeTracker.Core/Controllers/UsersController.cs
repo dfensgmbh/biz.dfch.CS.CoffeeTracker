@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright $year$ d-fens GmbH
+ * Copyright 2017 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,128 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
-using biz.dfch.CS.CoffeeTracker.Core.Models;
+using System.Web.Http.Description;
+using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
     public class UsersController : ApiController
     {
-        User[] users = new User[]
-        {
-            new User { Id = 1, Name = "Tralala"}, 
-            new User { Id = 2, Name = "Hans"}, 
-            new User { Id = 3, Name = "Peter"} 
-        };
+        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
 
-        public IEnumerable<User> GetAllUsers()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return users;
+            return db.Users;
         }
 
-        public IHttpActionResult GetUser(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> Get(long id)
         {
-            var user = users.FirstOrDefault((u) => u.Id == id);
-            Contract.Assert(null != user);
+            User user = await db.Users.FindAsync(id);
+            if (null == user)
+            {
+                return NotFound();
+            }
 
             return Ok(user);
         }
 
+        // PUT: api/Users/5
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> Put(long id, User user)
+        {
+            Contract.Requires(null != user, "|400|");
+            Contract.Requires(0 < id, "|400|");
+            Contract.Requires(id == user.Id, "|400|");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var entity = await db.Users.FindAsync(id);
+            Contract.Assert(null != entity, "|400|");
+
+            entity.Name = user.Name;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(entity);
+        }
+
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> Post(User user)
+        {
+            Contract.Requires(null != user);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.Users.Add(user);
+            await db.SaveChangesAsync();
+
+            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+        }
+
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> Delete(long id)
+        {
+            User user = await db.Users.FindAsync(id);
+            if (null == user)
+            {
+                return NotFound();
+            }
+
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
+
+            return Ok(user);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private bool UserExists(long id)
+        {
+            return db.Users.Count(e => e.Id == id) > 0;
+        }
     }
 }

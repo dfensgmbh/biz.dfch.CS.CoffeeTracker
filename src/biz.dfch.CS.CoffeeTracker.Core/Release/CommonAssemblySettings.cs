@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright $year$ d-fens GmbH
+ * Copyright 2017 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Models
-{
-    public class User
-    {
-        public int Id { get; set; }
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyCompany("d-fens GmbH")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyTrademark("The d-fens logo is a registered trademark in the European Union and/or other countries.")]
+[assembly: AssemblyCulture("")]
 
-        public string Name { get; set; }
-    }
-}
+[assembly: ComVisible(false)]
+
+[assembly: AssemblyVersion("1.0.0.*")]
