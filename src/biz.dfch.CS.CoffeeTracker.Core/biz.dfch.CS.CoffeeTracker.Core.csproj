@@ -230,6 +230,7 @@
       <Link>Properties\CommonAssemblySettings.cs</Link>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CoffeeOrdersController.cs" />
     <Compile Include="Controllers\CoffeesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
