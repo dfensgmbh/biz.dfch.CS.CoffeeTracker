@@ -33,7 +33,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
             {
                 var user = new User
                 {
-                    Name = "Test-User"
+                    Name = "Test-User",
+                    Password = "1234"
                 };
 
                 sut.Users.Add(user);
