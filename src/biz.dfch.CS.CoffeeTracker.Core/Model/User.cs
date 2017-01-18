@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +24,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class User : BaseEntity
     {
-        // N/A
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Password { get; set; }
     }
 }

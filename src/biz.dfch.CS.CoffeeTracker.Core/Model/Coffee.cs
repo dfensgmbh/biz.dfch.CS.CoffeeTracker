@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,9 +21,21 @@ using System.Web;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public abstract class BaseEntity
+    public class Coffee : BaseEntity
     {
-        [Key]
-        public long Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Brand { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
+
+        [Required]
+        public int Stock { get; set; }
+
+        [Required]
+        public DateTimeOffset LastDelivery { get; set; }
     }
 }
