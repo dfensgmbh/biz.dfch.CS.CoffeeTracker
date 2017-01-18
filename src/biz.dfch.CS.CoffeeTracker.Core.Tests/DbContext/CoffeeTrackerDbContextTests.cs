@@ -29,10 +29,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         [TestCategory(("SkipOnTeamCity"))]
         public void AddUserSucceeds()
         {
-
             using (var sut = new CoffeeTrackerDbContext())
             {
-                
                 var user = new User
                 {
                     Name = "Test-User"
@@ -41,10 +39,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
                 sut.Users.Add(user);
                 sut.SaveChanges();
 
-                var result = sut.Users.Find(user.Name);
+                var result = sut.Users.FirstOrDefault(u => u.Name == user.Name);
 
                 Assert.IsNotNull(result);
-                Assert.Equals(result.Name, user.Name);
+                Assert.AreEqual(user.Name, result.Name);
             }
         }
     }
