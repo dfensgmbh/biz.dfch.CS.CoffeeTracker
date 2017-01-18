@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web.Http;
+using System.Web;
 
-namespace biz.dfch.CS.CoffeeTracker.Core
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public static class WebApiConfig
+    public abstract class BaseEntity
     {
-        public static void Register(HttpConfiguration config)
-        {
-            // Web API configuration and services
+        [Key]
+        public long Id { get; set; }
 
-            // Web API routes
-            config.MapHttpAttributeRoutes();
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-        }
+        [Required]
+        public string Name { get; set; }
     }
 }

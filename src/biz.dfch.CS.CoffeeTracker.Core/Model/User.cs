@@ -1,5 +1,5 @@
 ﻿/**
- * Copyright $year$ d-fens GmbH
+ * Copyright 2017 d-fens GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,22 +18,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
 
-namespace biz.dfch.CS.CoffeeTracker.Core
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public class RouteConfig
+    public class User : BaseEntity
     {
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
-        }
+        // N/A
     }
 }
