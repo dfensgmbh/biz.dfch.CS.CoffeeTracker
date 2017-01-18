@@ -143,6 +143,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\biz.dfch.CS.CoffeeTracker.Core\Release\CommonAssemblySettings.cs">
+      <Link>CommonAssemblySettings.cs</Link>
+    </Compile>
     <Compile Include="DbContext\CoffeeTrackerDbContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

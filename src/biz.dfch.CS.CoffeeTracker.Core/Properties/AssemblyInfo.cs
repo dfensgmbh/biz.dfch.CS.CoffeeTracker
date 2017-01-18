@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("biz.dfch.CS.CoffeeTracker.Core")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyProduct("biz.dfch.CS.CoffeeTracker.Core")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("92bf2795-4691-48fe-9eda-91754eb5e9ab")]

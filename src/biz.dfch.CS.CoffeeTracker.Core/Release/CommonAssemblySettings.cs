@@ -22,7 +22,6 @@ using System.Web;
 
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("d-fens GmbH")]
-[assembly: AssemblyProduct("biz.dfch.CS.CoffeeTracker.Core")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("The d-fens logo is a registered trademark in the European Union and/or other countries.")]
 [assembly: AssemblyCulture("")]
