@@ -7,10 +7,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.Statistics", "CoffeeMachineId", "dbo.CoffeeMachines");
-            DropForeignKey("dbo.Statistics", "UserId", "dbo.Users");
-            DropIndex("dbo.Statistics", new[] { "UserId" });
-            DropIndex("dbo.Statistics", new[] { "CoffeeMachineId" });
+            DropForeignKey("dbo.Coffees", "CoffeeMachineId", "dbo.CoffeeOrders");
+            DropForeignKey("dbo.Coffees", "UserId", "dbo.Users");
+            DropIndex("dbo.Coffees", new[] { "UserId" });
+            DropIndex("dbo.Coffees", new[] { "CoffeeMachineId" });
             CreateTable(
                 "dbo.CoffeeOrders",
                 c => new
@@ -40,14 +40,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
                 .PrimaryKey(t => t.Id);
             
             AddColumn("dbo.Users", "Password", c => c.String(nullable: false));
-            DropTable("dbo.CoffeeMachines");
-            DropTable("dbo.Statistics");
+            DropTable("dbo.CoffeeOrders");
+            DropTable("dbo.Coffees");
         }
         
         public override void Down()
         {
             CreateTable(
-                "dbo.Statistics",
+                "dbo.Coffees",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -59,7 +59,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.CoffeeMachines",
+                "dbo.CoffeeOrders",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -75,10 +75,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
             DropColumn("dbo.Users", "Password");
             DropTable("dbo.Coffees");
             DropTable("dbo.CoffeeOrders");
-            CreateIndex("dbo.Statistics", "CoffeeMachineId");
-            CreateIndex("dbo.Statistics", "UserId");
-            AddForeignKey("dbo.Statistics", "UserId", "dbo.Users", "Id", cascadeDelete: true);
-            AddForeignKey("dbo.Statistics", "CoffeeMachineId", "dbo.CoffeeMachines", "Id", cascadeDelete: true);
+            CreateIndex("dbo.Coffees", "CoffeeMachineId");
+            CreateIndex("dbo.Coffees", "UserId");
+            AddForeignKey("dbo.Coffees", "UserId", "dbo.Users", "Id", cascadeDelete: true);
+            AddForeignKey("dbo.Coffees", "CoffeeMachineId", "dbo.CoffeeOrders", "Id", cascadeDelete: true);
         }
     }
 }

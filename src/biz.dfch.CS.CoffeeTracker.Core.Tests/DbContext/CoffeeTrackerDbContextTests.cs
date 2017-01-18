@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 using System;
-using System.IO;
 using System.Linq;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
@@ -25,24 +24,86 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
     [TestClass]
     public class CoffeeTrackerDbContextTests
     {
+        private static readonly User TestUser = new User
+        {
+            Name = "Test-User",
+            Password = "1234"
+        };
+
+        private static readonly Coffee TestCoffee = new Coffee
+        {
+            Name = "Test-User",
+            Brand = "Test-Brand",
+            LastDelivery = DateTime.Now,
+            Price = 2.50M,
+            Stock = 42
+        };
+
+        private static readonly CoffeeOrder TestCoffeeOrder = new CoffeeOrder()
+        {
+            Created = DateTime.Now,
+            Coffee = TestCoffee,
+            CoffeeId = TestCoffee.Id,
+            User = TestUser,
+            UserId = TestUser.Id
+        };
+
+
         [TestMethod]
-        [TestCategory(("SkipOnTeamCity"))]
+        [TestCategory("SkipOnTeamCity")]
         public void AddUserSucceeds()
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                var user = new User
-                {
-                    Name = "Test-User"
-                };
-
-                sut.Users.Add(user);
+                sut.Users.Add(TestUser);
                 sut.SaveChanges();
 
-                var result = sut.Users.FirstOrDefault(u => u.Name == user.Name);
+                var result = sut.Users.FirstOrDefault(u => u.Name == TestUser.Name);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(user.Name, result.Name);
+                Assert.AreEqual(TestUser.Name, result.Name);
+
+                sut.Users.Remove(TestUser);
+                sut.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("SkipOnTeamCity")]
+        public void AddCoffeeSucceeds()
+        {
+            using (var sut = new CoffeeTrackerDbContext())
+            {
+                sut.Coffees.Add(TestCoffee);
+                sut.SaveChanges();
+
+                var result = sut.Coffees.FirstOrDefault(c => c.Name == TestCoffee.Name);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(TestCoffee.Name, result.Name);
+
+                sut.Coffees.Remove(TestCoffee);
+                sut.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("SkipOnTeamCity")]
+        public void AddCoffeeOrderSucceeds()
+        {
+            using (var sut = new CoffeeTrackerDbContext())
+            {
+                
+                sut.CoffeeOrders.Add(TestCoffeeOrder);
+                sut.SaveChanges();
+
+                var result = sut.CoffeeOrders.FirstOrDefault(c => c.Coffee.LastDelivery == TestCoffee.LastDelivery);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(TestCoffeeOrder.CoffeeId, result.CoffeeId);
+
+                sut.CoffeeOrders.Remove(TestCoffeeOrder);
+                sut.SaveChanges();
             }
         }
     }
