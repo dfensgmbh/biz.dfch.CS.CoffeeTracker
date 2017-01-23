@@ -41,9 +41,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             var sut = new CoffeesController();
             
             // Act
-            var awaitResult = sut.Post(testCoffee);
+            var httpActionResult = sut.Post(testCoffee).Result;
 
-            var result = GetTestCoffeeFromDb();
+            var result = GetCoffeeFromDb(testCoffee.Name);
 
             // Assert
             Assert.IsNotNull(result);
@@ -64,31 +64,30 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
         {
             // Arrange
             var sut = new CoffeesController();
-            var awaitResult = sut.Post(testCoffee);
+            var task = sut.Post(testCoffee);
+            var httpActionResult = task.Result;
             var updatedName = "Test-Coffee-Updated";
 
             // Act
-            var coffee = GetTestCoffeeFromDb();
+            var coffee = GetCoffeeFromDb(testCoffee.Name);
             dynamic testCoffeeDelta = new Delta<Coffee>();
             testCoffeeDelta.Name = updatedName;
 
-            sut.Patch(coffee.Id, testCoffeeDelta);
-            var result = GetTestCoffeeFromDb();
+            task = sut.Patch(coffee.Id, testCoffeeDelta);
+            var actionResult = task.Result;
+            var result = GetCoffeeFromDb(updatedName);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(updatedName, result.Name);
+            Assert.AreEqual(coffee.Id, result.Id);
         }
 
-        public Coffee GetTestCoffeeFromDb()
+        public Coffee GetCoffeeFromDb(string name)
         {
-            Coffee result;
             using (var dbContext = new CoffeeTrackerDbContext())
             {
-                result = dbContext.Coffees.FirstOrDefault(c => c.Name == testCoffee.Name);
+                return dbContext.Coffees.FirstOrDefault(c => c.Name == name);
             }
-
-            return result;
         }
     }
 }

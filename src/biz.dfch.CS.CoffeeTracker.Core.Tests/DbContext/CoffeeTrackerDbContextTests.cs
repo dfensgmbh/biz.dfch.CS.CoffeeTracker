@@ -24,28 +24,28 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
     [TestClass]
     public class CoffeeTrackerDbContextTests
     {
-        private static readonly User TestUser = new User
+        private static readonly User _testUser = new User
         {
             Name = "Test-User",
             Password = "1234"
         };
 
-        private static readonly Coffee TestCoffee = new Coffee
+        private static readonly Coffee _testCoffee = new Coffee
         {
-            Name = "Test-User",
+            Name = "Test-Coffee",
             Brand = "Test-Brand",
             LastDelivery = DateTime.Now,
             Price = 2.50M,
             Stock = 42
         };
 
-        private static readonly CoffeeOrder TestCoffeeOrder = new CoffeeOrder()
+        private static readonly CoffeeOrder _testCoffeeOrder = new CoffeeOrder()
         {
             Created = DateTime.Now,
-            Coffee = TestCoffee,
-            CoffeeId = TestCoffee.Id,
-            User = TestUser,
-            UserId = TestUser.Id
+            Coffee = _testCoffee,
+            CoffeeId = _testCoffee.Id,
+            User = _testUser,
+            UserId = _testUser.Id
         };
 
 
@@ -55,15 +55,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                sut.Users.Add(TestUser);
+                sut.Users.Add(_testUser);
                 sut.SaveChanges();
 
-                var result = sut.Users.FirstOrDefault(u => u.Name == TestUser.Name);
+                var result = sut.Users.FirstOrDefault(u => u.Name == _testUser.Name);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(TestUser.Name, result.Name);
+                Assert.AreEqual(_testUser.Name, result.Name);
 
-                sut.Users.Remove(TestUser);
+                sut.Users.Remove(_testUser);
                 sut.SaveChanges();
             }
         }
@@ -74,15 +74,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                sut.Coffees.Add(TestCoffee);
+                sut.Coffees.Add(_testCoffee);
                 sut.SaveChanges();
 
-                var result = sut.Coffees.FirstOrDefault(c => c.Name == TestCoffee.Name);
+                var result = sut.Coffees.FirstOrDefault(c => c.Name == _testCoffee.Name);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(TestCoffee.Name, result.Name);
+                Assert.AreEqual(_testCoffee.Name, result.Name);
 
-                sut.Coffees.Remove(TestCoffee);
+                sut.Coffees.Remove(_testCoffee);
                 sut.SaveChanges();
             }
         }
@@ -93,16 +93,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                
-                sut.CoffeeOrders.Add(TestCoffeeOrder);
+                sut.CoffeeOrders.Add(_testCoffeeOrder);
                 sut.SaveChanges();
 
-                var result = sut.CoffeeOrders.FirstOrDefault(c => c.Coffee.LastDelivery == TestCoffee.LastDelivery);
+                var result = sut.CoffeeOrders.FirstOrDefault(c => c.Coffee.LastDelivery == _testCoffee.LastDelivery);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(TestCoffeeOrder.CoffeeId, result.CoffeeId);
+                Assert.AreEqual(_testCoffeeOrder.CoffeeId, result.CoffeeId);
 
-                sut.CoffeeOrders.Remove(TestCoffeeOrder);
+                sut.CoffeeOrders.Remove(_testCoffeeOrder);
+                sut.Coffees.Remove(_testCoffee);
+                sut.Users.Remove(_testUser);
                 sut.SaveChanges();
             }
         }
