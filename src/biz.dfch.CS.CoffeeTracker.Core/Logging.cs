@@ -38,7 +38,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core
         public static class TraceSourceName
         {
             public const string COFFEE_TRACKER_CORE = "biz.dfch.CS.CoffeTracker.Core";
-            public const string APP_START = "WebApiConfig";
+            public const string WEB_API_CONFIG = "biz.dfch.CS.CoffeeTracker.Core.WebApiConfig";
+            public const string COFFEES_CONTROLLER = "biz.dfch.CS.CoffeeTracker.Core.Controllers.CoffeesController";
         }
     }
 }

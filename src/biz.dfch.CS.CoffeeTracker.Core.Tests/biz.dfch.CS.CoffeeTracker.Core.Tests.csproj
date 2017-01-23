@@ -148,6 +148,7 @@
     <Compile Include="..\CommonAssemblySettings.cs">
       <Link>Properties\CommonAssemblySettings.cs</Link>
     </Compile>
+    <Compile Include="Controllers\CoffeesControllerTest.cs" />
     <Compile Include="DbContext\CoffeeTrackerDbContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
