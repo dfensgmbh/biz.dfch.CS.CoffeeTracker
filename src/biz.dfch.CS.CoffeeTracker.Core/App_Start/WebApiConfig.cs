@@ -27,13 +27,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core
 {
     public static class WebApiConfig
     {
-        private const string Convention = "OData";
+        private const string CONVENTION = "OData";
 
         public static void Register(HttpConfiguration config)
         {
             // Log Event
             Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
-                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.WebApiConfig_Register__Start, Convention);
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.WebApiConfig_Register__Start, CONVENTION);
             // Web API configuration and services
 
             // Web API routes
@@ -44,7 +44,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
 
             Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
-                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, Convention);
+                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, CONVENTION);
         }
     }
 }

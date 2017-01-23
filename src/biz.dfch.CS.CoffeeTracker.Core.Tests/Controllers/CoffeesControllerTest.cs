@@ -26,7 +26,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
     [TestClass]
     public class CoffeesControllerTest
     {
-        private Coffee testCoffee = new Coffee
+        private readonly Coffee testCoffee = new Coffee
         {
             Name = "Test-Coffee",
             Brand = "Test-Brand",

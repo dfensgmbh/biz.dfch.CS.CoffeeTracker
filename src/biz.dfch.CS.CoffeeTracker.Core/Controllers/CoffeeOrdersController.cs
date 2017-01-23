@@ -31,7 +31,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class CoffeeOrdersController : ODataController
     {
-        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
 
         // GET: odata/CoffeeOrders
         [EnableQuery]
