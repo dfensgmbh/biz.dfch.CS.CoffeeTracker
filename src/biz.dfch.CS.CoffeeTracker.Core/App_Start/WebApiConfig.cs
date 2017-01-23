@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
@@ -26,9 +27,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core
 {
     public static class WebApiConfig
     {
+        private const string Convention = "OData";
+
         public static void Register(HttpConfiguration config)
         {
-            Logger.Get()
+            // Log Event
+            Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.WebApiConfig_Register__Start, Convention);
             // Web API configuration and services
 
             // Web API routes
@@ -37,6 +42,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
             config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+
+            Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
+                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, Convention);
         }
     }
 }
