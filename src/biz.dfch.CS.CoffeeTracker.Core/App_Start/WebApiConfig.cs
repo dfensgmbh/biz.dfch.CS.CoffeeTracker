@@ -41,7 +41,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<User>("Users");
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
-            config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+            config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
 
             Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
                 .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, CONVENTION);
