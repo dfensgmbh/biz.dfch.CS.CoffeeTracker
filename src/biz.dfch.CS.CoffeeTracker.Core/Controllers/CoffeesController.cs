@@ -62,7 +62,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return NotFound();
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEES_CONTROLLER)
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
                 .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, 
                 "Start update coffee with Id {0} values \n Name: {1} \n Brand: {2} \n LastDelivery {3} \n Price: {4} \n Stock: {5}", coffee.Id, coffee.Name, coffee.Brand, coffee.LastDelivery, coffee.Price, coffee.Stock);
 
@@ -76,7 +76,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
-            Logger.Get(Logging.TraceSourceName.COFFEE_TRACKER_CORE)
+            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start insert coffee \n Id: {0} \n Name: {1} \n Brand: {2}", coffee.Id, coffee.Name, coffee.Brand);
 
             if (!ModelState.IsValid)
@@ -87,7 +87,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             db.Coffees.Add(coffee);
             await db.SaveChangesAsync();
 
-            Logger.Get(Logging.TraceSourceName.COFFEE_TRACKER_CORE)
+            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, "Stop insert {0}-{1}-{2}", coffee.Id, coffee.Name, coffee.Brand);
 
             return Created(coffee);
@@ -110,7 +110,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return NotFound();
             }
             patch.GetChangedPropertyNames();
-            Logger.Get(Logging.TraceSourceName.COFFEES_CONTROLLER)
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
                 .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Start update Id: {0}", coffee.Id);
 
             patch.Patch(coffee);
@@ -129,7 +129,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return NotFound();
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEES_CONTROLLER)
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
                 .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Start delete with Id {0}", coffee.Id);
 
             db.Coffees.Remove(coffee);

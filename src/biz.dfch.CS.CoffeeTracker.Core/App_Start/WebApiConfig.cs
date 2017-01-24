@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
         public static void Register(HttpConfiguration config)
         {
             // Log Event
-            Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
+            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.WebApiConfig_Register__Start, CONVENTION);
             // Web API configuration and services
 
@@ -43,7 +43,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
 
-            Logger.Get(Logging.TraceSourceName.WEB_API_CONFIG)
+            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, CONVENTION);
         }
     }
