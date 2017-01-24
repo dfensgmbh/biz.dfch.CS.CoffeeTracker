@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
@@ -39,6 +40,31 @@ namespace biz.dfch.CS.CoffeeTracker.Core
         {
             public const string API_ACTIVITIES = "biz.dfch.CS.CoffeeTracker.Core";
             public const string COFFEETRACKER_CONTROLLERS = "biz.dfch.CS.CoffeeTracker.Core.Controllers";
+        }
+
+        public static string FormatEntity(BaseEntity entity)
+        {
+            var message = "";
+
+            foreach (var property in GetPropertyNames(entity))
+            {
+                var value = entity.GetType().GetProperty(property).GetValue(entity, null);
+                message = string.Format("{0} \t {1} : {2} \n", message, property, value);
+            }
+
+            return string.Format("Properties: \n {0}", message);
+        }
+
+        private static IEnumerable<string> GetPropertyNames(object theObject)
+        {
+            var propertyNames = new List<string>();
+
+            foreach (var property in theObject.GetType().GetProperties())
+            {
+                propertyNames.Add(property.Name);
+            }
+
+            return propertyNames;
         }
     }
 }
