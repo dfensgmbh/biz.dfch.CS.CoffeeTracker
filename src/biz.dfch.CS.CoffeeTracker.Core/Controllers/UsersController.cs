@@ -12,6 +12,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
@@ -28,12 +29,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class UsersController : ODataController
     {
-        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
         // GET: odata/Users
         [EnableQuery]
         public IQueryable<User> GetUsers()
         {
+            ControllerLogging.LogGetEntities(MODELNAME);
+
             return db.Users;
         }
 
@@ -41,6 +45,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
+            ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
+
             return SingleResult.Create(db.Users.Where(user => user.Id == key));
         }
 
@@ -60,23 +66,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return NotFound();
             }
 
-            patch.Put(user);
+            ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            patch.Put(user);
+            await db.SaveChangesAsync();
+
+            ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
 
             return Updated(user);
         }
@@ -89,8 +84,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
+            ControllerLogging.LogInsertEntityStart(MODELNAME, user);
+
             db.Users.Add(user);
             await db.SaveChangesAsync();
+
+            ControllerLogging.LogInsertEntityStop(MODELNAME, user);
 
             return Created(user);
         }
@@ -106,29 +105,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            User user = await db.Users.FindAsync(key);
+            var user = await db.Users.FindAsync(key);
             if (user == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(user);
+            ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            patch.Patch(user);
+            await db.SaveChangesAsync();
+
+            ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, user);
 
             return Updated(user);
         }
@@ -136,14 +124,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/Users(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
-            User user = await db.Users.FindAsync(key);
+            var user = await db.Users.FindAsync(key);
             if (user == null)
             {
                 return NotFound();
             }
 
+            ControllerLogging.LogDeleteEntityStart(MODELNAME, user);
+
             db.Users.Remove(user);
             await db.SaveChangesAsync();
+
+            ControllerLogging.LogDeleteEntityStop(MODELNAME, user);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -155,11 +147,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool UserExists(long key)
-        {
-            return db.Users.Count(e => e.Id == key) > 0;
         }
     }
 }
