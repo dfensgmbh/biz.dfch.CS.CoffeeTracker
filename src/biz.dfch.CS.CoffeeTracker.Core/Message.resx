@@ -123,4 +123,38 @@
   <data name="WebApiConfig_Register__SUCCEEDED" xml:space="preserve">
     <value>Apply {0} config SUCCEEDED</value>
   </data>
+  <data name="Get_Entities" xml:space="preserve">
+    <value>Get {0}s</value>
+  </data>
+  <data name="Get_Entity" xml:space="preserve">
+    <value>Get {0} with Id: {1}</value>
+  </data>
+  <data name="Update_Entity_Put_Start" xml:space="preserve">
+    <value>Start Update of {0} with id {1}...</value>
+  </data>
+  <data name="Update_Entity_Put_Stop" xml:space="preserve">
+    <value>{0} with id {1} updated. entity: 
+ {2}</value>
+  </data>
+  <data name="Insert_Entity_Start" xml:space="preserve">
+    <value>Start Insert {0}: 
+ {1}...</value>
+  </data>
+  <data name="Insert_Entity_Stop" xml:space="preserve">
+    <value>Insert finished. EntityId: {0}</value>
+  </data>
+  <data name="Update_Entity_Patch_Start" xml:space="preserve">
+    <value>Start Update {0} with Id: {1}...</value>
+  </data>
+  <data name="Update_Entity_Patch_Stop" xml:space="preserve">
+    <value>Stop update {0} with Id: {1} 
+ {2}</value>
+  </data>
+  <data name="Delete_Entity_Start" xml:space="preserve">
+    <value>Start remove {0} with Id: {1} 
+ {2}</value>
+  </data>
+  <data name="Delete_Entity_Stop" xml:space="preserve">
+    <value>{0} with id {1} Removed</value>
+  </data>
 </root>

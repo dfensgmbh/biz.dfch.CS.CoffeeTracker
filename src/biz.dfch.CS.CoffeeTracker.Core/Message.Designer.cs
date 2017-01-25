@@ -61,6 +61,100 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start remove {0} with Id: {1} 
+        /// {2}.
+        /// </summary>
+        internal static string Delete_Entity_Start {
+            get {
+                return ResourceManager.GetString("Delete_Entity_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} with id {1} Removed.
+        /// </summary>
+        internal static string Delete_Entity_Stop {
+            get {
+                return ResourceManager.GetString("Delete_Entity_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get {0}s.
+        /// </summary>
+        internal static string Get_Entities {
+            get {
+                return ResourceManager.GetString("Get_Entities", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get {0} with Id: {1}.
+        /// </summary>
+        internal static string Get_Entity {
+            get {
+                return ResourceManager.GetString("Get_Entity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Insert {0}: 
+        /// {1}....
+        /// </summary>
+        internal static string Insert_Entity_Start {
+            get {
+                return ResourceManager.GetString("Insert_Entity_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert finished. EntityId: {0}.
+        /// </summary>
+        internal static string Insert_Entity_Stop {
+            get {
+                return ResourceManager.GetString("Insert_Entity_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Update {0} with Id: {1}....
+        /// </summary>
+        internal static string Update_Entity_Patch_Start {
+            get {
+                return ResourceManager.GetString("Update_Entity_Patch_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop update {0} with Id: {1} 
+        /// {2}.
+        /// </summary>
+        internal static string Update_Entity_Patch_Stop {
+            get {
+                return ResourceManager.GetString("Update_Entity_Patch_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start Update of {0} with id {1}....
+        /// </summary>
+        internal static string Update_Entity_Put_Start {
+            get {
+                return ResourceManager.GetString("Update_Entity_Put_Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} with id {1} updated. entity: 
+        /// {2}.
+        /// </summary>
+        internal static string Update_Entity_Put_Stop {
+            get {
+                return ResourceManager.GetString("Update_Entity_Put_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply {0} config....
         /// </summary>
         internal static string WebApiConfig_Register__Start {
