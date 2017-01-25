@@ -24,10 +24,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class User : BaseEntity
     {
+        public User()
+        {
+            Modelname = "User";
+        }
+
         [Required]
         public string Name { get; set; }
 
         [Required]
         public string Password { get; set; }
+
+        public sealed override string Modelname { get; set; }
     }
 }

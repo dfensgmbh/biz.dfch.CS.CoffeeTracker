@@ -24,6 +24,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class CoffeeOrder : BaseEntity
     {
+        public CoffeeOrder()
+        {
+            Modelname = "CoffeeOrder";
+        }
+
         [Required]
         public long UserId { get; set; }
 
@@ -40,5 +45,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 
         [Required]
         public DateTimeOffset Created { get; set; }
+
+        [NotMapped]
+        public sealed override string Modelname { get; set; }
     }
 }
