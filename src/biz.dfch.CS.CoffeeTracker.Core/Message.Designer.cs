@@ -108,7 +108,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert finished. EntityId: {0}.
+        ///   Looks up a localized string similar to Insert {0} finished. EntityId: {1}.
         /// </summary>
         internal static string Insert_Entity_Stop {
             get {

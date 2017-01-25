@@ -141,7 +141,7 @@
  {1}...</value>
   </data>
   <data name="Insert_Entity_Stop" xml:space="preserve">
-    <value>Insert finished. EntityId: {0}</value>
+    <value>Insert {0} finished. EntityId: {1}</value>
   </data>
   <data name="Update_Entity_Patch_Start" xml:space="preserve">
     <value>Start Update {0} with Id: {1}...</value>
