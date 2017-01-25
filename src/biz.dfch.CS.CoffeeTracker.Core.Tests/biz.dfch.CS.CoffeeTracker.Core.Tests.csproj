@@ -189,6 +189,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Scripts\IntegrationTests\CoffeesController.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
