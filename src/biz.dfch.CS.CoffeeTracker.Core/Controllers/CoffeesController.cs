@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +14,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 
@@ -31,11 +33,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeesController : ODataController
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private const string MODELNAME = ControllerLogging.ModelNames.COFFEE;
 
         // GET: odata/Coffees
         [EnableQuery]
         public IQueryable<Coffee> GetCoffees()
         {
+            ControllerLogging.LogGetEntities(MODELNAME);
+
             return db.Coffees;
         }
 
@@ -43,6 +48,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
+            ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
+
             return SingleResult.Create(db.Coffees.Where(coffee => coffee.Id == key));
         }
 
@@ -56,19 +63,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            Coffee coffee = await db.Coffees.FindAsync(key);
+            var coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, 
-                "Start update coffee with Id {0} values \n Name: {1} \n Brand: {2} \n LastDelivery {3} \n Price: {4} \n Stock: {5}", coffee.Id, coffee.Name, coffee.Brand, coffee.LastDelivery, coffee.Price, coffee.Stock);
-
+            ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
+            
             patch.Put(coffee);
-
             await db.SaveChangesAsync();
+
+            ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
 
             return Updated(coffee);
         }
@@ -76,19 +82,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
-            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
-                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start insert coffee \n Id: {0} \n Name: {1} \n Brand: {2}", coffee.Id, coffee.Name, coffee.Brand);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            ControllerLogging.LogInsertEntityStart(MODELNAME, coffee);
+
             db.Coffees.Add(coffee);
             await db.SaveChangesAsync();
 
-            Logger.Get(Logging.TraceSourceName.API_ACTIVITIES)
-                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, "Stop insert {0}-{1}-{2}", coffee.Id, coffee.Name, coffee.Brand);
+            ControllerLogging.LogInsertEntityStop(MODELNAME, coffee);
 
             return Created(coffee);
         }
@@ -104,18 +108,21 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            Coffee coffee = await db.Coffees.FindAsync(key);
+            var coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
             }
-            patch.GetChangedPropertyNames();
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Start update Id: {0}", coffee.Id);
+            
+            ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
             patch.Patch(coffee);
 
             await db.SaveChangesAsync();
+            coffee = await db.Coffees.FindAsync(key);
+            Contract.Assert(null != coffee);
+
+            ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffee);
 
             return Updated(coffee);
         }
@@ -123,17 +130,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/Coffees(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
-            Coffee coffee = await db.Coffees.FindAsync(key);
+            var coffee = await db.Coffees.FindAsync(key);
             if (coffee == null)
             {
                 return NotFound();
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Start delete with Id {0}", coffee.Id);
-
+            ControllerLogging.LogDeleteEntityStart(MODELNAME, coffee);
+            
             db.Coffees.Remove(coffee);
             await db.SaveChangesAsync();
+
+            ControllerLogging.LogDeleteEntityStop(MODELNAME, coffee);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
