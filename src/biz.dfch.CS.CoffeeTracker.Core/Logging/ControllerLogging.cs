@@ -13,12 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
+
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 
@@ -36,37 +32,37 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Logging
         public static void LogGetEntities(string modelname)
         {
             Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-               .TraceEvent(TraceEventType.Information, (int)Core.Logging.Logging.EventId.Default, Message.Get_Entities, modelname);
+               .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entities, modelname);
         }
 
         public static void LogGetEntity(string modelname, string id)
         {
             Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Core.Logging.Logging.EventId.Default, Message.Get_Entity, modelname, id);
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entity, modelname, id);
         }
 
         public static void LogUpdateEntityStartPut(string modelname, string id)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Start, (int)Core.Logging.Logging.EventId.Start, Message.Update_Entity_Put_Start, modelname, id);
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.Update_Entity_Put_Start, modelname, id);
         }
 
         public static void LogUpdateEntityStopPut(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-               .TraceEvent(TraceEventType.Stop, (int)Core.Logging.Logging.EventId.Stop, Message.Update_Entity_Put_Stop, modelname, entity.Id, Logging.FormatEntity(entity));
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+               .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.Update_Entity_Put_Stop, modelname, entity.Id, Logging.FormatEntity(entity));
         }
 
         public static void LogInsertEntityStart(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Start, (int)Core.Logging.Logging.EventId.Start, Message.Insert_Entity_Start, modelname, Core.Logging.Logging.FormatEntity(entity));
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.Insert_Entity_Start, modelname, Logging.FormatEntity(entity));
         }
 
         public static void LogInsertEntityStop(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                            .TraceEvent(TraceEventType.Stop, (int)Core.Logging.Logging.EventId.Stop, Message.Insert_Entity_Stop, modelname, entity.Id);
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                            .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.Insert_Entity_Stop, modelname, entity.Id);
         }
 
         public static void LogUpdateEntityStartPatch(string modelname, string id)
@@ -77,20 +73,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Logging
 
         public static void LogUpdateEntityStopPatch(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Core.Logging.Logging.EventId.Default, Message.Update_Entity_Patch_Stop, modelname, entity.Id, Core.Logging.Logging.FormatEntity(entity));
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Update_Entity_Patch_Stop, modelname, entity.Id, Logging.FormatEntity(entity));
         }
 
         public static void LogDeleteEntityStart(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-              .TraceEvent(TraceEventType.Warning, (int)Core.Logging.Logging.EventId.Default, Message.Delete_Entity_Start, modelname, entity.Id, Core.Logging.Logging.FormatEntity(entity));
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+              .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, Message.Delete_Entity_Start, modelname, entity.Id, Logging.FormatEntity(entity));
         }
 
         public static void LogDeleteEntityStop(string modelname, BaseEntity entity)
         {
-            Logger.Get(Core.Logging.Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Warning, (int)Core.Logging.Logging.EventId.Default, Message.Delete_Entity_Stop, modelname, entity.Id);
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, Message.Delete_Entity_Stop, modelname, entity.Id);
         }
 
         
