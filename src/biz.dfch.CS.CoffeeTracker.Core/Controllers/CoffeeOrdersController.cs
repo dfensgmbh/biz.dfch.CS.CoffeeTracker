@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
@@ -14,6 +15,7 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -32,11 +34,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private const string MODELNAME = "CoffeeOrder";
 
         // GET: odata/CoffeeOrders
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Get {0}s", MODELNAME);
             return db.CoffeeOrders;
         }
 
@@ -44,6 +49,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Get {0} with Id: {1}", MODELNAME, key);
             return SingleResult.Create(db.CoffeeOrders.Where(coffeeOrder => coffeeOrder.Id == key));
         }
 
@@ -62,10 +69,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             {
                 return NotFound();
             }
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start Update of {0} with id {1}...", MODELNAME, key);
 
             patch.Put(coffeeOrder);
 
             await db.SaveChangesAsync();
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, "{0} with id {1} updated. entity: \n {2}", MODELNAME, key, coffeeOrder);
 
             return Updated(coffeeOrder);
         }
@@ -78,9 +89,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start Insert {0}: \n {1}...", MODELNAME, coffeeOrder);
+
             db.CoffeeOrders.Add(coffeeOrder);
             await db.SaveChangesAsync();
 
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                            .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, "Insert finished. EntityId: {0}", coffeeOrder.Id);
             return Created(coffeeOrder);
         }
 
@@ -88,6 +104,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -100,10 +117,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             {
                 return NotFound();
             }
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                            .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, "Start Update {0} with Id: {1}...", MODELNAME, key);
 
             patch.Patch(coffeeOrder);
 
             await db.SaveChangesAsync();
+
+            coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            Contract.Assert(null != coffeeOrder);
+
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Stop update {0} with Id: {1} \n {2}", MODELNAME, coffeeOrder.Id, Logging.FormatEntity(coffeeOrder));
 
             return Updated(coffeeOrder);
         }
@@ -111,14 +136,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/CoffeeOrders(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
-            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
             }
 
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, "Start remove {0} with Id: {1} \n {2}", MODELNAME, coffeeOrder.Id, Logging.FormatEntity(coffeeOrder));
+
             db.CoffeeOrders.Remove(coffeeOrder);
             await db.SaveChangesAsync();
+
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, "{0} with id {1} Removed", MODELNAME, coffeeOrder.Id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -127,6 +158,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Get {0} with Id: {1}", MODELNAME, key);
+
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
         }
 
@@ -134,6 +168,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
+            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
+                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, "Get {0} with Id: {1}", MODELNAME, key);
+
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.User));
         }
 
