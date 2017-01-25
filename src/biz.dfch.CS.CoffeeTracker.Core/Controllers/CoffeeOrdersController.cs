@@ -50,6 +50,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(coffeeOrder => coffeeOrder.Id == key));
@@ -58,6 +60,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // PUT: odata/CoffeeOrders(5)
         public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch);
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
