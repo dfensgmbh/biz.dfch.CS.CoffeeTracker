@@ -1,5 +1,13 @@
-function ExtractIdFromSingleEntity($responseBody) {
-	
+function ExtractIdFromSingleEntity([string]$responseBody) {
+	$splittedResponse = $responseBody.Split("=");
+
+	write-host $splittedResponse[7].Remove("}");
+
+#	foreach($part in $splittedResponse) {
+#		Write-Host $part;
+#	}
+
+
 }
 
 Describe "CoffeesController" -Tags "CoffeesController" {
@@ -15,7 +23,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$brand = "TEST-Brand-{0}" -f [guid]::NewGuid();
+			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 
 			$body = @{
 				name = $name
@@ -82,8 +90,10 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			
 			$newNameCheck = "*{0}*" -f $newName;
 			$newBrandCheck = "*{0}*" -f $newBrand;
-			
+
 			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+
+			ExtractIdFromSingleEntity $result;
 
 			# Act
 			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
