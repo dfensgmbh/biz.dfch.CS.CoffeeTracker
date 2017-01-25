@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -24,11 +23,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class Coffee : BaseEntity
     {
-        public Coffee()
-        {
-            Modelname = "Coffee";
-        }
-
         [Required]
         public string Name { get; set; }
 
@@ -43,8 +37,5 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 
         [Required]
         public DateTimeOffset LastDelivery { get; set; }
-
-        [NotMapped]
-        public sealed override string Modelname { get; set; }
     }
 }
