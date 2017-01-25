@@ -16,6 +16,7 @@ using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
+using biz.dfch.CS.CoffeeTracker.Core.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -34,14 +35,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
-        private const string MODELNAME = "CoffeeOrder";
+        private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
 
         // GET: odata/CoffeeOrders
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entities, MODELNAME);
+            ControllerLogging.LogGetEntities(MODELNAME);
 
             return db.CoffeeOrders;
         }
@@ -50,8 +50,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entity, MODELNAME, key);
+            ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(coffeeOrder => coffeeOrder.Id == key));
         }
@@ -66,19 +65,19 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
             }
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.Update_Entity_Put_Start, MODELNAME, key);
+
+            ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
             patch.Put(coffeeOrder);
 
             await db.SaveChangesAsync();
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.Update_Entity_Put_Stop, MODELNAME, key, coffeeOrder);
+
+            ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffeeOrder);
 
             return Updated(coffeeOrder);
         }
@@ -91,14 +90,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.Insert_Entity_Start, MODELNAME, Logging.FormatEntity(coffeeOrder));
+            ControllerLogging.LogInsertEntityStart(MODELNAME, coffeeOrder);
 
             db.CoffeeOrders.Add(coffeeOrder);
             await db.SaveChangesAsync();
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                            .TraceEvent(TraceEventType.Stop, (int)Logging.EventId.Stop, Message.Insert_Entity_Stop, coffeeOrder.Id);
+            ControllerLogging.LogInsertEntityStop(MODELNAME, coffeeOrder);
+
             return Created(coffeeOrder);
         }
 
@@ -114,13 +112,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            CoffeeOrder coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             if (coffeeOrder == null)
             {
                 return NotFound();
             }
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                            .TraceEvent(TraceEventType.Start, (int)Logging.EventId.Start, Message.Update_Entity_Patch_Start, MODELNAME, key);
+          
+            ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
             patch.Patch(coffeeOrder);
 
@@ -129,8 +127,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             coffeeOrder = await db.CoffeeOrders.FindAsync(key);
             Contract.Assert(null != coffeeOrder);
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Update_Entity_Patch_Stop, MODELNAME, coffeeOrder.Id, Logging.FormatEntity(coffeeOrder));
+            ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffeeOrder);
 
             return Updated(coffeeOrder);
         }
@@ -144,14 +141,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return NotFound();
             }
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, Message.Delete_Entity_Start, MODELNAME, coffeeOrder.Id, Logging.FormatEntity(coffeeOrder));
+            ControllerLogging.LogDeleteEntityStart(MODELNAME, coffeeOrder);
 
             db.CoffeeOrders.Remove(coffeeOrder);
             await db.SaveChangesAsync();
 
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Warning, (int)Logging.EventId.Default, Message.Delete_Entity_Stop, MODELNAME, coffeeOrder.Id);
+            ControllerLogging.LogDeleteEntityStop(MODELNAME, coffeeOrder);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -160,8 +155,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entity, MODELNAME, key);
+            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
         }
@@ -170,8 +164,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
-            Logger.Get(Logging.TraceSourceName.COFFEETRACKER_CONTROLLERS)
-                .TraceEvent(TraceEventType.Information, (int)Logging.EventId.Default, Message.Get_Entity, MODELNAME, key);
+            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.User));
         }
