@@ -239,7 +239,8 @@
       <Link>Properties\CommonAssemblySettings.cs</Link>
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Logging.cs" />
+    <Compile Include="Logging\ControllerLogging.cs" />
+    <Compile Include="Logging\Logging.cs" />
     <Compile Include="Controllers\CoffeeOrdersController.cs" />
     <Compile Include="Controllers\CoffeesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
