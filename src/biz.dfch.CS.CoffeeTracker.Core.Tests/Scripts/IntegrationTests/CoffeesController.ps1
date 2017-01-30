@@ -1,18 +1,11 @@
 function ExtractIdFromSingleEntity([string]$responseBody) {
 	$splittedResponse = $responseBody.Split("=");
-
-	write-host $splittedResponse[7].Remove("}");
-
-#	foreach($part in $splittedResponse) {
-#		Write-Host $part;
-#	}
-
-
+	return $splittedResponse[7].Remove($splittedResponse[7].Length - 1);
 }
 
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
-	$baseUri = "http://localhost:49270/api/Coffees";
+	$baseUri = "http://CoffeeTracker/api/Coffees";
 	$entityPrefix = "CoffeeIntegrationTest";
 
 	Context "Create-Coffee" {
@@ -76,7 +69,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 				price = 0.00
 				stock = 0
 				lastdelivery = [DateTime]::Now
+				"odata.type" = "CoffeeTracker.Coffee"
 			}
+
+			$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+			$headers.Add("Content-Type", 'application/json')
 		}
 
 		It "Warmup" -Test {
@@ -91,12 +88,14 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$newNameCheck = "*{0}*" -f $newName;
 			$newBrandCheck = "*{0}*" -f $newBrand;
 
-			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
 
-			ExtractIdFromSingleEntity $result;
+			$addedEntityId = ExtractIdFromSingleEntity $resultAdd;
+			$putUri = "$baseUri({0}L)" -f $addedEntityId;
+
 
 			# Act
-			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+			$result = Invoke-RestMethod -Method Put -Uri $putUri -Body $newBody -Headers $headers;
 
 			# Assert
 			$result | Should Not Be $null;
