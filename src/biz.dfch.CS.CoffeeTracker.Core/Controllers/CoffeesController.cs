@@ -56,12 +56,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PUT: odata/Coffees(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<Coffee> patch)
+        public async Task<IHttpActionResult> Put([FromODataUri] long key, Coffee modifiedCoffee)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
+            Contract.Requires(null != modifiedCoffee, "|404|");
 
-            Validate(patch.GetEntity());
+            Validate(modifiedCoffee);
 
             if (!ModelState.IsValid)
             {
@@ -72,8 +72,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             Contract.Assert(null != coffee, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
-            
-            patch.Put(coffee);
+
+            coffee.Name = modifiedCoffee.Name;
+            coffee.Brand = modifiedCoffee.Brand;
+            coffee.LastDelivery = modifiedCoffee.LastDelivery;
+            coffee.Price = modifiedCoffee.Price;
+            coffee.Stock = coffee.Stock;
+
             await db.SaveChangesAsync();
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
