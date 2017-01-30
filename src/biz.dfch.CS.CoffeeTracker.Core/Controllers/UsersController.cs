@@ -67,10 +67,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
 
             var user = await db.Users.FindAsync(key);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
@@ -85,6 +82,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Users
         public async Task<IHttpActionResult> Post(User user)
         {
+            Contract.Requires(null != user, "|404|");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -104,6 +103,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<User> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch, "|404|");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -112,10 +114,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
 
             var user = await db.Users.FindAsync(key);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
@@ -130,11 +129,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/Users(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             var user = await db.Users.FindAsync(key);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, user);
 

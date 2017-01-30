@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 using System;
-using System.Text;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
@@ -25,18 +23,37 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
 {
-    /// <summary>
-    /// Summary description for UsersControllerTest
-    /// </summary>
     [TestClass]
-    public class UsersControllerTest
+    public class CoffeeOrdersControllerTest
     {
-        private UsersController sut = new UsersController();
+        CoffeeOrdersController sut = new CoffeeOrdersController();
         private const long INVALID_ID = 0;
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "key")]
-        public void UsersControllerCodeContractsGetUserInvalidIdFails()
+        public void CoffeeOrdersControllerCodeContractsGetCoffeeOrderInvalidIdFails()
+        {
+            // Arrange
+            // N/A
+
+            // Act/Assert
+            sut.GetCoffeeOrder(INVALID_ID);
+        }
+
+        [TestMethod]
+        [ExpectContractFailure(MessagePattern = "key")]
+        public void CoffeeOrdersControllerCodeContractsGetCoffeeInvalidIdFails()
+        {
+            // Arrange
+            // N/A
+
+            // Act/Assert
+            sut.GetCoffee(INVALID_ID);
+        }
+
+        [TestMethod]
+        [ExpectContractFailure(MessagePattern = "key")]
+        public void CoffeeOrdersControllerCodeContractsGetUserInvalidIdFails()
         {
             // Arrange
             // N/A
@@ -46,19 +63,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
         }
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "key")]
-        public async Task UsersControllerCodeContractsDeleteUserInvalidIdFails()
-        {
-            // Arrange
-            // N/A
-
-            // Act/Assert
-            await sut.Delete(INVALID_ID);
-        }
-
-        [TestMethod]
-        [ExpectContractFailure(MessagePattern = "user")]
-        public async Task UsersControllerCodeContractsPostUserNullCoffeeFails()
+        [ExpectContractFailure(MessagePattern = "coffeeOrder")]
+        public async Task CoffeeOrdersControllerCodeContractsPostNullCoffeeOrderFails()
         {
             // Arrange
             // N/A
@@ -69,19 +75,29 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "key")]
-        public async Task UsersControllerCodeContractsPatchUserInvalidIdFails()
+        public async Task CoffeeOrdersControllerCodeContractsDeleteInvalidIdFails()
         {
             // Arrange
             // N/A
 
             // Act/Assert
-            await sut.Patch(INVALID_ID, new Delta<User>());
+            await sut.Delete(INVALID_ID);
         }
 
+        [TestMethod]
+        [ExpectContractFailure(MessagePattern = "key")]
+        public async Task CoffeeOrdersControllerCodeContractsPatchInvalidIdFails()
+        {
+            // Arrange
+            // N/A
+
+            // Act/Assert
+            await sut.Patch(INVALID_ID, new Delta<CoffeeOrder>());
+        }
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "patch")]
-        public async Task UsersControllerCodeContractsPatchUserNullDeltaFails()
+        public async Task CoffeeOrdersControllerCodeContractsPatchNullDeltaFails()
         {
             // Arrange
             // N/A
@@ -92,19 +108,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "key")]
-        public async Task UsersControllerCodeContractsPutUserInvalidIdFails()
+        public async Task CoffeeOrdersControllerCodeContractsPutInvalidIdFails()
         {
             // Arrange
             // N/A
 
             // Act/Assert
-            await sut.Put(INVALID_ID, new Delta<User>());
+            await sut.Put(INVALID_ID, new Delta<CoffeeOrder>());
         }
-
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "patch")]
-        public async Task UsersControllerCodeContractsPutUserNullDeltaFails()
+        public async Task CoffeeOrdersControllerCodeContractsPutNullDeltaFails()
         {
             // Arrange
             // N/A
