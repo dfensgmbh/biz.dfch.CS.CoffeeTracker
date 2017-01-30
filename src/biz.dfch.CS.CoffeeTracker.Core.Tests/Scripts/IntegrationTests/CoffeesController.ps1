@@ -1,8 +1,3 @@
-function ExtractIdFromSingleEntity([string]$responseBody) {
-	$splittedResponse = $responseBody.Split("=");
-	return $splittedResponse[7].Remove($splittedResponse[7].Length - 1);
-}
-
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
 	$baseUri = "http://CoffeeTracker/api/Coffees";
@@ -19,11 +14,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 
 			$body = @{
-				name = $name
-				brand = $brand
-				price = 0.00
-				stock = 0
-				lastdelivery = [DateTime]::Now
+				Name = $name
+				Brand = $brand
+				Price = 0.00
+				Stock = 0
+				LastDelivery = [DateTime]::Now
 			}
 		}
 	
@@ -56,53 +51,56 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 
 			$body = @{
-				name = $name
-				brand = $brand
-				price = 0.00
-				stock = 0
-				lastdelivery = [DateTime]::Now
+				Name = $name
+				Brand = $brand
+				Price = "0.00"
+				Stock = 0
+				LastDelivery = [DateTime]::Now
 			}
 
 			$newBody = @{
-				name = $newName
-				brand = $NewBrand
-				price = 0.00
-				stock = 0
-				lastdelivery = [DateTime]::Now
-				"odata.type" = "CoffeeTracker.Coffee"
+				"odata.metadata" = 'CoffeeTracker/api/$metadata#Coffees/@Element'
+				Name = $newName
+				Brand = $NewBrand
+				Price = "0.00"
+				Stock = 0
+				LastDelivery = [DateTime]::Now
 			}
-
-			$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-			$headers.Add("Content-Type", 'application/json')
 		}
 
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
 
-		It "Update-CoffeePutSucceeds" -Test {
+		It "Update-CoffeePatchSucceeds" -Test {
 			# Arrange
 			$nameCheck = "*{0}*" -f $name;
-			$brandCheck = "*{0}*" -f $bran
+			$brandCheck = "*{0}*" -f $brand;
 			
 			$newNameCheck = "*{0}*" -f $newName;
 			$newBrandCheck = "*{0}*" -f $newBrand;
 
 			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
 
-			$addedEntityId = ExtractIdFromSingleEntity $resultAdd;
-			$putUri = "$baseUri({0}L)" -f $addedEntityId;
+			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
 
+			$newBodyJson = ConvertTo-Json -InputObject $newBody;
 
 			# Act
-			$result = Invoke-RestMethod -Method Put -Uri $putUri -Body $newBody -Headers $headers;
+			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
 
 			# Assert
+			$result = Invoke-RestMethod -Method Get -Uri $putUri;
+
 			$result | Should Not Be $null;
 			$result | Should Not BeLike $nameCheck;
 			$result | Should Not BeLike $brandCheck;
 			$result | Should BeLike $newNameCheck;
 			$result | Should BeLike $newBrandCheck;
+		}
+
+		AfterEach {
+			
 		}
 	}
 
