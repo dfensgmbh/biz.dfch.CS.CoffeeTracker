@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,6 +46,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
             return SingleResult.Create(db.Users.Where(user => user.Id == key));
@@ -53,6 +56,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // PUT: odata/Users(5)
         public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<User> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch, "|404|");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -60,7 +66,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            User user = await db.Users.FindAsync(key);
+            var user = await db.Users.FindAsync(key);
             if (user == null)
             {
                 return NotFound();
