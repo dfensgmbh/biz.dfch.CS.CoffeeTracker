@@ -48,6 +48,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
+            Contract.Requires(0 < key);
+
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
             return SingleResult.Create(db.Coffees.Where(coffee => coffee.Id == key));
@@ -56,6 +58,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // PUT: odata/Coffees(5)
         public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<Coffee> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch, "|404|");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -64,10 +69,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
 
             var coffee = await db.Coffees.FindAsync(key);
-            if (coffee == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != coffee, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
             
@@ -82,6 +84,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
+            Contract.Requires(null != coffee, "|404|");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -101,6 +105,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<Coffee> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch, "|404|");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -109,10 +116,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
 
             var coffee = await db.Coffees.FindAsync(key);
-            if (coffee == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != coffee, "|404|");
             
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
@@ -120,7 +124,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             await db.SaveChangesAsync();
             coffee = await db.Coffees.FindAsync(key);
-            Contract.Assert(null != coffee);
 
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffee);
 
@@ -130,11 +133,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/Coffees(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
+            Contract.Requires(0 < key);
+
             var coffee = await db.Coffees.FindAsync(key);
-            if (coffee == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != coffee, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffee);
             
