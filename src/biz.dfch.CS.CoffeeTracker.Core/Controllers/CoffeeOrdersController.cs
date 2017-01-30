@@ -61,7 +61,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch);
+            Contract.Requires(null != patch, "|404|");
 
             Validate(patch.GetEntity());
 
@@ -71,10 +71,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
 
             var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
-            if (coffeeOrder == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != coffeeOrder, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
@@ -90,6 +87,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/CoffeeOrders
         public async Task<IHttpActionResult> Post(CoffeeOrder coffeeOrder)
         {
+            Contract.Requires(null != coffeeOrder, "|404|");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -109,6 +108,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
+            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(null != patch, "|404|");
 
             Validate(patch.GetEntity());
 
@@ -140,11 +141,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // DELETE: odata/CoffeeOrders(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
-            if (coffeeOrder == null)
-            {
-                return NotFound();
-            }
+            Contract.Assert(null != coffeeOrder, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffeeOrder);
 
@@ -160,6 +160,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
@@ -169,6 +171,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.User));
