@@ -119,6 +119,10 @@
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="biz.dfch.CS.Testing, Version=1.4.0.33739, Culture=neutral, PublicKeyToken=ddc350d26de1d0d9, processorArchitecture=MSIL">
+      <HintPath>..\packages\biz.dfch.CS.Testing.1.4.0\lib\biz.dfch.CS.Testing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -177,6 +181,9 @@
     <Compile Include="..\CommonAssemblySettings.cs">
       <Link>Properties\CommonAssemblySettings.cs</Link>
     </Compile>
+    <Compile Include="Controllers\CoffeeOrdersControllerTest.cs" />
+    <Compile Include="Controllers\CoffeesControllerTest.cs" />
+    <Compile Include="Controllers\UsersControllerTest.cs" />
     <Compile Include="DbContext\CoffeeTrackerDbContextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -191,9 +198,7 @@
     <None Include="packages.config" />
     <None Include="Scripts\IntegrationTests\CoffeesController.ps1" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -22,6 +22,8 @@ using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
+using biz.dfch.CS.Web.Utilities.Http;
+using biz.dfch.CS.Web.Utilities.OData;
 using static biz.dfch.CS.CoffeeTracker.Core.Logging.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
@@ -43,6 +45,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
+
+            // Exception filters
+            // filter are processed from bottom (first called) to top (last called)
+            config.Filters.Add(new CatchallExceptionFilterAttribute(false));
+            config.Filters.Add(new ODataExceptionFilterAttribute());
+            config.Filters.Add(new HttpStatusExceptionFilterAttribute());
+            config.Filters.Add(new ContractRequiresExceptionFilterAttribute());
 
             Logger.Get(TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Stop, (int)EventId.Stop, Message.WebApiConfig_Register__SUCCEEDED, CONVENTION);
