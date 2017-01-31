@@ -198,6 +198,7 @@
     <None Include="packages.config" />
     <None Include="Scripts\IntegrationTests\CoffeesController.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\DeleteEntities.ps1" />
+    <None Include="Scripts\IntegrationTests\UsersController.Tests.ps1" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
