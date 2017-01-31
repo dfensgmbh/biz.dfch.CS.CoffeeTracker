@@ -54,12 +54,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PUT: odata/Users(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] long key, Delta<User> patch)
+        public async Task<IHttpActionResult> Put([FromODataUri] long key, User modifiedUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
+            Contract.Requires(null != modifiedUser, "|404|");
 
-            Validate(patch.GetEntity());
+            Validate(modifiedUser);
 
             if (!ModelState.IsValid)
             {
@@ -71,9 +71,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            patch.Put(user);
-            await db.SaveChangesAsync();
+            user.Name = modifiedUser.Name;
+            user.Password = modifiedUser.Password;
 
+            await db.SaveChangesAsync();
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
 
             return Updated(user);
