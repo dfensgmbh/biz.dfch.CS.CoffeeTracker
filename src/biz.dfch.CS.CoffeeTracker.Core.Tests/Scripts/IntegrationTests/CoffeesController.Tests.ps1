@@ -1,3 +1,5 @@
+. .\DeleteEntities.ps1;
+
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
 	$baseUri = "http://CoffeeTracker/api/Coffees";
@@ -24,6 +26,12 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 	
 		It "Warmup" -Test {
 			$true | Should Be $true;
+		}
+
+		It "Warmup-DeleteEntitiesCalled" -Test {
+			$called = DeleteEntities -EntityName "Coffees" -OdataComparison "1 eq 2";
+
+			$called | Should Be $true;
 		}
 
 		It "Add-CoffeeSucceeds" -Test {
@@ -87,7 +95,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$newBodyJson = ConvertTo-Json -InputObject $newBody;
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;";
+			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
 
 			# Assert
 			$result = Invoke-RestMethod -Method Get -Uri $putUri;
@@ -98,14 +106,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result | Should BeLike $newNameCheck;
 			$result | Should BeLike $newBrandCheck;
 		}
-
-		AfterEach {
-			
-		}
 	}
 
 		AfterAll {
-			
+			$queryFilter = "startswith(Name, '{0}')" -f $entityPrefix;
+			DeleteEntities -EntityName "Coffees" -OdataComparison $queryFilter;
 		}
 }
 

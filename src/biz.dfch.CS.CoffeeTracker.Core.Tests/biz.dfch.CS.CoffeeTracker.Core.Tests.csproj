@@ -196,7 +196,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Scripts\IntegrationTests\CoffeesController.ps1" />
+    <None Include="Scripts\IntegrationTests\CoffeesController.Tests.ps1" />
+    <None Include="Scripts\IntegrationTests\DeleteEntities.ps1" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
