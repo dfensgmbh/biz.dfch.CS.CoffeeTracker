@@ -76,12 +76,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act / Assert
-            await sut.Put(INVALID_ID, new Delta<Coffee>());
+            await sut.Put(INVALID_ID, new Coffee());
         }
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "patch")]
-        public async Task CoffeesControllerCodeContractsPutCoffeeDeltaNullFails()
+        [ExpectContractFailure(MessagePattern = "modifiedCoffee")]
+        public async Task CoffeesControllerCodeContractsPutCoffeeNullFails()
         {
             // Arrange
             // N/A
