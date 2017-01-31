@@ -87,7 +87,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$newBodyJson = ConvertTo-Json -InputObject $newBody;
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
+			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;";
 
 			# Assert
 			$result = Invoke-RestMethod -Method Get -Uri $putUri;
