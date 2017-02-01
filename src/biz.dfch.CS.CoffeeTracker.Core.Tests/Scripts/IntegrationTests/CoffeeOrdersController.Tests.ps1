@@ -42,8 +42,10 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 	Context "Create-CoffeeOrder" {
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
-			
+			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
+
 			$body = @{
+				Name = $name
 				UserId = $user.Id
 				CoffeeId = $coffee.Id;
 				Created = [DateTime]::Now;
@@ -86,9 +88,11 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 	Context "Update-CoffeeOrder" {
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
-			
+			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
+
 			$body = @{
-				UserId = $user.Id;
+				Name = $name
+				UserId = $user.Id
 				CoffeeId = $coffee.Id;
 				Created = [DateTime]::Now;
 			}
@@ -99,7 +103,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-
 		It "Update-CoffeeOrderCoffeeForeignKeySucceeds" -test {
 			# Arrange
 
@@ -118,9 +121,12 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 			$newCoffee = Invoke-RestMethod -Method Post -Uri $newCoffeeUri -Body $newCoffeeBody;
 
-			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
+			$body.Add("odata.metadata", 'CoffeeTracker/api/$metadata#CoffeeOrders/@Element');
+			$body.CoffeeId = $newCoffee.Id;
 
-			$coffeeOrderJson = $coffeeOrder | ConvertTo-Json;
+			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
+			$coffeeOrderJson = $body | ConvertTo-Json;
+
 			# Act
 			Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -ContentType "application/json;odata=verbose";
 
@@ -128,9 +134,8 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$result = Invoke-RestMethod -Method Get -Uri $uri;
 			$result | Should Not Be $null;
 			$result.UserId | Should Be $user.Id;
-			$result.CoffeeId | Should Be $coffee.Id;
+			$result.CoffeeId | Should Be $newCoffee.Id;
 		}
-
 		It "Update-CoffeeOrderChangeCoffeeOrderIdThrows" -test {
 			# Arrange
 			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
