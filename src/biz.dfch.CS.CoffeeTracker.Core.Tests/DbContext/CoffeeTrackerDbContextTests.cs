@@ -41,6 +41,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
 
         private static readonly CoffeeOrder _testCoffeeOrder = new CoffeeOrder()
         {
+            Name = "Test-CoffeeOrder",
             Created = DateTime.Now,
             Coffee = _testCoffee,
             CoffeeId = _testCoffee.Id,
