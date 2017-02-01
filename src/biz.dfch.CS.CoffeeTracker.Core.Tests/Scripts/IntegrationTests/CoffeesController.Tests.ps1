@@ -1,10 +1,10 @@
 . .\DeleteEntities.ps1;
 
+$baseUri = "http://CoffeeTracker/api/Coffees";
+$entityPrefix = "CoffeeIntegrationTest";
+
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
-	$baseUri = "http://CoffeeTracker/api/Coffees";
-	$entityPrefix = "CoffeeIntegrationTest";
-
 	Context "Create-Coffee" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -227,10 +227,25 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Brand | Should Be $entity.Brand;
 		}
 	}
-		AfterAll {
-			$queryFilter = "startswith(Name, '{0}')" -f $entityPrefix;
-			DeleteEntities -EntityName "Coffees" -OdataComparison $queryFilter;
+	AfterAll {
+		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		It "Warmup-AfterAll" -test {
+			$true | Should Be $true;
 		}
+
+		It "Delete-TestDataSucceeded" -test {
+			# Arrange
+			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
+			$getUri = "{0}?$filter={1}" -f $baseUri, $queryOption;
+
+			# Act
+			DeleteEntities -EntityName "Coffees" -OdataComparison $queryOption;
+
+			# Assert
+			$result = Invoke-RestMethod -Method Get -Uri $getUri;
+			$result.value.Count | Should Be 0;
+		}
+	}
 }
 
 #
