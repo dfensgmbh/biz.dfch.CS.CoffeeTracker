@@ -1,12 +1,9 @@
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
+. .\DeleteEntities.ps1
+
+$baseUri = "http://CoffeeTracker/api/Users";
+$entityPrefix = "UserIntegrationTest";
 
 Describe "UsersController" -Tags "UsersController" {
-	
-	. "$here\DeleteEntities.ps1"
-	
-	$baseUri = "http://CoffeeTracker/api/Users";
-	$entityPrefix = "CoffeeIntegrationTest";
-
 	Context "Create-User" {
 		
 		BeforeEach {
@@ -57,7 +54,7 @@ Describe "UsersController" -Tags "UsersController" {
 			$password = "1234";
 
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$newBrand = "5687";
+			$newPassword = "5687";
 
 			$body = @{
 				Name = $name
@@ -69,16 +66,58 @@ Describe "UsersController" -Tags "UsersController" {
 				Name = $newName
 				Password = $newPassword
 			}
+
+			$entityAdded = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+			$entityAddedUri = "{0}({1})" -f $baseUri, $entityAdded.Id;
 		}
 
 		It "Warmup" -test {
 			$true | Should Be $true;
 		}
 
+		It "Update-UsersChangeNameAndPasswordSucceeds" -test {
+			# Arrange
+			$newBodyJson = $newBody | ConvertTo-Json;
+
+			# Act
+			Invoke-RestMethod -Method Put -Uri $entityAddedUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
+
+			# Assert
+			$result = Invoke-RestMethod -Method Get -Uri $entityAddedUri;
+
+			$result.Name | Should Not Be $name;
+			$result.Password | Should Not Be $password;
+			$result.Name | Should Be $newName;
+			$result.Password | Should Be $newPassword;
+		}
+
+		It "Update-CoffeePutWithoutNameThrows" -test {
+			# Arrange
+			$newBody.Remove("Name");
+			$newBodyJson = $newBody | ConvertTo-Json;
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri -Body $newBodyJson } | Should Throw;
+		}
 	}
-
 	AfterAll {
+		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		It "Warmup-AfterAll" -test {
+			$true | Should Be $true;
+		}
 
+		It "Delete-TestDataSucceeded" -test {
+			# Arrange
+			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
+			$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
+
+			# Act
+			DeleteEntities -EntityName "Users" -OdataComparison $queryOption;
+
+			# Assert
+			$result = Invoke-RestMethod -Method Get -Uri $getUri;
+			$result.value.Count | Should Be 0;
+		}
 	}
 }
 
