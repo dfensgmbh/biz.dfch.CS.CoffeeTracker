@@ -236,7 +236,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		It "Delete-TestDataSucceeded" -test {
 			# Arrange
 			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
-			$getUri = "{0}?$filter={1}" -f $baseUri, $queryOption;
+			$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
 
 			# Act
 			DeleteEntities -EntityName "Coffees" -OdataComparison $queryOption;
