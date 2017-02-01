@@ -103,7 +103,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
 
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "patch")]
+        [ExpectContractFailure(MessagePattern = "modified")]
         public async Task UsersControllerCodeContractsPutUserNullDeltaFails()
         {
             // Arrange
