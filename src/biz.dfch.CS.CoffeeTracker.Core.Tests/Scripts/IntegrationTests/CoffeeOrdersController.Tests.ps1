@@ -1,33 +1,173 @@
-$here = Split-Path -Parent $MyInvocation.MyCommand.Path
-$sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
+. ./DeleteEntities.ps1
 
-Describe "$safeitemname$" -Tags "$safeitemname$" {
-	
-	. "$here\$sut"
-	
-	Context "$safeitemname$" {
-		
-		BeforeAll {
+$usedEntitieSets = @("Coffees", "Users", "CoffeeOrders");
+$entityPrefix = "CoffeeOrdersIntegrationTest";
+$baseUri = "CoffeeTracker/api/";
 
-		}
-		
+Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 		BeforeEach {
+			# Create user
+			$userName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$userPassword = "1234";
+			$userUri = "{0}{1}" -f $baseUri, "Users";
+
+			$userBody = @{
+				Name = $userName
+				Password = $userPassword
+			}
+
+			$user = Invoke-RestMethod -Method Post -Uri $userUri -Body $userBody
+			if (!$user) {
+				throw "User could not be created.";
+			}
+
+			# Create Coffee
+			$coffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$coffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
+			$coffeeUri = "{0}{1}" -f $baseUri, "Coffees";
+
+			$coffeeBody = @{
+				Name = $coffeeName
+				Brand = $coffeeBrand
+				Price = 0.00
+				Stock = 0
+				LastDelivery = [DateTime]::Now
+			}
+
+			$coffee = Invoke-RestMethod -Method Post -Uri $coffeeUri -Body $coffeeBody;
+			if (!$coffee) {
+				throw "Coffee could not be created."
+			}
+		}
+	Context "Create-CoffeeOrder" {
+		BeforeEach {
+			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
 			
+			$body = @{
+				UserId = $user.Id
+				CoffeeId = $coffee.Id;
+				Created = [DateTime]::Now;
+			}
 		}
 		
-		AfterAll {
-
-		}
-	
 		It "Warmup" -Test {
 			$true | Should Be $true;
+		}
+
+		It "Create-CoffeeOrderSucceeds" -test {
+			# Arrange
+			# N/A
+
+			# Act
+			$result = Invoke-RestMethod -Method Post -Uri $uri -Body $body;
+
+			# Assert
+			$result | Should Not Be $null;
+			$result.UserId | Should Be $user.Id;
+			$result.CoffeeId | Should Be $coffee.Id;
+		}
+
+		It "Create-CoffeeOrderWithoutCoffeeIdThrows" -test {
+			# Arrange
+			$body.Remove("CoffeeId");
+
+			# Act / Assert
+			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body } | Should Throw "400";
+		}
+
+		It "Create-CoffeeOrderWithoutUserIdThrows" -test {
+			# Arrange
+			$body.Remove("UserId");
+
+			# Act / Assert
+			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body } | Should Throw "400";
+		}
+	}
+	Context "Update-CoffeeOrder" {
+		BeforeEach {
+			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+			
+			$body = @{
+				UserId = $user.Id;
+				CoffeeId = $coffee.Id;
+				Created = [DateTime]::Now;
+			}
+
+			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $body;
+		}
+		
+		It "Warmup" -Test {
+			$true | Should Be $true;
+		}
+
+		It "Update-CoffeeOrderCoffeeForeignKeySucceeds" -test {
+			# Arrange
+
+			# # Create Coffee
+			$newCoffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$newCoffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
+			$newCoffeeUri = "{0}{1}" -f $baseUri, "Coffees";
+
+			$newCoffeeBody = @{
+				Name = $coffeeName
+				Brand = $coffeeBrand
+				Price = 0.00
+				Stock = 0
+				LastDelivery = [DateTime]::Now
+			}
+
+			$newCoffee = Invoke-RestMethod -Method Post -Uri $newCoffeeUri -Body $newCoffeeBody;
+
+			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
+
+			$coffeeOrderJson = $coffeeOrder | ConvertTo-Json;
+			# Act
+			Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -ContentType "application/json;odata=verbose";
+
+			# Assert
+			$result = Invoke-RestMethod -Method Get -Uri $uri;
+			$result | Should Not Be $null;
+			$result.UserId | Should Be $user.Id;
+			$result.CoffeeId | Should Be $coffee.Id;
+		}
+
+		It "Update-CoffeeOrderChangeCoffeeOrderIdThrows" -test {
+			# Arrange
+			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
+			$coffeeOrder.Id = $coffeeOrder.Id + 1;
+			$coffeeOrderJson = $coffeeOrder | ConvertTo-Json;
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson } | Should Throw;
+		}
+	}
+	AfterAll {
+		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		It "Warmup-AfterAll" -test {
+			$true | Should Be $true;
+		}
+
+		foreach($entitySet in $usedEntitieSets) {
+
+			It "Delete-$entitySet-TestDataSucceeded" -test {
+				# Arrange
+				$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
+				$getUri = '{0}{1}?$filter={2}' -f $baseUri, $entitySet ,$queryOption;
+
+				# Act
+				DeleteEntities -EntityName $entitySet -OdataComparison $queryOption;
+
+				# Assert
+				$result = Invoke-RestMethod -Method Get -Uri $getUri;
+				$result.value.Count | Should Be 0;
+			}
 		}
 
 	}
 }
 
 #
-# Copyright $year$ d-fens GmbH
+# Copyright 2017 d-fens GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
