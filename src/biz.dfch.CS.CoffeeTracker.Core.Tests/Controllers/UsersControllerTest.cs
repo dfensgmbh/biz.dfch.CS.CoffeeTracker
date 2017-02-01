@@ -98,7 +98,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Put(INVALID_ID, new Delta<User>());
+            await sut.Put(INVALID_ID, new User());
         }
 
 
