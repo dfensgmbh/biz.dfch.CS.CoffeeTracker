@@ -24,9 +24,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
     public class Coffee : BaseEntity
     {
         [Required]
-        public string Name { get; set; }
-
-        [Required]
         public string Brand { get; set; }
 
         [Required]

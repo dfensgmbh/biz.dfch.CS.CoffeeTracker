@@ -25,9 +25,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
     public class User : BaseEntity
     {
         [Required]
-        public string Name { get; set; }
-
-        [Required]
         public string Password { get; set; }
     }
 }

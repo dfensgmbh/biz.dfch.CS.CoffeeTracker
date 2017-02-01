@@ -26,5 +26,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
     {
         [Key]
         public long Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
     }
 }

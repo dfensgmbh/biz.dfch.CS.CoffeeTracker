@@ -264,6 +264,10 @@
     <Compile Include="Migrations\201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.Designer.cs">
       <DependentUpon>201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702011250377_AddedNameToBaseEntity.cs" />
+    <Compile Include="Migrations\201702011250377_AddedNameToBaseEntity.Designer.cs">
+      <DependentUpon>201702011250377_AddedNameToBaseEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="DbContext\CoffeeTrackerDbContext.cs" />
@@ -298,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.resx">
       <DependentUpon>201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702011250377_AddedNameToBaseEntity.resx">
+      <DependentUpon>201702011250377_AddedNameToBaseEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

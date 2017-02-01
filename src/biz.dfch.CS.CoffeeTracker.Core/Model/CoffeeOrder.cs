@@ -27,16 +27,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [Required]
         public long UserId { get; set; }
 
-        [Required]
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
         [Required]
         public long CoffeeId { get; set; }
 
-        [Required]
         [ForeignKey("CoffeeId")]
-        public Coffee Coffee { get; set; }
+        public virtual Coffee Coffee { get; set; }
 
         [Required]
         public DateTimeOffset Created { get; set; }
