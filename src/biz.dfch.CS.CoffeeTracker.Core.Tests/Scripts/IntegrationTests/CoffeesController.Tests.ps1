@@ -29,7 +29,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$called | Should Be $true;
 		}
 
-		It "Add-CoffeeSucceeds" -Test {
+		It "Create-CoffeeSucceeds" -Test {
 			# Arrange
 			$nameCheck = "*{0}*" -f $name;
 			$brandCheck = "*{0}*" -f $brand;
@@ -43,7 +43,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result | Should BeLike $brandCheck;
 		}
 
-		It "Add-CoffeeWithoutNameThrows" -test {
+		It "Create-CoffeeWithoutNameThrows" -test {
 			# Arrange
 			$body.Remove("Name");
 
@@ -52,7 +52,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			
 		}
 
-		It "Add-CoffeeWithoutBrandThrows" -test {
+		It "Create-CoffeeWithoutBrandThrows" -test {
 			# Arrange
 			$body.Remove("Brand");
 
