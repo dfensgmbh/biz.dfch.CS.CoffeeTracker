@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class UsersController : ODataController
     {
-        private AuthRepository authRepository = null;
+        private readonly AuthRepository authRepository = null;
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
