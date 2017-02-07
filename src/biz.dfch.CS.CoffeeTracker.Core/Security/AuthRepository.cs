@@ -34,6 +34,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         {
             authContext = new AuthContext();
             userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+            userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
         }
 
         public async Task<IdentityResult> RegisterUser(User user)
