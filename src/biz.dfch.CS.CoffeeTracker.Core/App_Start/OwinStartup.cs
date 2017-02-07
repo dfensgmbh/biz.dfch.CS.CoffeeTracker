@@ -18,7 +18,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using biz.dfch.CS.CoffeeTracker.Core.Provider;
 using Microsoft.Owin;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 
 [assembly: OwinStartup(typeof(biz.dfch.CS.CoffeeTracker.Core.App_Start.OwinStartup))]
@@ -31,6 +33,21 @@ namespace biz.dfch.CS.CoffeeTracker.Core.App_Start
             HttpConfiguration config = new HttpConfiguration();
             WebApiConfig.Register(config);
             app.UseWebApi(config);
+        }
+
+        public void ConfigureOAuth(IAppBuilder app)
+        {
+            var oAuthServerOptions = new OAuthAuthorizationServerOptions()
+            {
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                Provider = new SimpleAuthorizationServerProvider()
+            };
+
+            // Token Generation
+            app.UseOAuthAuthorizationServer(oAuthServerOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
     }
 }
