@@ -38,6 +38,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
 
         // GET: odata/CoffeeOrders
+        [Authorize]
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
@@ -47,6 +48,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // GET: odata/CoffeeOrders(5)
+        [Authorize]
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
@@ -58,6 +60,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PUT: odata/CoffeeOrders(5)
+        [Authorize]
         public async Task<IHttpActionResult> Put([FromODataUri] long key, CoffeeOrder modifiedCoffeeOrder)
         {
             Contract.Requires(0 < key, "|404|");
@@ -87,6 +90,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // POST: odata/CoffeeOrders
+        [Authorize]
         public async Task<IHttpActionResult> Post(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|404|");
@@ -107,6 +111,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PATCH: odata/CoffeeOrders(5)
+        [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
@@ -141,6 +146,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // DELETE: odata/CoffeeOrders(5)
+        [Authorize]
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
@@ -159,6 +165,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // GET: odata/CoffeeOrders(5)/Coffee
+        [Authorize]
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
@@ -170,6 +177,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // GET: odata/CoffeeOrders(5)/User
+        [Authorize]
         [EnableQuery]
         public SingleResult<User> GetUser([FromODataUri] long key)
         {

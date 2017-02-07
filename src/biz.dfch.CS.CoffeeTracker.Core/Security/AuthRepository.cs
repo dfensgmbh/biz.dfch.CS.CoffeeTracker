@@ -27,13 +27,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
 {
     public class AuthRepository : IDisposable
     {
-        private AuthContext authContext;
+        private CoffeeTrackerDbContext db;
         private UserManager<IdentityUser> userManager;
 
         public AuthRepository()
         {
-            authContext = new AuthContext();
-            userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+            db = new CoffeeTrackerDbContext();
+            userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
             {
                 AllowOnlyAlphanumericUserNames = false
@@ -61,7 +61,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
 
         public void Dispose()
         {
-            authContext.Dispose();
+            db.Dispose();
             userManager.Dispose();
         }
     }

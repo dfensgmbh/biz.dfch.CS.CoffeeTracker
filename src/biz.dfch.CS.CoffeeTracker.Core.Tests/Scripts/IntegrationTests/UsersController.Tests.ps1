@@ -8,7 +8,7 @@ Describe "UsersController" -Tags "UsersController" {
 		
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$password = "1234";
+			$password = "123456";
 
 			$body = @{
 				Name = $name
@@ -51,10 +51,10 @@ Describe "UsersController" -Tags "UsersController" {
 	Context "Update-User" {
 		BeforeEach{
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$password = "1234";
+			$password = "123456";
 
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$newPassword = "5687";
+			$newPassword = "568789";
 
 			$body = @{
 				Name = $name

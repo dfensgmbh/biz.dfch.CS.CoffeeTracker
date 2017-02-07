@@ -291,8 +291,11 @@
     </Compile>
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Migrations\201702071103548_AddedAuthorization.cs" />
+    <Compile Include="Migrations\201702071103548_AddedAuthorization.Designer.cs">
+      <DependentUpon>201702071103548_AddedAuthorization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Security\AuthorizationManager.cs" />
-    <Compile Include="DbContext\AuthContext.cs" />
     <Compile Include="DBStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -363,6 +366,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702011250377_AddedNameToBaseEntity.resx">
       <DependentUpon>201702011250377_AddedNameToBaseEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702071103548_AddedAuthorization.resx">
+      <DependentUpon>201702071103548_AddedAuthorization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
