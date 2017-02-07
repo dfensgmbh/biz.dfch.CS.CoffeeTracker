@@ -26,5 +26,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
     {
         [Required]
         public string Password { get; set; }
+
+        public bool IsPasswordSafe()
+        {
+            if (!string.IsNullOrWhiteSpace(Password))
+            {
+                if (6 <= Password.Length)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
