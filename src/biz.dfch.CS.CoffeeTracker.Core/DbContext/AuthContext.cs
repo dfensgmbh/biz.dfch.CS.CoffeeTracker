@@ -15,23 +15,17 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using biz.dfch.CS.CoffeeTracker.Core.Model;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
 {
-    public class CoffeeTrackerDbContext : System.Data.Entity.DbContext
+    public class AuthContext : IdentityDbContext<IdentityUser>
     {
-        public CoffeeTrackerDbContext() : base(DBStrings.CONNECTION_STRING_NAME)
+        public AuthContext() : base(DBStrings.CONNECTION_STRING_NAME)
         {
-            
-        }
 
-        // Registration of database tables
-        public DbSet<CoffeeOrder> CoffeeOrders { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Coffee> Coffees { get; set; }
+        }
     }
 }
