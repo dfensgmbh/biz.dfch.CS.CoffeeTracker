@@ -291,6 +291,13 @@
     </Compile>
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Security\AuthorizationManager.cs" />
+    <Compile Include="DbContext\AuthContext.cs" />
+    <Compile Include="DBStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Logging\ControllerLogging.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Controllers\CoffeeOrdersController.cs" />
@@ -320,6 +327,8 @@
     <Compile Include="Model\CoffeeOrder.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\AuthRepository.cs" />
+    <Compile Include="Validation\ApplicationUserManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -335,9 +344,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Security\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DBStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DBStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Message.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Message.Designer.cs</LastGenOutput>
