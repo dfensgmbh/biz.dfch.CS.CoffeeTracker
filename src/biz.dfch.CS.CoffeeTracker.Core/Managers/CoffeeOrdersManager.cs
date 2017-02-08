@@ -95,7 +95,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.SaveChanges();
         }
 
-        private bool HasPermissions(long key)
+        public bool HasPermissions(long key)
         {
             var coffeeOrder = Get(key);
             var user = ApplicationUserManager.GetCurrentUser(oDataController);

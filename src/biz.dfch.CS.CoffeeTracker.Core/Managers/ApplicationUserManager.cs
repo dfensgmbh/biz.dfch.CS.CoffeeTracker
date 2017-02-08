@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http.OData;
@@ -52,11 +53,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public static ApplicationUser GetCurrentUser(ODataController controller)
         {
-            var identity = controller.User.Identity as ClaimsIdentity;
-            Contract.Assert(null != identity);
+            /*var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var currentUserName = HttpContext.Current.User.Identity.Name;
+            return db.DataBaseUsers.FirstOrDefault(u => u.Name == currentUserName);*/
 
-            var identityClaim = identity.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-            return db.DataBaseUsers.FirstOrDefault(u => u.AspNetUserId == identityClaim.Value);
+            var currentUserName = controller.User.Identity.Name;
+            return GetUser(currentUserName);
         }
 
         public static ApplicationUser CreateAndPersistUser(ApplicationUser user)

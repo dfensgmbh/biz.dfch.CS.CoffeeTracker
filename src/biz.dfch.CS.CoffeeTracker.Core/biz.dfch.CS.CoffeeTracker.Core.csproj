@@ -300,6 +300,7 @@
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Managers\CoffeeOrdersManager.cs" />
+    <Compile Include="Managers\CoffeesManager.cs" />
     <Compile Include="Migrations\201702071103548_AddedAuthorization.cs" />
     <Compile Include="Migrations\201702071103548_AddedAuthorization.Designer.cs">
       <DependentUpon>201702071103548_AddedAuthorization.cs</DependentUpon>
