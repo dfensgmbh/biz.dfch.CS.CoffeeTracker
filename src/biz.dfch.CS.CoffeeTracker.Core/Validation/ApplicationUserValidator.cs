@@ -19,6 +19,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
 
