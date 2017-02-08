@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using System.Web.Http.OData;
@@ -23,13 +24,15 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
-    public class CoffeeOrdersManager
+    public class CoffeeOrdersManager : IDisposable
     {
         private CoffeeTrackerDbContext db;
+        private ODataController oDataController;
 
-        public CoffeeOrdersManager()
+        public CoffeeOrdersManager(ODataController oDataController)
         {
             db = new CoffeeTrackerDbContext();
+            this.oDataController = oDataController;
         }
 
         public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser(ODataController oDataController)
@@ -38,6 +41,71 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var coffeeOrders = db.CoffeeOrders.Where(c => c.UserId == user.Id);
 
             return coffeeOrders;
+        }
+
+        public CoffeeOrder Get(long id)
+        {
+            Contract.Requires(0 < id, "|404|");
+
+            return db.CoffeeOrders.FirstOrDefault(c => c.Id == id);
+        }
+
+        public CoffeeOrder Get(string name)
+        {
+            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
+
+            return db.CoffeeOrders.FirstOrDefault(c => c.Name == name);
+        }
+
+        public IQueryable<CoffeeOrder> GetAsQueryable(long id)
+        {
+            return db.CoffeeOrders.Where(c => c.Id == id);
+        }
+
+
+        public CoffeeOrder Update(long key, CoffeeOrder update)
+        {
+            Contract.Requires(null != update, "|400|");
+            Contract.Requires(HasPermissions(key), "|401|");
+            Contract.Requires(0 < key, "|404|");
+
+            var coffeeOrder = Get(key);
+            coffeeOrder.CoffeeId = update.CoffeeId;
+
+            db.SaveChanges();
+
+            return Get(key);
+        }
+
+        public CoffeeOrder Create(CoffeeOrder coffeeOrder)
+        {
+            db.CoffeeOrders.Add(coffeeOrder);
+            db.SaveChanges();
+
+            return Get(coffeeOrder.Name);
+        }
+
+        public void Delete(CoffeeOrder coffeeOrder)
+        {
+            Contract.Requires(0 < coffeeOrder.Id);
+            Contract.Requires(HasPermissions(coffeeOrder.Id), "|401|");
+            Contract.Requires(0 < coffeeOrder.Id, "|404|");
+
+            db.CoffeeOrders.Remove(coffeeOrder);
+            db.SaveChanges();
+        }
+
+        private bool HasPermissions(long key)
+        {
+            var coffeeOrder = Get(key);
+            var user = ApplicationUserManager.GetCurrentUser(oDataController);
+
+            return user.Id == coffeeOrder.UserId;
+        }
+
+        public void Dispose()
+        {
+            db?.Dispose();
         }
     }
 }
