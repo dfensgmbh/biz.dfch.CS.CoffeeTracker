@@ -34,5 +34,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db = new CoffeeTrackerDbContext();
         }
 
+        public Coffee Get(long key)
+        {
+            return db.Coffees.FirstOrDefault(c => c.Id == key);
+        }
+
+        public IQueryable<Coffee> GetAsQueryable(long key)
+        {
+            return db.Coffees.Where(c => c.Id == key);
+        }
     }
 }
