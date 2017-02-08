@@ -38,11 +38,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
-        private CoffeeOrdersManager coffeeOrdersManager;
+        private readonly CoffeeOrdersManager coffeeOrdersManager;
+        private readonly CoffeesManager coffeesManager;
 
         public CoffeeOrdersController()
         {
-            coffeeOrdersManager = new CoffeeOrdersManager();
+            coffeeOrdersManager = new CoffeeOrdersManager(this);
+            coffeesManager = new CoffeesManager(this);
         }
 
         // GET: odata/CoffeeOrders
@@ -50,7 +52,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
-
+            
             return coffeeOrdersManager.GetCoffeeOrdersOfCurrentUser(this).AsQueryable();
         }
 
@@ -62,7 +64,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(db.CoffeeOrders.Where(coffeeOrder => coffeeOrder.Id == key));
+            return SingleResult.Create(coffeeOrdersManager.GetAsQueryable(key));
         }
 
         // PUT: odata/CoffeeOrders(5)
@@ -78,16 +80,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            var coffeeOrder = coffeeOrdersManager.Get(key);
             Contract.Assert(null != coffeeOrder, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffeeOrder.Created = modifiedCoffeeOrder.Created;
-            coffeeOrder.UserId = modifiedCoffeeOrder.UserId;
-            coffeeOrder.CoffeeId = modifiedCoffeeOrder.CoffeeId;
-
-            await db.SaveChangesAsync();
+            coffeeOrder = coffeeOrdersManager.Update(key, modifiedCoffeeOrder);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffeeOrder);
 
@@ -106,8 +104,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogInsertEntityStart(MODELNAME, coffeeOrder);
 
-            db.CoffeeOrders.Add(coffeeOrder);
-            await db.SaveChangesAsync();
+            coffeeOrdersManager.Create(coffeeOrder);
 
             ControllerLogging.LogInsertEntityStop(MODELNAME, coffeeOrder);
 
@@ -128,19 +125,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
-            if (coffeeOrder == null)
-            {
-                return NotFound();
-            }
-          
+            var coffeeOrder = coffeeOrdersManager.Get(key);
+            Contract.Assert(null != coffeeOrder, "|404|");
+
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            patch.Patch(coffeeOrder);
+            coffeeOrdersManager.Update(key, patch.GetEntity());
 
-            await db.SaveChangesAsync();
-
-            coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            coffeeOrder = coffeeOrdersManager.Get(key);
             Contract.Assert(null != coffeeOrder);
 
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffeeOrder);
@@ -153,13 +145,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
 
-            var coffeeOrder = await db.CoffeeOrders.FindAsync(key);
+            var coffeeOrder = coffeeOrdersManager.Get(key);
             Contract.Assert(null != coffeeOrder, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffeeOrder);
 
-            db.CoffeeOrders.Remove(coffeeOrder);
-            await db.SaveChangesAsync();
+            coffeeOrdersManager.Delete(coffeeOrder);
 
             ControllerLogging.LogDeleteEntityStop(MODELNAME, coffeeOrder);
 
@@ -174,7 +165,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
-            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
+            return SingleResult.Create(coffeesManager.GetAsQueryable(key));
         }
 
         // GET: odata/CoffeeOrders(5)/ApplicationUser
@@ -185,14 +176,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
-            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.ApplicationUser));
+            return SingleResult.Create(ApplicationUserManager.GetUserAsQueryable(key));
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                coffeeOrdersManager.Dispose();
             }
             base.Dispose(disposing);
         }
