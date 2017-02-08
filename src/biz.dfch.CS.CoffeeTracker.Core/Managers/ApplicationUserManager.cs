@@ -40,6 +40,16 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.DataBaseUsers.FirstOrDefault(u => u.Name == name);
         }
 
+        public static ApplicationUser GetUser(long id)
+        {
+            return db.DataBaseUsers.FirstOrDefault(u => u.Id == id);
+        }
+
+        public static IQueryable<ApplicationUser> GetUserAsQueryable(long id)
+        {
+            return db.DataBaseUsers.Where(u => u.Id == id);
+        }
+
         public static ApplicationUser GetCurrentUser(ODataController controller)
         {
             var identity = controller.User.Identity as ClaimsIdentity;
