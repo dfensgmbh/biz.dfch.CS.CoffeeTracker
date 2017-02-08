@@ -13,26 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
-using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
+namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public class CoffeeTrackerDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationUser : BaseEntity
     {
-        public CoffeeTrackerDbContext() : base(DBStrings.CONNECTION_STRING_NAME)
-        {
-            
-        }
+        [Required]
+        public string Password { get; set; }
 
-        // Registration of database tables
-        public DbSet<CoffeeOrder> CoffeeOrders { get; set; }
-        public DbSet<ApplicationUser> DataBaseUsers { get; set; }
-        public DbSet<Coffee> Coffees { get; set; }
+        public string AspNetUserId { get; set; }
+
+        [ForeignKey("AspNetUserId")]
+        public virtual IdentityUser CorrespondingAspNetUser { get; set; }
+
+        [Pure]
+        public bool IsPasswordSafe()
+        {
+            if (!string.IsNullOrWhiteSpace(Password))
+            {
+                if (6 <= Password.Length)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

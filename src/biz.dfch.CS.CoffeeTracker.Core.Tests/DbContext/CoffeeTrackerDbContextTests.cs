@@ -24,9 +24,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
     [TestClass]
     public class CoffeeTrackerDbContextTests
     {
-        private static readonly User _testUser = new User
+        private static readonly ApplicationUser _testApplicationUser = new ApplicationUser
         {
-            Name = "Test-User",
+            Name = "Test-ApplicationUser",
             Password = "1234"
         };
 
@@ -45,8 +45,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
             Created = DateTime.Now,
             Coffee = _testCoffee,
             CoffeeId = _testCoffee.Id,
-            User = _testUser,
-            UserId = _testUser.Id
+            ApplicationUser = _testApplicationUser,
+            UserId = _testApplicationUser.Id
         };
 
 
@@ -56,15 +56,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                sut.DataBaseUsers.Add(_testUser);
+                sut.DataBaseUsers.Add(_testApplicationUser);
                 sut.SaveChanges();
 
-                var result = sut.DataBaseUsers.FirstOrDefault(u => u.Name == _testUser.Name);
+                var result = sut.DataBaseUsers.FirstOrDefault(u => u.Name == _testApplicationUser.Name);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(_testUser.Name, result.Name);
+                Assert.AreEqual(_testApplicationUser.Name, result.Name);
 
-                sut.DataBaseUsers.Remove(_testUser);
+                sut.DataBaseUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }
@@ -104,7 +104,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
 
                 sut.CoffeeOrders.Remove(_testCoffeeOrder);
                 sut.Coffees.Remove(_testCoffee);
-                sut.DataBaseUsers.Remove(_testUser);
+                sut.DataBaseUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }

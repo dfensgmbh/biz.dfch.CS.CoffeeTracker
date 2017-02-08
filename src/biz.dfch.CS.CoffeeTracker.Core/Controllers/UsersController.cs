@@ -27,23 +27,24 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     using System.Web.Http.OData.Extensions;
     using biz.dfch.CS.CoffeeTracker.Core.Model;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<User>("DataBaseUsers");
+    builder.EntitySet<ApplicationUser>("DataBaseUsers");
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
     public class UsersController : ODataController
     {
-        private readonly AuthRepository authRepository = null;
+        private readonly AuthorizationManager authorizationManager = null;
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
         public UsersController() : base()
         {
-            authRepository = new AuthRepository();
+            authorizationManager = new AuthorizationManager();
         }
 
         // GET: odata/DataBaseUsers
         [EnableQuery]
-        public IQueryable<User> GetUsers()
+        [Authorize]
+        public IQueryable<ApplicationUser> GetUsers()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
@@ -51,9 +52,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // GET: odata/DataBaseUsers(5)
+        [Authorize]
         [EnableQuery]
-        public SingleResult<User> GetUser([FromODataUri] long key)
+        public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
+            
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
@@ -62,12 +65,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PUT: odata/DataBaseUsers(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] long key, User modifiedUser)
+        [Authorize]
+        public async Task<IHttpActionResult> Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != modifiedUser, "|404|");
+            Contract.Requires(null != modifiedApplicationUser, "|404|");
 
-            Validate(modifiedUser);
+            Validate(modifiedApplicationUser);
 
             if (!ModelState.IsValid)
             {
@@ -79,8 +83,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            user.Name = modifiedUser.Name;
-            user.Password = modifiedUser.Password;
+            user.Name = modifiedApplicationUser.Name;
+            user.Password = modifiedApplicationUser.Password;
 
             await db.SaveChangesAsync();
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
@@ -89,20 +93,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // POST: odata/DataBaseUsers
-        public async Task<IHttpActionResult> Post(User user)
+        public async Task<IHttpActionResult> Post(ApplicationUser applicationUser)
         {
-            Contract.Requires(null != user, "|400|");
-            Contract.Requires(user.IsPasswordSafe(), "|400|");
+            Contract.Requires(null != applicationUser, "|400|");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            ControllerLogging.LogInsertEntityStart(MODELNAME, user);
+            ControllerLogging.LogInsertEntityStart(MODELNAME, applicationUser);
 
-            var result = await authRepository.RegisterUser(user);
-            Contract.Assert(null != user);
+            var result = await authorizationManager.RegisterUser(applicationUser);
+            Contract.Assert(result.Succeeded);
+            
 
             var errorResult = GetErrorResult(result);
 
@@ -111,14 +115,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return errorResult;
             }
 
-            ControllerLogging.LogInsertEntityStop(MODELNAME, user);
+            ControllerLogging.LogInsertEntityStop(MODELNAME, applicationUser);
 
-            return Created(user);
+            return Created(applicationUser);
         }
 
         // PATCH: odata/DataBaseUsers(5)
+        [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<User> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<ApplicationUser> patch)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
@@ -144,6 +149,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // DELETE: odata/DataBaseUsers(5)
+        [Authorize]
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");

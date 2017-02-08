@@ -37,20 +37,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Provider
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            using (var repo = new AuthRepository())
+            using (var repo = new AuthorizationManager())
             {
                 var user = await repo.FindUser(context.UserName, context.Password);
 
                 if (null == user)
                 {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
+                    context.SetError("invalid_grant", "The applicationUser name or password is incorrect.");
                     return;
                 }
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+            identity.AddClaim(new Claim("role", "applicationUser"));
 
             context.Validated(identity);
         }

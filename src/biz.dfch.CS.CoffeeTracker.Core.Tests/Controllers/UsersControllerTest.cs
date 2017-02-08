@@ -57,7 +57,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
         }
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "user")]
+        [ExpectContractFailure(MessagePattern = "applicationUser")]
         public async Task UsersControllerCodeContractsPostUserNullCoffeeFails()
         {
             // Arrange
@@ -75,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Patch(INVALID_ID, new Delta<User>());
+            await sut.Patch(INVALID_ID, new Delta<ApplicationUser>());
         }
 
 
@@ -98,7 +98,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Put(INVALID_ID, new User());
+            await sut.Put(INVALID_ID, new ApplicationUser());
         }
 
 

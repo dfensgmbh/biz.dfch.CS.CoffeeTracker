@@ -24,6 +24,7 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
 using biz.dfch.CS.Web.Utilities.OData;
+using Microsoft.AspNet.Identity.EntityFramework;
 using static biz.dfch.CS.CoffeeTracker.Core.Logging.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
@@ -41,7 +42,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core
 
             // Web API routes
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<User>("Users");
+            builder.EntitySet<ApplicationUser>("Users");
+            builder.EntitySet<IdentityUser>("IdentityUsers");
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());

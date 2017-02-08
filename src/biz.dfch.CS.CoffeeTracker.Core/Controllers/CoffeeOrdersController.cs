@@ -8,6 +8,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
@@ -17,6 +18,7 @@ using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -29,26 +31,30 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
     builder.EntitySet<CoffeeOrder>("CoffeeOrders");
     builder.EntitySet<Coffee>("Coffees"); 
-    builder.EntitySet<User>("Users"); 
+    builder.EntitySet<ApplicationUser>("Users"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
+    [Authorize]
     public class CoffeeOrdersController : ODataController
     {
-        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
+        private CoffeeOrdersManager coffeeOrdersManager;
+
+        public CoffeeOrdersController()
+        {
+            coffeeOrdersManager = new CoffeeOrdersManager();
+        }
 
         // GET: odata/CoffeeOrders
-        [Authorize]
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
-            return db.CoffeeOrders;
+            return coffeeOrdersManager.GetCoffeeOrdersOfCurrentUser(this).AsQueryable();
         }
 
         // GET: odata/CoffeeOrders(5)
-        [Authorize]
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
@@ -60,7 +66,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PUT: odata/CoffeeOrders(5)
-        [Authorize]
         public async Task<IHttpActionResult> Put([FromODataUri] long key, CoffeeOrder modifiedCoffeeOrder)
         {
             Contract.Requires(0 < key, "|404|");
@@ -90,7 +95,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // POST: odata/CoffeeOrders
-        [Authorize]
         public async Task<IHttpActionResult> Post(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|404|");
@@ -111,7 +115,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // PATCH: odata/CoffeeOrders(5)
-        [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
@@ -146,7 +149,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // DELETE: odata/CoffeeOrders(5)
-        [Authorize]
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
@@ -165,7 +167,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // GET: odata/CoffeeOrders(5)/Coffee
-        [Authorize]
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
@@ -176,16 +177,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.Coffee));
         }
 
-        // GET: odata/CoffeeOrders(5)/User
-        [Authorize]
+        // GET: odata/CoffeeOrders(5)/ApplicationUser
         [EnableQuery]
-        public SingleResult<User> GetUser([FromODataUri] long key)
+        public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
-            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.User));
+            return SingleResult.Create(db.CoffeeOrders.Where(m => m.Id == key).Select(m => m.ApplicationUser));
         }
 
         protected override void Dispose(bool disposing)

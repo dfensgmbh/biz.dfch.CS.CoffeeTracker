@@ -15,17 +15,32 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Security;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
-    public class ApplicationUserManager : UserManager<IdentityUser>
+    public class ApplicationUserValidator
     {
-        public ApplicationUserManager(IUserStore<IdentityUser> store) : base(store)
+        private readonly ApplicationUser user;
+
+        public ApplicationUserValidator(ApplicationUser user)
         {
+            this.user = user;
+        }
+
+        public bool UserExists()
+        {
+            var result = ApplicationUserManager.GetUser(user.Name);
+            if (null != result)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

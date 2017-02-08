@@ -26,7 +26,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Logging
         {
             public const string COFFEE = "Coffee";
             public const string COFFEEORDER = "CoffeeOrder";
-            public const string USER = "User";
+            public const string USER = "ApplicationUser";
         }
 
         public static void LogGetEntities(string modelname)

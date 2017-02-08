@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Http.OData;
+using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Model
+namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
-    public class User : BaseEntity
+    public class CoffeeOrdersManager
     {
-        [Required]
-        public string Password { get; set; }
+        private CoffeeTrackerDbContext db;
 
-        public bool IsPasswordSafe()
+        public CoffeeOrdersManager()
         {
-            if (!string.IsNullOrWhiteSpace(Password))
-            {
-                if (6 <= Password.Length)
-                {
-                    return true;
-                }
-            }
-            return false;
+            db = new CoffeeTrackerDbContext();
+        }
+
+        public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser(ODataController oDataController)
+        {
+            var user = ApplicationUserManager.GetCurrentUser(oDataController);
+            var coffeeOrders = db.CoffeeOrders.Where(c => c.UserId == user.Id);
+
+            return coffeeOrders;
         }
     }
 }

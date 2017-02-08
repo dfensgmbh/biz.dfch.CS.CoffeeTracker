@@ -28,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         public long UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
         public long CoffeeId { get; set; }
