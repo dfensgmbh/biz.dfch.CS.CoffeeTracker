@@ -30,7 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly CoffeeTrackerDbContext db;
         internal readonly CoffeeOrdersController oDataController;
-        private readonly CoffeeOrdersValidator validator;
+        internal readonly CoffeeOrdersValidator validator;
 
         public CoffeeOrdersManager(CoffeeOrdersController oDataController)
         {
@@ -72,9 +72,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public CoffeeOrder Update(long key, CoffeeOrder update)
         {
             Contract.Requires(null != update, "|400|");
-            Contract.Requires(validator.HasPermissions(key), "|401|");
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(validator.ExistsInDatabase(key), "|404|");
+
+            var exists = validator.ExistsInDatabase(key);
+            Contract.Assert(exists, "|404|");
+
+            var hasPermission = validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
 
             var coffeeOrder = Get(key);
             coffeeOrder.CoffeeId = update.CoffeeId;
@@ -99,8 +103,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public void Delete(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(0 < coffeeOrder.Id);
-            Contract.Requires(validator.HasPermissions(coffeeOrder.Id), "|401|");
             Contract.Requires(0 < coffeeOrder.Id, "|404|");
+
+            var hasPermission = validator.HasPermissions(coffeeOrder);
+            Contract.Assert(hasPermission, "|403|");
 
             db.CoffeeOrders.Remove(coffeeOrder);
             db.SaveChanges();

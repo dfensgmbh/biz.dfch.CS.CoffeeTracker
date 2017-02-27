@@ -62,6 +62,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
 
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
+
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
             return SingleResult.Create(coffeeOrdersManager.GetAsQueryable(key));
@@ -73,6 +76,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != modifiedCoffeeOrder, "|404|");
 
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
+
             Validate(modifiedCoffeeOrder);
 
             if (!ModelState.IsValid)
@@ -80,12 +86,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var coffeeOrder = coffeeOrdersManager.Get(key);
-            Contract.Assert(null != coffeeOrder, "|404|");
-
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffeeOrder = coffeeOrdersManager.Update(key, modifiedCoffeeOrder);
+            var coffeeOrder = coffeeOrdersManager.Update(key, modifiedCoffeeOrder);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffeeOrder);
 
@@ -118,6 +121,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
 
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)
@@ -125,12 +131,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var coffeeOrder = coffeeOrdersManager.Get(key);
-            Contract.Assert(null != coffeeOrder, "|404|");
-
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            coffeeOrdersManager.Update(key, patch.GetEntity());
+            var coffeeOrder = coffeeOrdersManager.Update(key, patch.GetEntity());
 
             coffeeOrder = coffeeOrdersManager.Get(key);
             Contract.Assert(null != coffeeOrder);
@@ -144,9 +147,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
 
+            coffeeOrdersManager.validator.ExistsInDatabase(key);
             var coffeeOrder = coffeeOrdersManager.Get(key);
-            Contract.Assert(null != coffeeOrder, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffeeOrder);
 
@@ -162,17 +167,22 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
+
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
             return SingleResult.Create(coffeesManager.GetAsQueryable(key));
         }
 
-        // GET: odata/CoffeeOrders(5)/ApplicationUser
+        // GET: api/CoffeeOrders(5)/ApplicationUser
         [EnableQuery]
         public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
+            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
+            Contract.Assert(hasPermission, "|403|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
