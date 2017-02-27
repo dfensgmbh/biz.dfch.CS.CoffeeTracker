@@ -30,7 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly CoffeeTrackerDbContext db;
         internal readonly CoffeeOrdersController oDataController;
-        internal readonly CoffeeOrdersValidator validator;
+        public readonly CoffeeOrdersValidator validator;
 
         public CoffeeOrdersManager(CoffeeOrdersController oDataController)
         {

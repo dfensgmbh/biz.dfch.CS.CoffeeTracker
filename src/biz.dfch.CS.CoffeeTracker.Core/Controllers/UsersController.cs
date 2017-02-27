@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class UsersController : ODataController
     {
-        private readonly AuthorizationManager authorizationManager = null;
+        private readonly AuthorizationManager authorizationManager;
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
@@ -56,7 +56,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [EnableQuery]
         public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
-            
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());

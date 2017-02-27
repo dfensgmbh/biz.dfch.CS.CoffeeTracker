@@ -38,7 +38,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
-        private readonly CoffeeOrdersManager coffeeOrdersManager;
+        public readonly CoffeeOrdersManager coffeeOrdersManager;
         private readonly CoffeesManager coffeesManager;
 
         public CoffeeOrdersController()
@@ -61,9 +61,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
-
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
@@ -75,9 +73,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != modifiedCoffeeOrder, "|404|");
-
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             Validate(modifiedCoffeeOrder);
 
@@ -120,9 +116,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
-
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             Validate(patch.GetEntity());
 
@@ -147,8 +141,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             coffeeOrdersManager.validator.ExistsInDatabase(key);
             var coffeeOrder = coffeeOrdersManager.Get(key);
@@ -167,9 +160,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
-
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
@@ -181,8 +172,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
-            var hasPermission = coffeeOrdersManager.validator.HasPermissions(key);
-            Contract.Assert(hasPermission, "|403|");
+            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
