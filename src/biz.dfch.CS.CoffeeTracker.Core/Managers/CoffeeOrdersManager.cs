@@ -23,12 +23,14 @@ using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class CoffeeOrdersManager : IDisposable
     {
         private readonly CoffeeTrackerDbContext db;
+        private readonly ApplicationUserManager userManager;
         internal readonly CoffeeOrdersController oDataController;
         public readonly CoffeeOrdersValidator validator;
 
@@ -37,13 +39,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(null != oDataController);
 
             db = new CoffeeTrackerDbContext();
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
             validator = new CoffeeOrdersValidator(db, this);
             this.oDataController = oDataController;
         }
 
         public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser()
         {
-            var user = ApplicationUserManager.GetCurrentUser(oDataController);
+            var user = userManager.GetCurrentUser(oDataController);
             var coffeeOrders = db.CoffeeOrders.Where(c => c.UserId == user.Id);
 
             return coffeeOrders;

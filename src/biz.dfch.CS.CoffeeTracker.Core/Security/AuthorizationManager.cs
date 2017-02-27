@@ -28,12 +28,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
     public class AuthorizationManager : IDisposable
     {
         private readonly CoffeeTrackerDbContext db;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly ApplicationUserManager userManager;
 
         public AuthorizationManager()
         {
             db = new CoffeeTrackerDbContext();
-            userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
+
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
             {
                 AllowOnlyAlphanumericUserNames = false
@@ -57,7 +58,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
             var user = await FindUser(applicationUser.Name, applicationUser.Password);
             applicationUser.AspNetUserId = user.Id;
             applicationUser.Password = userManager.PasswordHasher.HashPassword(applicationUser.Password);
-            ApplicationUserManager.CreateAndPersistUser(applicationUser);
+            userManager.CreateAndPersistUser(applicationUser);
 
             return result;
         }

@@ -30,40 +30,40 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class ApplicationUserManager : UserManager<IdentityUser>
     {
-        private static CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
 
         public ApplicationUserManager(IUserStore<IdentityUser> store) : base(store)
         {
         }
 
-        public static ApplicationUser GetUser(string name)
+        public ApplicationUser GetUser(string name)
         {
-            return db.DataBaseUsers.FirstOrDefault(u => u.Name == name);
+            return db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
         }
 
-        public static ApplicationUser GetUser(long id)
+        public ApplicationUser GetUser(long id)
         {
-            return db.DataBaseUsers.FirstOrDefault(u => u.Id == id);
+            return db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
         }
 
-        public static IQueryable<ApplicationUser> GetUserAsQueryable(long id)
+        public IQueryable<ApplicationUser> GetUserAsQueryable(long id)
         {
-            return db.DataBaseUsers.Where(u => u.Id == id);
+            return db.ApplicationUsers.Where(u => u.Id == id);
         }
 
-        public static ApplicationUser GetCurrentUser(ODataController controller)
+        public ApplicationUser GetCurrentUser(ODataController controller)
         {
             /*var currentUserId = HttpContext.Current.User.Identity.GetUserId();
             var currentUserName = HttpContext.Current.User.Identity.Name;
-            return db.DataBaseUsers.FirstOrDefault(u => u.Name == currentUserName);*/
+            return db.ApplicationUsers.FirstOrDefault(u => u.Name == currentUserName);*/
 
             var currentUserName = controller.User.Identity.Name;
             return GetUser(currentUserName);
         }
 
-        public static ApplicationUser CreateAndPersistUser(ApplicationUser user)
+        public ApplicationUser CreateAndPersistUser(ApplicationUser user)
         {
-            db.DataBaseUsers.Add(user);
+            db.ApplicationUsers.Add(user);
             db.SaveChanges();
             return GetUser(user.Name);
         }

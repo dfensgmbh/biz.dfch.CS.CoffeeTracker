@@ -21,25 +21,29 @@ using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
     public class CoffeeOrdersValidator
     {
         private CoffeeTrackerDbContext db;
-        private CoffeeOrdersManager manager;
+        private CoffeeOrdersManager coffeeOrdersManager;
+        private readonly ApplicationUserManager userManager;
 
-        public CoffeeOrdersValidator(CoffeeTrackerDbContext db, CoffeeOrdersManager manager)
+
+        public CoffeeOrdersValidator(CoffeeTrackerDbContext db, CoffeeOrdersManager coffeeOrdersManager)
         {
             this.db = db;
-            this.manager = manager;
+            this.coffeeOrdersManager = coffeeOrdersManager;
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         public bool ExistsInDatabase(string name)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name));
 
-            var result = manager.Get(name);
+            var result = coffeeOrdersManager.Get(name);
 
             return null != result;
         }
@@ -48,7 +52,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         {
             Contract.Requires(0 < key);
 
-            var result = manager.Get(key);
+            var result = coffeeOrdersManager.Get(key);
 
             return null != result;
         }
@@ -62,8 +66,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         {
             Contract.Requires(0 < key);
 
-            var coffeeOrder = manager.Get(key);
-            var user = ApplicationUserManager.GetCurrentUser(manager.oDataController);
+            var coffeeOrder = coffeeOrdersManager.Get(key);
+            var user = userManager.GetCurrentUser(coffeeOrdersManager.oDataController);
             Contract.Assert(!string.IsNullOrWhiteSpace(user.Name));
 
             return user.Id == coffeeOrder.UserId;

@@ -22,21 +22,24 @@ using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
     public class ApplicationUserValidator
     {
         private readonly ApplicationUser user;
+        private ApplicationUserManager applicationUserManager;
 
         public ApplicationUserValidator(ApplicationUser user)
         {
             this.user = user;
+            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         public bool UserExists()
         {
-            var result = ApplicationUserManager.GetUser(user.Name);
+            var result = applicationUserManager.GetUser(user.Name);
             if (null != result)
             {
                 return true;

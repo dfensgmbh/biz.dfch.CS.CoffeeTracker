@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
 
         // Registration of database tables
         public DbSet<CoffeeOrder> CoffeeOrders { get; set; }
-        public DbSet<ApplicationUser> DataBaseUsers { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Coffee> Coffees { get; set; }
     }
 }

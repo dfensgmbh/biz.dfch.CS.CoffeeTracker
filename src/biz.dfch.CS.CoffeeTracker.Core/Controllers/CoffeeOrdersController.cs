@@ -19,6 +19,7 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -38,13 +39,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
-        public readonly CoffeeOrdersManager coffeeOrdersManager;
         private readonly CoffeesManager coffeesManager;
+        private readonly ApplicationUserManager userManager;
+        public readonly CoffeeOrdersManager coffeeOrdersManager;
 
         public CoffeeOrdersController()
         {
             coffeeOrdersManager = new CoffeeOrdersManager(this);
             coffeesManager = new CoffeesManager(this);
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         // GET: odata/CoffeeOrders
@@ -172,11 +175,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(coffeeOrdersManager.validator.HasPermissions(key), "|403|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
-            return SingleResult.Create(ApplicationUserManager.GetUserAsQueryable(key));
+            return SingleResult.Create(userManager.GetUserAsQueryable(key));
         }
 
         protected override void Dispose(bool disposing)

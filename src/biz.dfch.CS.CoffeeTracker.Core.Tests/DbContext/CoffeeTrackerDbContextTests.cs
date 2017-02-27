@@ -56,15 +56,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                sut.DataBaseUsers.Add(_testApplicationUser);
+                sut.ApplicationUsers.Add(_testApplicationUser);
                 sut.SaveChanges();
 
-                var result = sut.DataBaseUsers.FirstOrDefault(u => u.Name == _testApplicationUser.Name);
+                var result = sut.ApplicationUsers.FirstOrDefault(u => u.Name == _testApplicationUser.Name);
 
                 Assert.IsNotNull(result);
                 Assert.AreEqual(_testApplicationUser.Name, result.Name);
 
-                sut.DataBaseUsers.Remove(_testApplicationUser);
+                sut.ApplicationUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }
@@ -104,7 +104,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
 
                 sut.CoffeeOrders.Remove(_testCoffeeOrder);
                 sut.Coffees.Remove(_testCoffee);
-                sut.DataBaseUsers.Remove(_testApplicationUser);
+                sut.ApplicationUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }

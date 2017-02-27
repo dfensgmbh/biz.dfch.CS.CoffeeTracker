@@ -27,7 +27,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     using System.Web.Http.OData.Extensions;
     using biz.dfch.CS.CoffeeTracker.Core.Model;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<ApplicationUser>("DataBaseUsers");
+    builder.EntitySet<ApplicationUser>("ApplicationUsers");
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
     public class UsersController : ODataController
@@ -36,34 +36,32 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
-        public UsersController() : base()
+        public UsersController()
         {
             authorizationManager = new AuthorizationManager();
         }
 
-        // GET: odata/DataBaseUsers
         [EnableQuery]
         [Authorize]
-        public IQueryable<ApplicationUser> GetUsers()
+        public IQueryable<ApplicationUser> Get()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
-            return db.DataBaseUsers;
+            return db.ApplicationUsers;
         }
 
-        // GET: odata/DataBaseUsers(5)
         [Authorize]
         [EnableQuery]
-        public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
+        public SingleResult<ApplicationUser> Get([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(db.DataBaseUsers.Where(user => user.Id == key));
+            return SingleResult.Create(db.ApplicationUsers.Where(user => user.Id == key));
         }
 
-        // PUT: odata/DataBaseUsers(5)
+        // PUT: odata/ApplicationUsers(5)
         [Authorize]
         public async Task<IHttpActionResult> Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
@@ -77,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await db.DataBaseUsers.FindAsync(key);
+            var user = await db.ApplicationUsers.FindAsync(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
@@ -91,7 +89,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Updated(user);
         }
 
-        // POST: odata/DataBaseUsers
+        // POST: odata/ApplicationUsers
         public async Task<IHttpActionResult> Post(ApplicationUser applicationUser)
         {
             Contract.Requires(null != applicationUser, "|400|");
@@ -119,7 +117,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Created(applicationUser);
         }
 
-        // PATCH: odata/DataBaseUsers(5)
+        // PATCH: odata/ApplicationUsers(5)
         [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<ApplicationUser> patch)
@@ -134,7 +132,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await db.DataBaseUsers.FindAsync(key);
+            var user = await db.ApplicationUsers.FindAsync(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
@@ -147,18 +145,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Updated(user);
         }
 
-        // DELETE: odata/DataBaseUsers(5)
+        // DELETE: odata/ApplicationUsers(5)
         [Authorize]
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
-            var user = await db.DataBaseUsers.FindAsync(key);
+            var user = await db.ApplicationUsers.FindAsync(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, user);
 
-            db.DataBaseUsers.Remove(user);
+            db.ApplicationUsers.Remove(user);
             await db.SaveChangesAsync();
 
             ControllerLogging.LogDeleteEntityStop(MODELNAME, user);
