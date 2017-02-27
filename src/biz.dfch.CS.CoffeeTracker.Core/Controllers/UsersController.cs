@@ -14,9 +14,11 @@ using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -33,12 +35,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class UsersController : ODataController
     {
         private readonly AuthorizationManager authorizationManager;
-        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly ApplicationUserManager userManager;
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
         public UsersController()
         {
             authorizationManager = new AuthorizationManager();
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         [EnableQuery]
@@ -47,7 +50,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
-            return db.ApplicationUsers;
+            return userManager.GetUsers();
         }
 
         [Authorize]
@@ -58,7 +61,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(db.ApplicationUsers.Where(user => user.Id == key));
+            return SingleResult.Create(userManager.GetUserAsQueryable(key));
         }
 
         // PUT: odata/ApplicationUsers(5)
@@ -75,15 +78,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await db.ApplicationUsers.FindAsync(key);
+            var user = userManager.GetUser(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            user.Name = modifiedApplicationUser.Name;
-            user.Password = modifiedApplicationUser.Password;
+            userManager.UpdateUser(key, modifiedApplicationUser);
 
-            await db.SaveChangesAsync();
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
 
             return Updated(user);
@@ -120,25 +121,22 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // PATCH: odata/ApplicationUsers(5)
         [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<ApplicationUser> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
-
-            Validate(patch.GetEntity());
+            Contract.Requires(null != modifiedApplicationUser, "|404|");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await db.ApplicationUsers.FindAsync(key);
+            var user = userManager.GetUser(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            patch.Patch(user);
-            await db.SaveChangesAsync();
+            userManager.UpdateUser(key, modifiedApplicationUser);
 
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, user);
 
@@ -151,13 +149,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
 
-            var user = await db.ApplicationUsers.FindAsync(key);
+            var user = userManager.GetUser(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, user);
 
-            db.ApplicationUsers.Remove(user);
-            await db.SaveChangesAsync();
+            userManager.DeleteUser(key);
 
             ControllerLogging.LogDeleteEntityStop(MODELNAME, user);
 
@@ -168,7 +165,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                authorizationManager.Dispose();
+                userManager.Dispose();
             }
             base.Dispose(disposing);
         }
