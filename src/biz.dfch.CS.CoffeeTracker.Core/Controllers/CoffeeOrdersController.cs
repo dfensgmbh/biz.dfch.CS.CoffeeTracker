@@ -53,7 +53,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             ControllerLogging.LogGetEntities(MODELNAME);
             
-            return coffeeOrdersManager.GetCoffeeOrdersOfCurrentUser(this).AsQueryable();
+            return coffeeOrdersManager.GetCoffeeOrdersOfCurrentUser().AsQueryable();
         }
 
         // GET: odata/CoffeeOrders(5)

@@ -22,19 +22,22 @@ using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Validation;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class CoffeeOrdersManager : IDisposable
     {
         private readonly CoffeeTrackerDbContext db;
-        private readonly CoffeeOrdersController oDataController;
+        internal readonly CoffeeOrdersController oDataController;
+        private readonly CoffeeOrdersValidator validator;
 
         public CoffeeOrdersManager(CoffeeOrdersController oDataController)
         {
             Contract.Requires(null != oDataController);
 
             db = new CoffeeTrackerDbContext();
+            validator = new CoffeeOrdersValidator(db, this);
             this.oDataController = oDataController;
         }
 
@@ -69,8 +72,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public CoffeeOrder Update(long key, CoffeeOrder update)
         {
             Contract.Requires(null != update, "|400|");
-            Contract.Requires(HasPermissions(key), "|401|");
+            Contract.Requires(validator.HasPermissions(key), "|401|");
             Contract.Requires(0 < key, "|404|");
+            Contract.Requires(validator.ExistsInDatabase(key), "|404|");
 
             var coffeeOrder = Get(key);
             coffeeOrder.CoffeeId = update.CoffeeId;
@@ -82,6 +86,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public CoffeeOrder Create(CoffeeOrder coffeeOrder)
         {
+            Contract.Requires(null != coffeeOrder);
+            Contract.Requires(0 < coffeeOrder.CoffeeId);
+            Contract.Requires(0 < coffeeOrder.UserId);
+
             db.CoffeeOrders.Add(coffeeOrder);
             db.SaveChanges();
 
@@ -91,20 +99,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public void Delete(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(0 < coffeeOrder.Id);
-            Contract.Requires(HasPermissions(coffeeOrder.Id), "|401|");
+            Contract.Requires(validator.HasPermissions(coffeeOrder.Id), "|401|");
             Contract.Requires(0 < coffeeOrder.Id, "|404|");
 
             db.CoffeeOrders.Remove(coffeeOrder);
             db.SaveChanges();
         }
 
-        public bool HasPermissions(long key)
-        {
-            var coffeeOrder = Get(key);
-            var user = ApplicationUserManager.GetCurrentUser(oDataController);
 
-            return user.Id == coffeeOrder.UserId;
-        }
 
         public void Dispose()
         {
