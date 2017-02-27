@@ -19,6 +19,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using System.Web.Http.OData;
+using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 
@@ -26,16 +27,18 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class CoffeeOrdersManager : IDisposable
     {
-        private CoffeeTrackerDbContext db;
-        private ODataController oDataController;
+        private readonly CoffeeTrackerDbContext db;
+        private readonly CoffeeOrdersController oDataController;
 
-        public CoffeeOrdersManager(ODataController oDataController)
+        public CoffeeOrdersManager(CoffeeOrdersController oDataController)
         {
+            Contract.Requires(null != oDataController);
+
             db = new CoffeeTrackerDbContext();
             this.oDataController = oDataController;
         }
 
-        public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser(ODataController oDataController)
+        public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser()
         {
             var user = ApplicationUserManager.GetCurrentUser(oDataController);
             var coffeeOrders = db.CoffeeOrders.Where(c => c.UserId == user.Id);
