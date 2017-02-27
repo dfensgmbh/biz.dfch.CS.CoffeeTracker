@@ -36,26 +36,35 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
         }
 
+        public IQueryable<ApplicationUser> GetUsers()
+        {
+            return db.ApplicationUsers;
+        }
+
         public ApplicationUser GetUser(string name)
         {
+            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
+
             return db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
         }
 
         public ApplicationUser GetUser(long id)
         {
+            Contract.Requires(0 < id, "|404|");
+
             return db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
         }
 
         public IQueryable<ApplicationUser> GetUserAsQueryable(long id)
         {
+            Contract.Requires(0 < id, "|404|");
+
             return db.ApplicationUsers.Where(u => u.Id == id);
         }
 
         public ApplicationUser GetCurrentUser(ODataController controller)
         {
-            /*var currentUserId = HttpContext.Current.User.Identity.GetUserId();
-            var currentUserName = HttpContext.Current.User.Identity.Name;
-            return db.ApplicationUsers.FirstOrDefault(u => u.Name == currentUserName);*/
+            Contract.Requires(null != controller);
 
             var currentUserName = controller.User.Identity.Name;
             return GetUser(currentUserName);
@@ -63,9 +72,38 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public ApplicationUser CreateAndPersistUser(ApplicationUser user)
         {
+            Contract.Requires(null != user, "|400|");
+
             db.ApplicationUsers.Add(user);
             db.SaveChanges();
             return GetUser(user.Name);
+        }
+
+        public ApplicationUser UpdateUser(long id, ApplicationUser update)
+        {
+            Contract.Requires(0 < id, "|404|");
+            Contract.Requires(null != update, "|400|");
+
+            var user = GetUser(id);
+            Contract.Assert(null != user);
+
+            user.Name = update.Name;
+            user.Password = update.Password;
+
+            db.SaveChanges();
+
+            return GetUser(id);
+        }
+
+        public void DeleteUser(long id)
+        {
+            Contract.Requires(0 < id, "|404|");
+
+            var user = GetUser(id);
+            Contract.Assert(null != user, "|404|");
+
+            db.ApplicationUsers.Remove(user);
+            db.SaveChanges();
         }
     }
 }
