@@ -20,6 +20,7 @@ using System.Linq;
 using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
@@ -50,6 +51,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
             var result = manager.Get(key);
 
             return null != result;
+        }
+
+        public bool HasPermissions(CoffeeOrder coffeeOrder)
+        {
+            return HasPermissions(coffeeOrder.Id);
         }
 
         public bool HasPermissions(long key)
