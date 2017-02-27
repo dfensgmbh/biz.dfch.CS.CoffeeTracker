@@ -106,8 +106,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.SaveChanges();
         }
 
-
-
         public void Dispose()
         {
             db?.Dispose();
