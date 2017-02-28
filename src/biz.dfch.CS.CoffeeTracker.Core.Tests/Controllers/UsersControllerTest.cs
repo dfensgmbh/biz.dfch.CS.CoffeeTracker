@@ -28,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
     [TestClass]
     public class UsersControllerTest
     {
-        private UsersController sut = new UsersController();
+        private readonly UsersController sut = new UsersController();
         private const long INVALID_ID = 0;
 
         [TestMethod]
