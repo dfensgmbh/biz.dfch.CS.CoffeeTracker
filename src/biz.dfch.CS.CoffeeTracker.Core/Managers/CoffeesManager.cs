@@ -30,7 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private CoffeeTrackerDbContext db;
         private ODataController oDataController;
-        private PermissionChecker permissionChecker;
+        private readonly PermissionChecker permissionChecker;
 
         public CoffeesManager(ODataController oDataController)
         {
