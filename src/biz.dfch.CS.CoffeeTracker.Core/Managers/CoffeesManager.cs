@@ -20,6 +20,9 @@ using System.Linq;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
+using biz.dfch.CS.CoffeeTracker.Core.Validation;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
@@ -27,11 +30,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private CoffeeTrackerDbContext db;
         private ODataController oDataController;
+        private PermissionChecker permissionChecker;
 
         public CoffeesManager(ODataController oDataController)
         {
             this.oDataController = oDataController;
             db = new CoffeeTrackerDbContext();
+            var currentUser = new ApplicationUserManager(new UserStore<IdentityUser>(), oDataController).GetCurrentUser();
+            permissionChecker = new PermissionChecker(currentUser);
         }
 
         public IQueryable<Coffee> Get()
@@ -65,6 +71,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(null != modifiedCoffee, "|400|");
             Contract.Requires(0 < modifiedCoffee.Id, "|404|");
 
+            var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
+            Contract.Assert(hasPermission, "|403|");
+
             var coffee = Get(modifiedCoffee.Id);
 
             coffee.Name = modifiedCoffee.Name;
@@ -82,6 +91,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(null != coffee, "|400|");
 
+            var hasPermission = permissionChecker.HasPermission(coffee);
+            Contract.Assert(hasPermission, "|403|");
+
             db.Coffees.Add(coffee);
             db.SaveChanges();
 
@@ -92,6 +104,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(0 < id, "|404|");
 
+            var hasPermission = permissionChecker.HasPermission(Get(id));
+            Contract.Assert(hasPermission, "|403|");
+
             Delete(Get(id));
         }
 
@@ -99,9 +114,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(null != coffee, "|400|");
 
+            var hasPermission = permissionChecker.HasPermission(coffee);
+            Contract.Assert(hasPermission, "|403|");
+
             db.Coffees.Remove(coffee);
             db.SaveChanges();
         }
-
     }
 }
