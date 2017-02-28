@@ -133,7 +133,7 @@
     <value>Start Update of {0} with id {1}...</value>
   </data>
   <data name="Update_Entity_Put_Stop" xml:space="preserve">
-    <value>{0} with id {1} updated. entity: 
+    <value>{0} with id {1} modifiedCoffeed. entity: 
  {2}</value>
   </data>
   <data name="Insert_Entity_Start" xml:space="preserve">
@@ -147,7 +147,7 @@
     <value>Start Update {0} with Id: {1}...</value>
   </data>
   <data name="Update_Entity_Patch_Stop" xml:space="preserve">
-    <value>Stop update {0} with Id: {1} 
+    <value>Stop modifiedCoffee {0} with Id: {1} 
  {2}</value>
   </data>
   <data name="Delete_Entity_Start" xml:space="preserve">
