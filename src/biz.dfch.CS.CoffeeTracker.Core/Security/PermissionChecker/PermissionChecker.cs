@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Web;
-using System.Web.Http.OData;
-using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
-using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Validation
+namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
 {
-    public class CoffeeOrderPermissionChecker
+    public class PermissionChecker
     {
         private readonly ApplicationUser currentUser;
 
-        public CoffeeOrderPermissionChecker(ApplicationUser user)
+        public PermissionChecker(ApplicationUser user)
         {
             Contract.Requires(null != user);
 
