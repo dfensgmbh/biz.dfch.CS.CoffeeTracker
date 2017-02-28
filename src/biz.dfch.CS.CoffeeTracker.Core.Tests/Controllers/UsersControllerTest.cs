@@ -15,7 +15,6 @@
  */
 
 using System.Threading.Tasks;
-using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Testing.Attributes;
