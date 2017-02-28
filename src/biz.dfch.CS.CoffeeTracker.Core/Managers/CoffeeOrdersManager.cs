@@ -34,7 +34,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public CoffeeOrdersManager(CoffeeOrdersController oDataController)
         {
-            Contract.Requires(null != oDataController);
+            Contract.Requires(null != oDataController, "|400|");
 
             db = new CoffeeTrackerDbContext();
             userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), oDataController);
@@ -59,7 +59,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public CoffeeOrder Get(string name)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
+            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
 
             return db.CoffeeOrders.FirstOrDefault(c => c.Name == name);
         }
@@ -91,9 +91,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public CoffeeOrder Create(CoffeeOrder coffeeOrder)
         {
-            Contract.Requires(null != coffeeOrder);
-            Contract.Requires(0 < coffeeOrder.CoffeeId);
-            Contract.Requires(0 < coffeeOrder.UserId);
+            Contract.Requires(null != coffeeOrder, "|400|");
+            Contract.Requires(0 < coffeeOrder.CoffeeId, "|404|");
+            Contract.Requires(0 < coffeeOrder.UserId, "|404|");
 
             db.CoffeeOrders.Add(coffeeOrder);
             db.SaveChanges();
@@ -103,7 +103,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public void Delete(CoffeeOrder coffeeOrder)
         {
-            Contract.Requires(0 < coffeeOrder.Id);
+            Contract.Requires(null != coffeeOrder, "|400|");
             Contract.Requires(0 < coffeeOrder.Id, "|404|");
 
             var hasPermission = validator.HasPermissions(coffeeOrder);
