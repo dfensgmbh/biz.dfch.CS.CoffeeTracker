@@ -17,8 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Web.Http.OData;
-using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
@@ -31,27 +29,33 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly CoffeeTrackerDbContext db;
         private readonly ApplicationUserManager userManager;
-        private readonly ODataController oDataController;
         private readonly PermissionChecker permissionChecker;
         public readonly CoffeeOrdersValidator validator;
 
 
-        public CoffeeOrdersManager(ODataController oDataController)
+        public CoffeeOrdersManager()
         {
-            Contract.Requires(null != oDataController, "|400|");
 
             db = new CoffeeTrackerDbContext();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), oDataController);
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
             validator = new CoffeeOrdersValidator(this);
-            this.oDataController = oDataController;
         }
 
         public IEnumerable<CoffeeOrder> GetCoffeeOrdersOfCurrentUser()
         {
-            var user = userManager.GetCurrentUser(oDataController);
+            var user = userManager.GetCurrentUser();
             var coffeeOrders = db.CoffeeOrders.Where(c => c.UserId == user.Id);
 
             return coffeeOrders;
+        }
+
+        public IEnumerable<CoffeeOrder> Get()
+        {
+            if (userManager.GetCurrentUser().IsAdmin)
+            {
+                return db.CoffeeOrders;
+            }
+            return GetCoffeeOrdersOfCurrentUser();
         }
 
         public CoffeeOrder Get(long id)

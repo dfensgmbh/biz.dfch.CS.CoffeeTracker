@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
-using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class CoffeesManager
     {
-        private CoffeeTrackerDbContext db;
-        private ODataController oDataController;
+        private readonly CoffeeTrackerDbContext db;
         private readonly PermissionChecker permissionChecker;
 
-        public CoffeesManager(ODataController oDataController)
+        public CoffeesManager()
         {
-            this.oDataController = oDataController;
             db = new CoffeeTrackerDbContext();
-            var currentUser = new ApplicationUserManager(new UserStore<IdentityUser>(), oDataController).GetCurrentUser();
+            var currentUser = new ApplicationUserManager(new UserStore<IdentityUser>()).GetCurrentUser();
             permissionChecker = new PermissionChecker(currentUser);
         }
 

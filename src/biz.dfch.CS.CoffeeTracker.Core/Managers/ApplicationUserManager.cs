@@ -17,6 +17,7 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
@@ -30,12 +31,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         private readonly PermissionChecker permissionChecker;
-        internal readonly ODataController Controller;
 
-        public ApplicationUserManager(IUserStore<IdentityUser> store, ODataController controller)
+        public ApplicationUserManager(IUserStore<IdentityUser> store)
             : base(store)
         {
-            this.Controller = controller;
             var currentUser = GetCurrentUser();
             permissionChecker = new PermissionChecker(currentUser);
         }
@@ -83,15 +82,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public ApplicationUser GetCurrentUser()
         {
-            return GetCurrentUser(Controller);
-        }
-
-
-        public ApplicationUser GetCurrentUser(ODataController oDataController)
-        {
-            Contract.Requires(null != oDataController);
-
-            var currentUserName = oDataController.User.Identity.Name;
+            var currentUserName = HttpContext.Current.User.Identity.Name;
             return GetUser(currentUserName);
         }
 
@@ -137,7 +128,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
 
-            Controller.Request.GetOwinContext().Authentication.SignOut();
+            HttpContext.Current.Request.GetOwinContext().Authentication.SignOut();
         }
     }
 }
