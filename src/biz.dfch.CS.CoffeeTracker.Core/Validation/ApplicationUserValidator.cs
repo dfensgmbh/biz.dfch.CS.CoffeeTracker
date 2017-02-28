@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -23,12 +24,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
     public class ApplicationUserValidator
     {
         private readonly ApplicationUser user;
-        private ApplicationUserManager applicationUserManager;
+        private readonly ApplicationUserManager applicationUserManager;
 
-        public ApplicationUserValidator(ApplicationUser user)
+        public ApplicationUserValidator(ApplicationUser user, ODataController controller)
         {
             this.user = user;
-            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>(), null);
+            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>(), controller);
         }
 
         public bool UserExists()
@@ -40,5 +41,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
             }
             return false;
         }
+
+
     }
 }

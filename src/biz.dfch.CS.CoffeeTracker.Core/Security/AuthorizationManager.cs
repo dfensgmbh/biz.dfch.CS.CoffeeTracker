@@ -33,7 +33,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         public AuthorizationManager()
         {
             db = new CoffeeTrackerDbContext();
-            // controller argument is null because no controller can be accessed from here
+            // Controller argument is null because no Controller can be accessed from here
             userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()), null);
 
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
@@ -46,7 +46,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         {
             Contract.Requires(null != applicationUser, "|400|");
             // Check if User does not already exist
-            Contract.Requires(!new ApplicationUserValidator(applicationUser).UserExists(), "|400|");
+            Contract.Assert(!new ApplicationUserValidator(applicationUser, userManager.Controller).UserExists(), "|400|");
 
             var identityUser = new IdentityUser
             {

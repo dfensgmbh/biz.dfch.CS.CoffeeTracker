@@ -28,12 +28,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     public class ApplicationUserManager : UserManager<IdentityUser>
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
-        private readonly ODataController controller;
+        internal readonly ODataController Controller;
 
         public ApplicationUserManager(IUserStore<IdentityUser> store, ODataController controller)
             : base(store)
         {
-            this.controller = controller;
+            this.Controller = controller;
         }
 
         public IQueryable<ApplicationUser> GetUsers()
@@ -79,7 +79,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public ApplicationUser GetCurrentUser()
         {
-            return GetCurrentUser(controller);
+            return GetCurrentUser(Controller);
         }
 
 
@@ -133,7 +133,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
 
-            controller.Request.GetOwinContext().Authentication.SignOut();
+            Controller.Request.GetOwinContext().Authentication.SignOut();
         }
     }
 }
