@@ -16,6 +16,7 @@
 
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net.Http;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
@@ -26,27 +27,41 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
     public class ApplicationUserManager : UserManager<IdentityUser>
     {
-        private CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly ODataController controller;
 
-        public ApplicationUserManager(IUserStore<IdentityUser> store) : base(store)
+        public ApplicationUserManager(IUserStore<IdentityUser> store, ODataController controller)
+            : base(store)
         {
+            this.controller = controller;
         }
 
         public IQueryable<ApplicationUser> GetUsers()
         {
-            return db.ApplicationUsers;
+            var currentUser = GetCurrentUser();
+
+            return db.ApplicationUsers.Where(u => u.Id == currentUser.Id);
         }
 
         public ApplicationUser GetUser(string name)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
 
-            return db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
+            var currentUser = GetCurrentUser();
+            var user = db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
+            Contract.Assert(null != user, "|404|");
+            Contract.Assert(user.Id == currentUser.Id, "|403|");
+
+            return user;
         }
 
         public ApplicationUser GetUser(long id)
         {
             Contract.Requires(0 < id, "|404|");
+            var currentUser = GetCurrentUser();
+            var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            Contract.Assert(null != user, "|404|");
+            Contract.Assert(user.Id == currentUser.Id, "|403|");
 
             return db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
         }
@@ -54,11 +69,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public IQueryable<ApplicationUser> GetUserAsQueryable(long id)
         {
             Contract.Requires(0 < id, "|404|");
+            var currentUser = GetCurrentUser();
+            var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
+            Contract.Assert(null != user, "|404|");
+            Contract.Assert(user.Id == currentUser.Id, "|403|");
 
             return db.ApplicationUsers.Where(u => u.Id == id);
         }
 
-        public ApplicationUser GetCurrentUser(ODataController controller)
+        public ApplicationUser GetCurrentUser()
         {
             Contract.Requires(null != controller);
 
@@ -69,10 +88,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public ApplicationUser CreateAndPersistUser(ApplicationUser user)
         {
             Contract.Requires(null != user, "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace(user.Name));
+            Contract.Requires(!string.IsNullOrWhiteSpace(user.Password));
 
             db.ApplicationUsers.Add(user);
             db.SaveChanges();
-            return GetUser(user.Name);
+            return user;
         }
 
         public ApplicationUser UpdateUser(long id, ApplicationUser update)
@@ -80,8 +101,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < id, "|404|");
             Contract.Requires(null != update, "|400|");
 
+            var currentUser = GetCurrentUser();
+
             var user = GetUser(id);
-            Contract.Assert(null != user);
+            Contract.Assert(null != user, "|404|");
+            Contract.Assert(user.Id == currentUser.Id, "|403|");
 
             user.Name = update.Name;
             user.Password = update.Password;
@@ -95,11 +119,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(0 < id, "|404|");
 
+            var currentUser = GetCurrentUser();
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
+            Contract.Assert(user.Id == currentUser.Id, "|403|");
 
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
+
+            controller.Request.GetOwinContext().Authentication.SignOut();
         }
     }
 }
