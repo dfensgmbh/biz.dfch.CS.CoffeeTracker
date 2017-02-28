@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Provider

@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Text;
-using System.Collections.Generic;
+
 using System.Threading.Tasks;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using biz.dfch.CS.Testing;
 using biz.dfch.CS.Testing.Attributes;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers

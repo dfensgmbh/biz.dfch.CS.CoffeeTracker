@@ -1,6 +1,5 @@
 namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class AddedNameToBaseEntity : DbMigration

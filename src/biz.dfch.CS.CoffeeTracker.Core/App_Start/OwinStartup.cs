@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Http;
+using biz.dfch.CS.CoffeeTracker.Core;
 using biz.dfch.CS.CoffeeTracker.Core.Provider;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 
-[assembly: OwinStartup(typeof(biz.dfch.CS.CoffeeTracker.Core.App_Start.OwinStartup))]
-namespace biz.dfch.CS.CoffeeTracker.Core.App_Start
+[assembly: OwinStartup(typeof(biz.dfch.CS.CoffeeTracker.Core.OwinStartup))]
+namespace biz.dfch.CS.CoffeeTracker.Core
 {
     public class OwinStartup
     {
