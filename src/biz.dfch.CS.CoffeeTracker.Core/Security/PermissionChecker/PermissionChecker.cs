@@ -33,7 +33,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
         public bool HasPermission(ApplicationUser user)
         {
             Contract.Requires(null != user, "|400|");
-
+            if (currentUser.IsAdmin)
+            {
+                return true;
+            }
             return user.Id == currentUser.Id;
         }
 
@@ -47,7 +50,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
         public bool HasPermission(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|400|");
-
+            if (currentUser.IsAdmin)
+            {
+                return true;
+            }
             return currentUser.Id == coffeeOrder.UserId;
         }
     }
