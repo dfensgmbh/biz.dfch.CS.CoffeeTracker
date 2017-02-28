@@ -44,8 +44,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
-            
-            return coffeeOrdersManager.GetCoffeeOrdersOfCurrentUser().AsQueryable();
+
+            return coffeeOrdersManager.Get().AsQueryable();
         }
 
         // GET: odata/CoffeeOrders(5)
