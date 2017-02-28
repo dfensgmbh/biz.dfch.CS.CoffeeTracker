@@ -21,6 +21,7 @@ using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -31,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         private readonly CoffeeTrackerDbContext db;
         private readonly ApplicationUserManager userManager;
         private readonly ODataController oDataController;
-        private readonly CoffeeOrderPermissionChecker permissionChecker;
+        private readonly PermissionChecker permissionChecker;
         public readonly CoffeeOrdersValidator validator;
 
 
