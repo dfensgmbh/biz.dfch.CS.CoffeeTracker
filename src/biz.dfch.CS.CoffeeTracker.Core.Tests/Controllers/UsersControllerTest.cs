@@ -42,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.GetUser(INVALID_ID);
+            sut.Get(INVALID_ID);
         }
 
         [TestMethod]
@@ -75,12 +75,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Patch(INVALID_ID, new Delta<ApplicationUser>());
+            await sut.Patch(INVALID_ID, new ApplicationUser());
         }
 
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "patch")]
+        [ExpectContractFailure(MessagePattern = "modified")]
         public async Task UsersControllerCodeContractsPatchUserNullDeltaFails()
         {
             // Arrange
