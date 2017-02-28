@@ -53,19 +53,37 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public CoffeeOrder Get(long id)
         {
             Contract.Requires(0 < id, "|404|");
+            var coffeeOrder = db.CoffeeOrders.FirstOrDefault(c => c.Id == id);
+            Contract.Assert(null != coffeeOrder, "|404|");
 
-            return db.CoffeeOrders.FirstOrDefault(c => c.Id == id);
+            var hasPermission = validator.HasPermissions(id);
+            Contract.Assert(hasPermission, "|403|");
+
+            return coffeeOrder;
         }
 
         public CoffeeOrder Get(string name)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
+            var coffeeOrder = db.CoffeeOrders.FirstOrDefault(c => c.Name == name);
+            Contract.Assert(null != coffeeOrder, "|404|");
 
-            return db.CoffeeOrders.FirstOrDefault(c => c.Name == name);
+            var hasPermission = validator.HasPermissions(coffeeOrder.Id);
+            Contract.Assert(hasPermission, "|403|");
+
+
+            return coffeeOrder;
         }
 
         public IQueryable<CoffeeOrder> GetAsQueryable(long id)
         {
+            Contract.Requires(0 < id, "|404|");
+            var coffeeOrder = db.CoffeeOrders.Where(c => c.Id == id);
+            Contract.Assert(null != coffeeOrder, "|404|");
+
+            var hasPermission = validator.HasPermissions(id);
+            Contract.Assert(hasPermission, "|403|");
+
             return db.CoffeeOrders.Where(c => c.Id == id);
         }
 
