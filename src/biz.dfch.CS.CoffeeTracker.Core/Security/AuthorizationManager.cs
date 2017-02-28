@@ -33,7 +33,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         public AuthorizationManager()
         {
             db = new CoffeeTrackerDbContext();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
+            // controller argument is null because no controller can be accessed from here
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()), null);
 
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
             {
