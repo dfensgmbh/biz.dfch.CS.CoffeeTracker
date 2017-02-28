@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -28,12 +29,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     public class ApplicationUserManager : UserManager<IdentityUser>
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly PermissionChecker permissionChecker;
         internal readonly ODataController Controller;
 
         public ApplicationUserManager(IUserStore<IdentityUser> store, ODataController controller)
             : base(store)
         {
             this.Controller = controller;
+            var currentUser = GetCurrentUser();
+            permissionChecker = new PermissionChecker(currentUser);
         }
 
         public IQueryable<ApplicationUser> GetUsers()
@@ -47,10 +51,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
 
-            var currentUser = GetCurrentUser();
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
             Contract.Assert(null != user, "|404|");
-            Contract.Assert(user.Id == currentUser.Id, "|403|");
+            var hasPermission = permissionChecker.HasPermission(user);
+            Contract.Assert(hasPermission, "|403|");
 
             return user;
         }
@@ -58,10 +62,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public ApplicationUser GetUser(long id)
         {
             Contract.Requires(0 < id, "|404|");
-            var currentUser = GetCurrentUser();
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             Contract.Assert(null != user, "|404|");
-            Contract.Assert(user.Id == currentUser.Id, "|403|");
+            var hasPermission = permissionChecker.HasPermission(user);
+            Contract.Assert(hasPermission, "|403|");
 
             return db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
         }
@@ -69,10 +73,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         public IQueryable<ApplicationUser> GetUserAsQueryable(long id)
         {
             Contract.Requires(0 < id, "|404|");
-            var currentUser = GetCurrentUser();
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             Contract.Assert(null != user, "|404|");
-            Contract.Assert(user.Id == currentUser.Id, "|403|");
+            var hasPermission = permissionChecker.HasPermission(user);
+            Contract.Assert(hasPermission, "|403|");
 
             return db.ApplicationUsers.Where(u => u.Id == id);
         }
@@ -107,11 +111,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < id, "|404|");
             Contract.Requires(null != update, "|400|");
 
-            var currentUser = GetCurrentUser();
 
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
-            Contract.Assert(user.Id == currentUser.Id, "|403|");
+            var hasPermission = permissionChecker.HasPermission(user);
+            Contract.Assert(hasPermission, "|403|");
 
             user.Name = update.Name;
             user.Password = update.Password;
@@ -125,10 +129,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             Contract.Requires(0 < id, "|404|");
 
-            var currentUser = GetCurrentUser();
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
-            Contract.Assert(user.Id == currentUser.Id, "|403|");
+            var hasPermission = permissionChecker.HasPermission(user);
+            Contract.Assert(hasPermission, "|403|");
 
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
