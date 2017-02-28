@@ -10,16 +10,6 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
-    /*
-    The WebApiConfig class may require additional changes to add a route for this controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
-
-    using System.Web.Http.OData.Builder;
-    using System.Web.Http.OData.Extensions;
-    using biz.dfch.CS.CoffeeTracker.Core.Model;
-    ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Coffee>("Coffees");
-    config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-    */
     public class CoffeesController : ODataController
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
