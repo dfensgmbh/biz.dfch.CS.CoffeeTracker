@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
@@ -32,14 +34,74 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db = new CoffeeTrackerDbContext();
         }
 
+        public IQueryable<Coffee> Get()
+        {
+            return db.Coffees;
+        }
+
         public Coffee Get(long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             return db.Coffees.FirstOrDefault(c => c.Id == key);
+        }
+
+        public Coffee Get(string name)
+        {
+            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
+
+            return db.Coffees.FirstOrDefault(c => c.Name == name);
         }
 
         public IQueryable<Coffee> GetAsQueryable(long key)
         {
+            Contract.Requires(0 < key, "|404|");
+
             return db.Coffees.Where(c => c.Id == key);
         }
+
+        public Coffee Update(Coffee modifiedCoffee)
+        {
+            Contract.Requires(null != modifiedCoffee, "|400|");
+            Contract.Requires(0 < modifiedCoffee.Id, "|404|");
+
+            var coffee = Get(modifiedCoffee.Id);
+
+            coffee.Name = modifiedCoffee.Name;
+            coffee.Brand = modifiedCoffee.Brand;
+            coffee.LastDelivery = modifiedCoffee.LastDelivery;
+            coffee.Price = modifiedCoffee.Price;
+            coffee.Stock = coffee.Stock;
+
+            db.SaveChanges();
+
+            return Get(coffee.Id);
+        }
+
+        public Coffee Create(Coffee coffee)
+        {
+            Contract.Requires(null != coffee, "|400|");
+
+            db.Coffees.Add(coffee);
+            db.SaveChanges();
+
+            return Get(coffee.Name);
+        }
+
+        public void Delete(long id)
+        {
+            Contract.Requires(0 < id, "|404|");
+
+            Delete(Get(id));
+        }
+
+        public void Delete(Coffee coffee)
+        {
+            Contract.Requires(null != coffee, "|400|");
+
+            db.Coffees.Remove(coffee);
+            db.SaveChanges();
+        }
+
     }
 }
