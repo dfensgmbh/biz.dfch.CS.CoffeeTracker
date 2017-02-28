@@ -352,6 +352,7 @@
     <Compile Include="Managers\ApplicationUserManager.cs" />
     <Compile Include="Validation\ApplicationUserValidator.cs" />
     <Compile Include="Validation\CoffeeOrdersValidator.cs" />
+    <Compile Include="Validation\PermissionChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
