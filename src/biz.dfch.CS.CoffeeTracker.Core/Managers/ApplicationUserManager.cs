@@ -79,9 +79,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public ApplicationUser GetCurrentUser()
         {
-            Contract.Requires(null != controller);
+            return GetCurrentUser(controller);
+        }
 
-            var currentUserName = controller.User.Identity.Name;
+
+        public ApplicationUser GetCurrentUser(ODataController oDataController)
+        {
+            Contract.Requires(null != oDataController);
+
+            var currentUserName = oDataController.User.Identity.Name;
             return GetUser(currentUserName);
         }
 

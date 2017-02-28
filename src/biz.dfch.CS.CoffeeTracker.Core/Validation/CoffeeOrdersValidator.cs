@@ -24,16 +24,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
     public class CoffeeOrdersValidator
     {
-        private CoffeeTrackerDbContext db;
         private CoffeeOrdersManager coffeeOrdersManager;
         private readonly ApplicationUserManager userManager;
 
 
-        public CoffeeOrdersValidator(CoffeeTrackerDbContext db, CoffeeOrdersManager coffeeOrdersManager)
+        public CoffeeOrdersValidator(CoffeeOrdersManager coffeeOrdersManager)
         {
-            this.db = db;
             this.coffeeOrdersManager = coffeeOrdersManager;
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), null);
         }
 
         public bool ExistsInDatabase(string name)

@@ -35,7 +35,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             coffeeOrdersManager = new CoffeeOrdersManager(this);
             coffeesManager = new CoffeesManager(this);
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), this);
         }
 
         // GET: odata/CoffeeOrders

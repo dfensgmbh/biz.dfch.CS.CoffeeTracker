@@ -28,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         public ApplicationUserValidator(ApplicationUser user)
         {
             this.user = user;
-            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>(), null);
         }
 
         public bool UserExists()

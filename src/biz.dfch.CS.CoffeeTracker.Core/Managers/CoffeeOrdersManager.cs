@@ -37,8 +37,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(null != oDataController);
 
             db = new CoffeeTrackerDbContext();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
-            validator = new CoffeeOrdersValidator(db, this);
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), oDataController);
+            validator = new CoffeeOrdersValidator(this);
             this.oDataController = oDataController;
         }
 

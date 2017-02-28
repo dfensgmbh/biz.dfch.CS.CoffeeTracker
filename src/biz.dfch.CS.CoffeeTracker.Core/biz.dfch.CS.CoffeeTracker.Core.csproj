@@ -309,6 +309,10 @@
     <Compile Include="Migrations\201702081039019_UserModelChanged.Designer.cs">
       <DependentUpon>201702081039019_UserModelChanged.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702280858026_AddedAdminAttribute.cs" />
+    <Compile Include="Migrations\201702280858026_AddedAdminAttribute.Designer.cs">
+      <DependentUpon>201702280858026_AddedAdminAttribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Provider\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="DBStrings.Designer.cs">
@@ -388,6 +392,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702081039019_UserModelChanged.resx">
       <DependentUpon>201702081039019_UserModelChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702280858026_AddedAdminAttribute.resx">
+      <DependentUpon>201702280858026_AddedAdminAttribute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
