@@ -51,21 +51,5 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 
             return null != result;
         }
-
-        public bool HasPermissions(CoffeeOrder coffeeOrder)
-        {
-            return HasPermissions(coffeeOrder.Id);
-        }
-
-        public bool HasPermissions(long key)
-        {
-            Contract.Requires(0 < key);
-
-            var coffeeOrder = coffeeOrdersManager.Get(key);
-            var user = userManager.GetCurrentUser(coffeeOrdersManager.oDataController);
-            Contract.Assert(!string.IsNullOrWhiteSpace(user.Name));
-
-            return user.Id == coffeeOrder.UserId;
-        }
     }
 }
