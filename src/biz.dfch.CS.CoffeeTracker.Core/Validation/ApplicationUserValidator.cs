@@ -26,10 +26,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         private readonly ApplicationUser user;
         private readonly ApplicationUserManager applicationUserManager;
 
-        public ApplicationUserValidator(ApplicationUser user, ODataController controller)
+        public ApplicationUserValidator(ApplicationUser user)
         {
             this.user = user;
-            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>(), controller);
+            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         public bool UserExists()

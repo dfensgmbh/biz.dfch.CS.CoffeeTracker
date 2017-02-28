@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public UsersController()
         {
             authorizationManager = new AuthorizationManager();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), this);
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         [EnableQuery]

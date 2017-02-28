@@ -31,7 +31,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         public CoffeeOrdersValidator(CoffeeOrdersManager coffeeOrdersManager)
         {
             this.coffeeOrdersManager = coffeeOrdersManager;
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(), null);
+            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
         public bool ExistsInDatabase(string name)

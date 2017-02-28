@@ -18,7 +18,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         public CoffeesController()
         {
-            coffeesManager = new CoffeesManager(this);
+            coffeesManager = new CoffeesManager();
         }
 
         // GET: odata/Coffees
