@@ -21,7 +21,6 @@ using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
-using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity.EntityFramework;
 
