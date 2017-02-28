@@ -23,6 +23,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class ApplicationUser : BaseEntity
     {
+        public ApplicationUser(string name, string password)
+        {
+            this.Name = name;
+            this.Password = password;
+            this.IsAdmin = false;
+        }
+
         [Required]
         public string Password { get; set; }
 
