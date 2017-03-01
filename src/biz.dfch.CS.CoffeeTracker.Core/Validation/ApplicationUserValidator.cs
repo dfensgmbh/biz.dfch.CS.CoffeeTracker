@@ -23,23 +23,27 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
 {
     public class ApplicationUserValidator
     {
-        private readonly ApplicationUser user;
-        private readonly ApplicationUserManager applicationUserManager;
+        internal ApplicationUserManager ApplicationUserManager;
 
-        public ApplicationUserValidator(ApplicationUser user)
+        public ApplicationUserValidator()
         {
-            this.user = user;
-            applicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            ApplicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>());
         }
 
-        public bool UserExists()
+        public ApplicationUserValidator(bool skipPermissionChecks)
         {
-            var result = applicationUserManager.GetUser(user.Name);
-            if (null != result)
-            {
-                return true;
-            }
-            return false;
+            ApplicationUserManager = new ApplicationUserManager(new UserStore<IdentityUser>(), skipPermissionChecks);
+        }
+
+        public bool UserExists(ApplicationUser user)
+        {
+            return UserExists(user.Name);
+        }
+
+        public bool UserExists(string name)
+        {
+            var result = ApplicationUserManager.GetUser(name);
+            return null != result;
         }
 
 
