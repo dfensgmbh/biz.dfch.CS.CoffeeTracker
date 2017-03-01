@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Provider;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -32,8 +33,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
 
         public AuthorizationManager()
         {
-            db = new CoffeeTrackerDbContext();
-            // Controller argument is null because no Controller can be accessed from here
             userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
 
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
@@ -46,7 +45,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         {
             Contract.Requires(null != applicationUser, "|400|");
             // Check if User does not already exist
-            Contract.Assert(!new ApplicationUserValidator(applicationUser).UserExists(), "|400|");
+            Contract.Assert(!new ApplicationUserValidator().UserExists(applicationUser), "|400|");
 
             var identityUser = new IdentityUser
             {
