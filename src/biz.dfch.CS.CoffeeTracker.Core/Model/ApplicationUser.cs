@@ -30,6 +30,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
             this.IsAdmin = false;
         }
 
+        public ApplicationUser()
+        {
+            IsAdmin = false;
+        }
+
         [Required]
         public string Password { get; set; }
 
