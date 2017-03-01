@@ -22,17 +22,29 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
     public class PermissionChecker
     {
         private readonly ApplicationUser currentUser;
+        internal bool SkipPermissionChecks { get; set; }
 
         public PermissionChecker(ApplicationUser user)
         {
-            Contract.Requires(null != user);
+            Contract.Requires(null != user, "|400|");
 
             this.currentUser = user;
+            SkipPermissionChecks = false;
+        }
+
+        public PermissionChecker(bool skipPermissionChecks)
+        {
+            SkipPermissionChecks = skipPermissionChecks;
         }
 
         public bool HasPermission(ApplicationUser user)
         {
             Contract.Requires(null != user, "|400|");
+            if (SkipPermissionChecks)
+            {
+                return true;
+            }
+            Contract.Assert(null != currentUser, "|500|");
             if (currentUser.IsAdmin)
             {
                 return true;
@@ -43,14 +55,27 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
         public bool HasPermission(Coffee coffee)
         {
             Contract.Requires(null != coffee, "|400|");
-
+            if (SkipPermissionChecks)
+            {
+                return true;
+            }
+            Contract.Assert(null != currentUser, "|500|");
+            if (SkipPermissionChecks)
+            {
+                return true;
+            }
             return currentUser.IsAdmin;
         }
 
         public bool HasPermission(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|400|");
-            if (currentUser.IsAdmin)
+            if (SkipPermissionChecks)
+            {
+                return true;
+            }
+            Contract.Assert(null != currentUser, "|500|");
+            if (currentUser.IsAdmin || SkipPermissionChecks)
             {
                 return true;
             }
