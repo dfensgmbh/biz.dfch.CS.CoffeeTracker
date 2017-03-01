@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.OData;
+using System.Web.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
@@ -30,13 +32,27 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     public class ApplicationUserManager : UserManager<IdentityUser>
     {
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
-        private readonly PermissionChecker permissionChecker;
+        internal PermissionChecker PermissionChecker;
 
         public ApplicationUserManager(IUserStore<IdentityUser> store)
             : base(store)
         {
             var currentUser = GetCurrentUser();
-            permissionChecker = new PermissionChecker(currentUser);
+            PermissionChecker = new PermissionChecker(currentUser);
+        }
+
+        public ApplicationUserManager(IUserStore<IdentityUser> store, bool skipPermissionChecks)
+            : base(store)
+        {
+            if (skipPermissionChecks)
+            {
+                PermissionChecker = new PermissionChecker(skipPermissionChecks);
+            }
+            else
+            {
+                var currentUser = GetCurrentUser();
+                PermissionChecker = new PermissionChecker(currentUser);
+            }
         }
 
         public IQueryable<ApplicationUser> GetUsers()
@@ -52,7 +68,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
             Contract.Assert(null != user, "|404|");
-            var hasPermission = permissionChecker.HasPermission(user);
+            var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
             return user;
@@ -63,7 +79,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < id, "|404|");
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             Contract.Assert(null != user, "|404|");
-            var hasPermission = permissionChecker.HasPermission(user);
+            var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
             return db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
@@ -74,7 +90,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < id, "|404|");
             var user = db.ApplicationUsers.FirstOrDefault(u => u.Id == id);
             Contract.Assert(null != user, "|404|");
-            var hasPermission = permissionChecker.HasPermission(user);
+            var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
             return db.ApplicationUsers.Where(u => u.Id == id);
@@ -105,7 +121,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
-            var hasPermission = permissionChecker.HasPermission(user);
+            var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
             user.Name = update.Name;
@@ -122,7 +138,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
-            var hasPermission = permissionChecker.HasPermission(user);
+            var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
             db.ApplicationUsers.Remove(user);
