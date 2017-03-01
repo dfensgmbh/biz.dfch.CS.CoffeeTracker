@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+using System.Diagnostics.Contracts;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
+using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.Owin.Security.OAuth;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Provider
@@ -33,17 +36,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Provider
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            using (var repo = new AuthorizationManager())
-            {
-                var user = await repo.FindUser(context.UserName, context.Password);
+            var validator = new ApplicationUserValidator(true);
+            var exists = validator.UserExists(context.UserName);
+            Contract.Assert(exists, "|404|");
 
-                if (null == user)
-                {
-                    context.SetError("invalid_grant", "The applicationUser name or password is incorrect.");
-                    return;
-                }
-            }
-
+            // Workaround. When this line is removed, a build error comes (Contract error)
+            await Task.Delay(1);
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("sub", context.UserName));
             identity.AddClaim(new Claim("role", "applicationUser"));
