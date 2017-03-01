@@ -228,6 +228,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Scripts\Functions\Get-Token.ps1" />
     <None Include="Scripts\IntegrationTests\CoffeeOrdersController.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\CoffeesController.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\DeleteEntities.ps1" />
