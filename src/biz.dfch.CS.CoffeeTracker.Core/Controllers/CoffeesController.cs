@@ -74,7 +74,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffeesManager.Update(coffee);
+            coffeesManager.Update(key, coffee);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
 
@@ -102,7 +102,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // PATCH: odata/Coffees(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<Coffee> patch)
+        public IHttpActionResult Patch([FromODataUri] long key, Delta<Coffee> patch)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
@@ -113,13 +113,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             var coffee = coffeesManager.Get(key);
             Contract.Assert(null != coffee, "|404|");
             
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            coffeesManager.Update(coffee);
+            coffeesManager.Update(key, patch);
                
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffee);
 
