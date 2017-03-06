@@ -1,4 +1,6 @@
-. .\DeleteEntities.ps1
+. ..\Functions\DeleteEntities.ps1
+. ..\Functions\CRUD-User.ps1
+
 
 $baseUri = "http://CoffeeTracker/api/Users";
 $entityPrefix = "UserIntegrationTest";
@@ -9,11 +11,6 @@ Describe "UsersController" -Tags "UsersController" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$password = "123456";
-
-			$body = @{
-				Name = $name
-				Password = $password
-			}
 		}
 	
 		It "Warmup" -Test {
@@ -25,7 +22,7 @@ Describe "UsersController" -Tags "UsersController" {
 			# N/A
 
 			# Act
-			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body
+			$result = CRUD-User -UserName $name -Password $password;
 
 			# Assert
 			$result | Should Not Be $null;
@@ -34,7 +31,7 @@ Describe "UsersController" -Tags "UsersController" {
 
 		it "Create-UserWithoutNameThrows400" -test {
 			# Arrange
-			$body.Remove("Name");
+			# N/A 
 
 			# Act / Assert
 			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body } | Should Throw "400";
