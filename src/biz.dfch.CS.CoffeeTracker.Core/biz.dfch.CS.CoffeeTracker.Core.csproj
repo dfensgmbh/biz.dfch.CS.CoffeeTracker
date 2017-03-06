@@ -350,7 +350,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AuthorizationManager.cs" />
     <Compile Include="Managers\ApplicationUserManager.cs" />
-    <Compile Include="Validation\ApplicationUserValidator.cs" />
+    <Compile Include="Stores\AppUserStore.cs" />
     <Compile Include="Validation\CoffeeOrdersValidator.cs" />
     <Compile Include="Security\PermissionChecker\PermissionChecker.cs" />
   </ItemGroup>

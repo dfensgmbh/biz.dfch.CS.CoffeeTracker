@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
@@ -11,14 +13,27 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
+    [Authorize]
     public class CoffeesController : ODataController
     {
-        private readonly CoffeesManager coffeesManager;
+        private CoffeesManager coffeesManager;
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEE;
 
         public CoffeesController()
         {
-            coffeesManager = new CoffeesManager();
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
+            {
+                coffeesManager = new CoffeesManager(true);
+            }
+            else
+            {
+                coffeesManager = new CoffeesManager();
+            }
+            base.Initialize(controllerContext);
         }
 
         // GET: odata/Coffees
@@ -69,7 +84,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
-            Contract.Requires(null != coffee, "|404|");
+            Contract.Requires(null != coffee, "|400|");
 
             if (!ModelState.IsValid)
             {

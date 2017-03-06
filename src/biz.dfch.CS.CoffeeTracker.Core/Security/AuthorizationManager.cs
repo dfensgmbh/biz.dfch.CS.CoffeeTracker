@@ -20,6 +20,7 @@ using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Provider;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -33,7 +34,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
 
         public AuthorizationManager()
         {
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>(new CoffeeTrackerDbContext()));
+            userManager = new ApplicationUserManager(new AppUserStore());
 
             userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
             {
@@ -41,18 +42,25 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
             };
         }
 
+        public AuthorizationManager(ApplicationUserManager userManager)
+        {
+            this.userManager = userManager;
+        }
+
         public async Task<IdentityResult> RegisterUser(ApplicationUser applicationUser)
         {
             Contract.Requires(null != applicationUser, "|400|");
             // Check if User does not already exist
-            Contract.Assert(!new ApplicationUserValidator().UserExists(applicationUser), "|400|");
+            var userExists = userManager.UserExists(applicationUser);
+            Contract.Assert(!userExists, "|400|");
 
             var identityUser = new IdentityUser
             {
                 UserName = applicationUser.Name
             };
 
-            var result = await userManager.CreateAsync(identityUser, applicationUser.Password);
+            var result = userManager.Create(identityUser, applicationUser.Password);
+            Contract.Assert(result.Succeeded, "|400|");
 
             // Create Link with application user
             var user = await FindUser(applicationUser.Name, applicationUser.Password);

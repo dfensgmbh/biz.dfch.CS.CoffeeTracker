@@ -1,13 +1,16 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -25,14 +28,28 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class UsersController : ODataController
     {
-        private readonly AuthorizationManager authorizationManager;
-        private readonly ApplicationUserManager userManager;
+        private AuthorizationManager authorizationManager;
+        private ApplicationUserManager userManager;
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
         public UsersController()
         {
-            authorizationManager = new AuthorizationManager();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            
+            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
+            {
+                userManager = new ApplicationUserManager(new AppUserStore(), true);
+                authorizationManager = new AuthorizationManager(userManager);
+            }
+            else
+            {
+                authorizationManager = new AuthorizationManager();
+                userManager = new ApplicationUserManager(new AppUserStore());
+            }
+            base.Initialize(controllerContext);
         }
 
         [EnableQuery]
