@@ -129,8 +129,16 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
+            var aspNetUser = GetAssociatedAspNetUser(user);
+            Contract.Assert(null != aspNetUser, "|404|");
+
+            var hashedNewPassword = PasswordHasher.HashPassword(update.Password);
+
+            aspNetUser.UserName = update.Name;
+            aspNetUser.PasswordHash = hashedNewPassword;
+
             user.Name = update.Name;
-            user.Password = update.Password;
+            user.Password = hashedNewPassword;
 
             db.SaveChanges();
 
@@ -146,10 +154,21 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
+            var aspNetUser = GetAssociatedAspNetUser(user);
+            Contract.Assert(null != aspNetUser, "|404|");
+
+            db.Users.Remove(aspNetUser);
             db.ApplicationUsers.Remove(user);
             db.SaveChanges();
 
             HttpContext.Current.Request.GetOwinContext().Authentication.SignOut();
+        }
+
+        public IdentityUser GetAssociatedAspNetUser(ApplicationUser user)
+        {
+            Contract.Requires(null != user, "|400|");
+
+            return db.Users.FirstOrDefault(u => u.Id == user.AspNetUserId);
         }
 
         public bool UserExists(ApplicationUser user)
