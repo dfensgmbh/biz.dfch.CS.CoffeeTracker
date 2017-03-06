@@ -227,13 +227,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Scripts\Functions\CRUD-CoffeeOrder.ps1" />
     <None Include="packages.config" />
-    <None Include="Scripts\Functions\Create-Coffee.ps1" />
-    <None Include="Scripts\Functions\Create-User.ps1" />
+    <None Include="Scripts\Functions\CRUD-Coffee.ps1" />
+    <None Include="Scripts\Functions\CRUD-User.ps1" />
     <None Include="Scripts\Functions\Get-Token.ps1" />
     <None Include="Scripts\IntegrationTests\CoffeeOrdersController.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\CoffeesController.Tests.ps1" />
-    <None Include="Scripts\IntegrationTests\DeleteEntities.ps1" />
+    <None Include="Scripts\Functions\Delete-Entities.ps1" />
     <None Include="Scripts\IntegrationTests\UsersController.Tests.ps1" />
   </ItemGroup>
   <ItemGroup />
