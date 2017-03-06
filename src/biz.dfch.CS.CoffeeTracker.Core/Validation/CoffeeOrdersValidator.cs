@@ -18,6 +18,7 @@ using System.Diagnostics.Contracts;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Validation
@@ -31,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Validation
         public CoffeeOrdersValidator(CoffeeOrdersManager coffeeOrdersManager)
         {
             this.coffeeOrdersManager = coffeeOrdersManager;
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            userManager = new ApplicationUserManager(new AppUserStore());
         }
 
         public bool ExistsInDatabase(string name)

@@ -24,6 +24,7 @@ using System.Web.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -34,14 +35,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
         internal PermissionChecker PermissionChecker;
 
-        public ApplicationUserManager(IUserStore<IdentityUser> store)
+        public ApplicationUserManager(AppUserStore store)
             : base(store)
         {
             var currentUser = GetCurrentUser();
             PermissionChecker = new PermissionChecker(currentUser);
         }
 
-        public ApplicationUserManager(IUserStore<IdentityUser> store, bool skipPermissionChecks)
+        public ApplicationUserManager(AppUserStore store, bool skipPermissionChecks)
             : base(store)
         {
             if (skipPermissionChecks)
@@ -98,8 +99,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public ApplicationUser GetCurrentUser()
         {
-            var currentUserName = HttpContext.Current.User.Identity.Name;
-            return GetUser(currentUserName);
+            if (HttpContext.Current != null)
+            {
+                var currentUserName = HttpContext.Current.User.Identity.Name;
+                return db.ApplicationUsers.FirstOrDefault(u => u.Name == currentUserName);
+            }
+            return null;
         }
 
         public ApplicationUser CreateAndPersistUser(ApplicationUser user)
@@ -145,6 +150,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.SaveChanges();
 
             HttpContext.Current.Request.GetOwinContext().Authentication.SignOut();
+        }
+
+        public bool UserExists(ApplicationUser user)
+        {
+            return UserExists(user.Name);
+        }
+
+        public bool UserExists(string name)
+        {
+            var result = db.Users.FirstOrDefault(u => u.UserName == name);
+            return null != result;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -36,7 +37,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             coffeeOrdersManager = new CoffeeOrdersManager();
             coffeesManager = new CoffeesManager();
-            userManager = new ApplicationUserManager(new UserStore<IdentityUser>());
+            userManager = new ApplicationUserManager(new AppUserStore());
         }
 
         // GET: odata/CoffeeOrders
