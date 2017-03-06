@@ -74,7 +74,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // PUT: odata/ApplicationUsers(5)
         [Authorize]
-        public async Task<IHttpActionResult> Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
+        [HttpPut]
+        public IHttpActionResult Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != modifiedApplicationUser, "|404|");
@@ -129,7 +130,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // PATCH: odata/ApplicationUsers(5)
         [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
+        [HttpPatch]
+        public IHttpActionResult Patch([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != modifiedApplicationUser, "|404|");

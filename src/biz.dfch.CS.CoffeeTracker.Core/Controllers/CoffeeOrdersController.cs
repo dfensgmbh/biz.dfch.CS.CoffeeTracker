@@ -131,7 +131,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|404|");
 
-            coffeeOrdersManager.validator.ExistsInDatabase(key);
+            coffeeOrdersManager.Validator.ExistsInDatabase(key);
             var coffeeOrder = coffeeOrdersManager.Get(key);
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffeeOrder);
