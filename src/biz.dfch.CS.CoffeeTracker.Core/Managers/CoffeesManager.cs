@@ -16,6 +16,7 @@
 
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
@@ -68,25 +69,56 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.Coffees.Where(c => c.Id == key);
         }
 
-        public Coffee Update(Coffee modifiedCoffee)
+        public Coffee Update(long id, Coffee modifiedCoffee)
         {
             Contract.Requires(null != modifiedCoffee, "|400|");
-            Contract.Requires(0 < modifiedCoffee.Id, "|404|");
+            Contract.Requires(0 < id, "|404|");
 
             var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
             Contract.Assert(hasPermission, "|403|");
 
-            var coffee = Get(modifiedCoffee.Id);
+            var coffee = Get(id);
 
             coffee.Name = modifiedCoffee.Name;
             coffee.Brand = modifiedCoffee.Brand;
             coffee.LastDelivery = modifiedCoffee.LastDelivery;
             coffee.Price = modifiedCoffee.Price;
-            coffee.Stock = coffee.Stock;
+            coffee.Stock = modifiedCoffee.Stock;
 
             db.SaveChanges();
 
             return Get(coffee.Id);
+        }
+
+        public Coffee Update(long id, Delta<Coffee> patch)
+        {
+            var coffee = Get(id);
+            var modifiedCoffee = patch.GetEntity();
+
+            if (patch.GetChangedPropertyNames().Contains("Name"))
+            {
+                coffee.Name = modifiedCoffee.Name;
+            }
+            if (patch.GetChangedPropertyNames().Contains("Brand"))
+            {
+                coffee.Brand = modifiedCoffee.Brand;
+            }
+            if (patch.GetChangedPropertyNames().Contains("Price"))
+            {
+                coffee.Price = modifiedCoffee.Price;
+            }
+            if (patch.GetChangedPropertyNames().Contains("Stock"))
+            {
+                coffee.Stock = modifiedCoffee.Stock;
+            }
+            if (patch.GetChangedPropertyNames().Contains("LastDelivery"))
+            {
+                coffee.LastDelivery = modifiedCoffee.LastDelivery;
+            }
+
+            db.SaveChanges();
+
+            return coffee;
         }
 
         public Coffee Create(Coffee coffee)
