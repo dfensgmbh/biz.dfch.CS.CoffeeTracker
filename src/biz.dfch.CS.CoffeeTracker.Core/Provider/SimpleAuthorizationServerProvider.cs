@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Provider
@@ -33,21 +37,27 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Provider
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            try
+            {
+                context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+                var userManager = new ApplicationUserManager(new AppUserStore(), true);
+                var userExists = userManager.UserExists(context.UserName);
+                Contract.Assert(userExists, "|404|");
 
-            var validator = new ApplicationUserValidator(true);
-            var exists = validator.UserExists(context.UserName);
-            Contract.Assert(exists, "|404|");
+                // Workaround. When this line is removed, a build error comes (Contract error)
+                await Task.Delay(1);
+                var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+                identity.AddClaim(new Claim("sub", context.UserName));
+                identity.AddClaim(new Claim("role", "applicationUser"));
+                identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
 
-            // Workaround. When this line is removed, a build error comes (Contract error)
-            await Task.Delay(1);
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "applicationUser"));
-            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-
-            context.Validated(identity);
+                context.Validated(identity);
+            }
+            catch (Exception)
+            {
+                context.Rejected();
+            }
         }
     }
 }
