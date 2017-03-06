@@ -23,8 +23,16 @@ function Get-Token {
 			password = $Password
 		}
 
-		$result = Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body;
-		$OutputParameter = $result.access_token;
+		try 
+		{
+			$result = Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body;
+			$OutputParameter = $result.access_token;
+		}
+		catch
+		{
+			$OutputParameter = "Invalid Username/Password combination";
+		}
+		
 	}
 	End
 	{
