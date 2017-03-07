@@ -51,7 +51,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act / Assert
-            await sut.Patch(INVALID_ID, new Delta<Coffee>());
+            sut.Patch(INVALID_ID, new Delta<Coffee>());
         }
 
         [TestMethod]
@@ -62,7 +62,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act / Assert
-            await sut.Patch(42, null);
+            sut.Patch(42, null);
         }
 
         [TestMethod]
