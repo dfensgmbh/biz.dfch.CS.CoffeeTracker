@@ -1,13 +1,14 @@
-. ..\Functions\DeleteEntities.ps1
+. ..\Functions\Delete-Entities.ps1
 . ..\Functions\CRUD-User.ps1
+. ..\Functions\Get-Token.ps1
 
 
 $baseUri = "http://CoffeeTracker/api/Users";
 $entityPrefix = "UserIntegrationTest";
 
 Describe "UsersController" -Tags "UsersController" {
+<#		
 	Context "Create-User" {
-		
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$password = "123456";
@@ -22,99 +23,160 @@ Describe "UsersController" -Tags "UsersController" {
 			# N/A
 
 			# Act
-			$result = CRUD-User -UserName $name -Password $password;
+			$result = CRUD-User -UserName $name -Password $password -Create;
 
 			# Assert
 			$result | Should Not Be $null;
 			$result.Name = $name;
 		}
 
-		it "Create-UserWithoutNameThrows400" -test {
+		it "Create-UserWithWeakPasswordThrows400" -test {
+			# Arrange
+			$weakPassword = "123";
+
+			# Act/Assert
+			{ CRUD-User -UserName $name -Password $weakPassword -Create; } | Should Throw "400";
+		}
+
+		it "Create-UserWithoutBodyThrows400" -test {
 			# Arrange
 			# N/A 
 
 			# Act / Assert
-			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body } | Should Throw "400";
-		}
-
-		it "Create-UserWithoutPasswordThrows400" -test {
-			# Arrange
-			$body.Remove("Password");
-
-			# Act / Assert
-			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body } | Should Throw "400";
+			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri } | Should Throw "400";
 		}
 	}
+#>
 	Context "Update-User" {
 		BeforeEach{
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$password = "123456";
 
+			$entityAdded = CRUD-User -UserName $name -Password $password -Create;
+			
+			$token = Get-Token -UserName $name -Password $password;
+
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$newPassword = "568789";
 
-			$body = @{
-				Name = $name
-				Password = $password
-			}
-
-			$newBody = @{
-				"odata.metadata" = 'CoffeeTracker/api/$metadata#users/@Element'
-				Name = $newName
-				Password = $newPassword
-			}
-
-			$entityAdded = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
 			$entityAddedUri = "{0}({1})" -f $baseUri, $entityAdded.Id;
 		}
 
+<#
 		It "Warmup" -test {
 			$true | Should Be $true;
 		}
-
-		It "Update-UsersChangeNameAndPasswordSucceeds" -test {
+		It "Update-UsersChangeNameSucceeds" -test {
 			# Arrange
-			$newBodyJson = $newBody | ConvertTo-Json;
+			# N/A
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $entityAddedUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
+			CRUD-User -UserName $name -NewUserName $newName -Token $token;
 
 			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $entityAddedUri;
+			$newToken = Get-Token -UserName $newName -Password $password; 
+
+			$result = CRUD-User -UserName $newName -Token $newToken -Read;
 
 			$result.Name | Should Not Be $name;
 			$result.Password | Should Not Be $password;
 			$result.Name | Should Be $newName;
-			$result.Password | Should Be $newPassword;
 		}
 
-		It "Update-CoffeePutWithoutNameThrows" -test {
+		It "Update-UsersChangePasswordSucceeds" -test {
 			# Arrange
-			$newBody.Remove("Name");
-			$newBodyJson = $newBody | ConvertTo-Json;
-
-			# Act / Assert
-			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri -Body $newBodyJson } | Should Throw;
-		}
-	}
-	AfterAll {
-		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
-		It "Warmup-AfterAll" -test {
-			$true | Should Be $true;
-		}
-
-		It "Delete-TestDataSucceeded" -test {
-			# Arrange
-			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
-			$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
+			# N/A
 
 			# Act
-			DeleteEntities -EntityName "Users" -OdataComparison $queryOption;
+			CRUD-User -UserName $name -Password $newPassword -Token $token;
 
 			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $getUri;
-			$result.value.Count | Should Be 0;
+			$newToken = Get-Token -UserName $name -Password $newPassword; 
+
+			$result = CRUD-User -UserName $name -Token $newToken -Read;
+
+			$result.Name | Should Be $name;
+			$result.Password | Should Not Be $password;
 		}
+
+		It "Update-UsersChangePasswordAndNameSucceeds" -test {
+			# Arrange
+			# N/A
+
+			# Act
+			CRUD-User -UserName $name -NewUserName $newName -Password $newPassword -Token $token;
+
+			# Assert
+			$newToken = Get-Token -UserName $newName -Password $newPassword; 
+
+			$result = CRUD-User -UserName $newName -Token $newToken -Read;
+
+			$result.Name | Should Not Be $name;
+			$result.Password | Should Not Be $password;
+			$result.Name | Should Be $newName;
+		}
+
+#>
+		It "Update-UsersChangePasswordWithWeakPasswordThrows400" -test {
+			# Arrange
+			$weakPassword = "123";
+
+			# Act/Assert
+			{ CRUD-User -UserName $name -NewUserName $newName -Password $weakPassword -Token $token; } | Should Throw "400";
+		}
+
+		It "Update-UsersChangeNameToAlreadyExistingNameThrows400" -test {
+			# Arrange
+			$AlreadyExistingUser = CRUD-User -UserName $newName -Password $password -Create;
+
+			# Act/Assert
+			{ CRUD-User -UserName $name -NewUserName $AlreadyExistingUser.Name -Token $token; } | Should Throw "400";
+		}
+
+<#
+		It "Update-UsersWithInvalidTokenThrows401" -test {
+			# Arrange
+			$invalidToken = "ThatShouldDefinetlyBeInvalid";
+
+			# Act/Assert
+			{ CRUD-User -UserName $name -NewUserName $NewName -Token $invalidToken; } | Should Throw "401";
+		}
+
+		It "Update-UsersAsOtherUserThrows403" -test {
+			# Arrange
+			$otherUser = CRUD-User -UserName $newName -Password $password -Create;
+			$weakPassword = "123";
+
+			# Act/Assert
+			{ CRUD-User -UserName $otherUser.Name -Password $weakPassword -Token $token; } | Should Throw "403";
+		}
+
+		It "Update-UserPutWithoutBodyThrows400" -test {
+			# Arrange
+			# N/A
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri } | Should Throw "400";
+		}
+	}
+
+	AfterAll {
+		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
+		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
+
+		Delete-Entities -EntityName "Users" -OdataComparison $queryOption;
+
+		$result = Invoke-RestMethod -Method Get -Uri $getUri;
+		if($result.value.Count -gt 0)
+		{
+			Write-Host -ForegroundColor Red "Test-data was not deleted!";
+		}
+		else
+		{
+			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
+		}
+#>
 	}
 }
 
