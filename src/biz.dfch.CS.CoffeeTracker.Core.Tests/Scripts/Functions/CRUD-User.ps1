@@ -18,6 +18,7 @@ function CRUD-User{
 		[switch] $Create
 		,
 		[Parameter(Mandatory = $true, ParameterSetName = 'Update')]
+		[Parameter(Mandatory = $true, ParameterSetName = 'Read')]
 		[ValidateNotNullOrEmpty()]
 		[string] $Token
 		,
@@ -26,6 +27,9 @@ function CRUD-User{
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Delete')]
 		[switch] $Delete
+		,
+		[Parameter(Mandatory = $false, ParameterSetName = 'Read')]
+		[switch] $Read
 	)
 	Process
 	{
@@ -51,13 +55,7 @@ function CRUD-User{
 				IsAdmin = $false
 			}
 
-			try
-			{
-				$result = Invoke-RestMethod -Method Post -Uri $uri -Body $userBody
-			}
-			catch {
-				throw "User could not be created.";
-			}
+			$result = Invoke-RestMethod -Method Post -Uri $uri -Body $userBody
 		}
 		elseif($PSCmdlet.ParameterSetName -eq 'Update')
 		{
@@ -107,6 +105,12 @@ function CRUD-User{
 		{
 			. .\Delete-Entities.ps1;
 			$result = Delete-Entities -EntityName "Users" -ODataComparison "Name eq '$UserName'";
+		}
+		elseif($PSCmdlet.ParameterSetName -eq 'Read')
+		{
+			$filter = '$filter';
+			$getUri = "{0}?$filter=Name eq '{1}'" -f $uri, $UserName;
+			$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 		}
 		$OutputParameter = $result;
 	}
