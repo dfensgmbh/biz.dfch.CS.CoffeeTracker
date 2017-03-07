@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.OData;
 using System.Web.Routing;
@@ -134,6 +135,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var aspNetUser = GetAssociatedAspNetUser(user);
             Contract.Assert(null != aspNetUser, "|404|");
+
+            var isSafe = PasswordValidator.ValidateAsync(update.Password).Result;
+            Contract.Assert(isSafe.Succeeded, "|400|");
+
+            var userExists = UserExists(update.Name);
+            Contract.Assert(!userExists, "|400|");
+
 
             var hashedNewPassword = PasswordHasher.HashPassword(update.Password);
 
