@@ -2,16 +2,13 @@ function CRUD-User{
 	PARAM
 	(
 		[Parameter(Mandatory = $true, Position = 0)]
-		[ValidateNotNullOrEmpty()]
 		[string] $UserName
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Update')]
-		[ValidateNotNullOrEmpty()]
 		[string] $NewUserName
 		,
 		[Parameter(Mandatory = $true, ParameterSetName = 'Create')]
 		[Parameter(Mandatory = $false, ParameterSetName = 'Update')]
-		[ValidateNotNullOrEmpty()]
 		[string] $Password
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Create')]
@@ -19,7 +16,6 @@ function CRUD-User{
 		,
 		[Parameter(Mandatory = $true, ParameterSetName = 'Update')]
 		[Parameter(Mandatory = $true, ParameterSetName = 'Read')]
-		[ValidateNotNullOrEmpty()]
 		[string] $Token
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Update')]
@@ -44,11 +40,6 @@ function CRUD-User{
 			
 		if($PSCmdlet.ParameterSetName -eq 'Create')
 		{
-			if($Password.Length -lt 6)
-			{
-				throw "Password is to weak (at least 6 characters)";
-			}
-
 			$userBody = @{
 				Name = $UserName
 				Password = $Password
@@ -63,16 +54,11 @@ function CRUD-User{
 			$getUri = "{0}?$filter=Name eq '{1}'" -f $uri, $UserName;
 
 			
-			$userResult =	Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
+			$userResult = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 			$user = $userResult.value;
 
 			if($NewUserName)
 			{
-				if($NewUserName.Length -lt 4)
-				{
-					throw "Invalid Name (at least 4 characters)"
-				}
-
 				$userBody = @{
 					Name = $NewUserName
 					Password = $user.Password
@@ -80,18 +66,18 @@ function CRUD-User{
 				}
 				
 			}
-			elseif($password)
+			else
 			{
-				if($Password.Length -lt 6)
-				{
-					throw "Password is to weak (at least 6 characters)";
-				}
-
 				$userBody = @{
-					Name = $user.Name
-					Password = $Password
+					Name = $UserName
+					Password = $user.Password
 					IsAdmin = $user.IsAdmin
 				}
+			}
+			
+			if($Password)
+			{
+				$userBody["Password"] = $Password;
 			}
 
 			$headers.Add("Content-Type", "application/json;odata=verbose")
@@ -110,8 +96,10 @@ function CRUD-User{
 		{
 			$filter = '$filter';
 			$getUri = "{0}?$filter=Name eq '{1}'" -f $uri, $UserName;
-			$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
+			$response = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
+			$result = $response.value;
 		}
+
 		$OutputParameter = $result;
 	}
 	End
