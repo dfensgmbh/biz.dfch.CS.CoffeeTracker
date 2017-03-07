@@ -27,7 +27,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Stores
         public AppUserStore()
             : base(new CoffeeTrackerDbContext())
         {
-
+            
         }
     }
 }

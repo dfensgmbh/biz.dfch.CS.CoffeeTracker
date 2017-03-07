@@ -46,6 +46,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             }
             else
             {
+
                 authorizationManager = new AuthorizationManager();
                 userManager = new ApplicationUserManager(new AppUserStore());
             }
