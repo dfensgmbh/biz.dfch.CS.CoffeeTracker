@@ -116,7 +116,6 @@ Describe "UsersController" -Tags "UsersController" {
 			$result.Name | Should Be $newName;
 		}
 
-#>
 		It "Update-UsersChangePasswordWithWeakPasswordThrows400" -test {
 			# Arrange
 			$weakPassword = "123";
@@ -133,7 +132,7 @@ Describe "UsersController" -Tags "UsersController" {
 			{ CRUD-User -UserName $name -NewUserName $AlreadyExistingUser.Name -Token $token; } | Should Throw "400";
 		}
 
-<#
+#>
 		It "Update-UsersWithInvalidTokenThrows401" -test {
 			# Arrange
 			$invalidToken = "ThatShouldDefinetlyBeInvalid";
@@ -141,6 +140,7 @@ Describe "UsersController" -Tags "UsersController" {
 			# Act/Assert
 			{ CRUD-User -UserName $name -NewUserName $NewName -Token $invalidToken; } | Should Throw "401";
 		}
+<#
 
 		It "Update-UsersAsOtherUserThrows403" -test {
 			# Arrange
