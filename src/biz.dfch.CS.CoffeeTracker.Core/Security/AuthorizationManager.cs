@@ -35,11 +35,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security
         public AuthorizationManager()
         {
             userManager = new ApplicationUserManager(new AppUserStore());
-
-            userManager.UserValidator = new UserValidator<IdentityUser>(userManager)
-            {
-                AllowOnlyAlphanumericUserNames = false
-            };
         }
 
         public AuthorizationManager(ApplicationUserManager userManager)

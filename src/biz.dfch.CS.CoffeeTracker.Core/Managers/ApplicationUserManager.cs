@@ -40,6 +40,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             var currentUser = GetCurrentUser();
             PermissionChecker = new PermissionChecker(currentUser);
+            this.UserValidator = new UserValidator<IdentityUser>(this) { AllowOnlyAlphanumericUserNames = false};
         }
 
         public ApplicationUserManager(AppUserStore store, bool skipPermissionChecks)
@@ -48,11 +49,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             if (skipPermissionChecks)
             {
                 PermissionChecker = new PermissionChecker(skipPermissionChecks);
+                this.UserValidator = new UserValidator<IdentityUser>(this) { AllowOnlyAlphanumericUserNames = false};
             }
             else
             {
                 var currentUser = GetCurrentUser();
                 PermissionChecker = new PermissionChecker(currentUser);
+                this.UserValidator = new UserValidator<IdentityUser>(this) { AllowOnlyAlphanumericUserNames = false};
             }
         }
 
