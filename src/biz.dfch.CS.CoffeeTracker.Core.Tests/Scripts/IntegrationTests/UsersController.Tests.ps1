@@ -169,7 +169,7 @@ Describe "UsersController" -Tags "UsersController" {
 	}
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
-		$adminToken = Get-Token -Username "Test" -Password "123456";
+		$adminToken = Get-Token -Username 'Admin@Example.com' -Password "123456";
 
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
 		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
