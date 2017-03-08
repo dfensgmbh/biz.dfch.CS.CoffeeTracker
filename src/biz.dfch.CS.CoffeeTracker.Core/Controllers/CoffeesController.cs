@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,24 +17,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     [Authorize]
     public class CoffeesController : ODataController
     {
-        private CoffeesManager coffeesManager;
+        private readonly Lazy<CoffeesManager> coffeesManagerLazy = new Lazy<CoffeesManager>(() =>
+            new CoffeesManager());
+        private CoffeesManager coffeesManager => coffeesManagerLazy.Value;
+
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEE;
 
         public CoffeesController()
         {
-        }
-
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
-            {
-                coffeesManager = new CoffeesManager(true);
-            }
-            else
-            {
-                coffeesManager = new CoffeesManager();
-            }
-            base.Initialize(controllerContext);
         }
 
         [EnableQuery]
