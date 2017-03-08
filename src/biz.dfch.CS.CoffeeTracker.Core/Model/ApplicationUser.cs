@@ -23,9 +23,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class ApplicationUser : BaseEntity
     {
-        public ApplicationUser(string name, string password)
+        // Due to renaming complications, ApplicationUser.Name is a Email Address
+        public ApplicationUser(string email, string password)
         {
-            this.Name = name;
+            var isValidMail = IsValidEmail(email);
+            Contract.Assert(isValidMail);
+
+            this.Name = email;
             this.Password = password;
             this.IsAdmin = false;
         }
@@ -46,5 +50,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [Required]
         public bool IsAdmin { get; set; }
 
+        public static bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
