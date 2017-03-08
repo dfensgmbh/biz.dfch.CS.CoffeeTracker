@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,30 +29,31 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     */
     public class UsersController : ODataController
     {
-        private AuthorizationManager authorizationManager;
-        private ApplicationUserManager userManager;
+        private readonly Lazy<AuthorizationManager> authorizationManagerLazy = new Lazy<AuthorizationManager>(() =>
+            new AuthorizationManager());
+        private AuthorizationManager authorizationManager => authorizationManagerLazy.Value;
+
+        private readonly Lazy<ApplicationUserManager> userManagerLazy = new Lazy<ApplicationUserManager>(() => 
+            new ApplicationUserManager(new AppUserStore()));
+        private ApplicationUserManager userManager => userManagerLazy.Value;
+
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
-        public UsersController()
-        {
-        }
+        //protected override void Initialize(HttpControllerContext controllerContext)
+        //{
 
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            
-            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
-            {
-                userManager = new ApplicationUserManager(new AppUserStore(), true);
-                authorizationManager = new AuthorizationManager(userManager);
-            }
-            else
-            {
+        //    //if (controllerContext.Request.Method.Equals(HttpMethod.Post))
+        //    //{
+        //    //    userManager = new ApplicationUserManager(new AppUserStore(), skipPermissionChecks: true);
+        //    //}
+        //    //else
+        //    //{
 
-                authorizationManager = new AuthorizationManager();
-                userManager = new ApplicationUserManager(new AppUserStore());
-            }
-            base.Initialize(controllerContext);
-        }
+        //    //    userManager = new ApplicationUserManager(new AppUserStore());
+        //    //}
+        //    //authorizationManager = new AuthorizationManager();
+        //    base.Initialize(controllerContext);
+        //}
 
         [EnableQuery]
         [Authorize]
@@ -110,9 +112,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
+            var unsecuredAuthManager = new AuthorizationManager(
+                new ApplicationUserManager(new AppUserStore(), skipPermissionChecks: true));
+
             ControllerLogging.LogInsertEntityStart(MODELNAME, applicationUser);
 
-            var result = await authorizationManager.RegisterUser(applicationUser);
+            var result = await unsecuredAuthManager.RegisterUser(applicationUser);
             Contract.Assert(result.Succeeded);
             
 
