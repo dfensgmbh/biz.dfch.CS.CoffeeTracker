@@ -22,10 +22,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 		}
-<#
+
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
+
 		It "Create-CoffeeAsAdminSucceeds" -Test {
 			# Arrange
 			# N/A
@@ -96,8 +97,6 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
 			
 		}
-#>	
-
 
 		it "Create-CoffeeWithInvalidTokenThrows401" -test {
 			# Arrange
@@ -106,14 +105,13 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			# Act / Assert
 			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken -Create } | Should Throw "401";
 		}
-<#
 
 		it "Create-CoffeeWithoutTokenThrows401" -test {
 			# Arrange
 			# N/A
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $brand } | Should Throw "401";
+			{ CRUD-Coffee -Name $name -Brand $brand -Create } | Should Throw "401";
 		}
 	}
 	Context "Update-Coffee" {
