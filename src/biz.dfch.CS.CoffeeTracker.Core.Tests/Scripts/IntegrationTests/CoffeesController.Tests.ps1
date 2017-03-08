@@ -87,7 +87,6 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody; } | Should Throw "400";
 			
 		}
-#>	
 
 		It "Create-CoffeeAsNonAdminThrows403" -test {
 			# Arrange
@@ -97,33 +96,17 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
 			
 		}
-<#
+#>	
 
-		It "Create-CoffeeAsNonAdminWithoutNameThrows403" -test {
-			# Arrange
-			$invalidName = "";
-
-			# Act / Assert
-			{ CRUD-Coffee -Name $invalidName -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
-			
-		}
-
-		It "Create-CoffeeAsNonAdminWithoutBrandThrows403" -test {
-			# Arrange
-			$invalidBrand = "";
-
-			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $normalUserToken -Create; } | Should Throw "403";
-			
-		}
 
 		it "Create-CoffeeWithInvalidTokenThrows401" -test {
 			# Arrange
 			$invalidToken = "ShouldBeDefinetlyInvalid";
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken } | Should Throw "401";
+			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken -Create } | Should Throw "401";
 		}
+<#
 
 		it "Create-CoffeeWithoutTokenThrows401" -test {
 			# Arrange
