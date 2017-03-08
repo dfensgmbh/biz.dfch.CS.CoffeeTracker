@@ -26,7 +26,6 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-#>	
 		It "Create-CoffeeAsAdminSucceeds" -Test {
 			# Arrange
 			# N/A
@@ -39,13 +38,12 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Name | Should Be $name;
 			$result.Brand | Should Be $brand;
 		}
-<#
 
 		It "Create-CoffeeAsAdminWithAllPropertiesSucceeds" -Test {
 			# Arrange
 			$price = 2.10;
 			$stock = 25;
-			$lastDelivery = [DateTime]::Now;
+			$lastDelivery = [DateTimeOffSet]::Now;
 
 			# Act
 			$result = CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Create;
@@ -56,26 +54,40 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Brand | Should Be $brand;
 			$result.Price | Should Be $price;
 			$result.stock | Should Be $stock;
-			$result.LastDelivery | Should Be $lastDelivery;
 		}
 
 		It "Create-CoffeeAsAdminWithoutNameThrows400" -test {
 			# Arrange
-			# N/A
+			$uri = "CoffeeTracker/api/Coffees";
+			$authString = "bearer {0}" -f $adminToken;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBody = @{}
+			$coffeeBody["Brand"] = $brand;
 
 			# Act / Assert
-			{ CRUD-User -Brand $brand -Token $adminToken -Create; } | Should Throw "400";
+			{ Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody; } | Should Throw "400";
 			
 		}
 		
 		It "Create-CoffeeAsAdminWithoutBrandThrows400" -test {
 			# Arrange
-			# N/A
+			$uri = "CoffeeTracker/api/Coffees";
+			$authString = "bearer {0}" -f $adminToken;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBody = @{}
+			$coffeeBody["Name"] = $name;
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Token $adminToken -Create; } | Should Throw "400";
+			{ Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody; } | Should Throw "400";
 			
 		}
+#>	
 
 		It "Create-CoffeeAsNonAdminThrows403" -test {
 			# Arrange
@@ -85,6 +97,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
 			
 		}
+<#
 
 		It "Create-CoffeeAsNonAdminWithoutNameThrows403" -test {
 			# Arrange
