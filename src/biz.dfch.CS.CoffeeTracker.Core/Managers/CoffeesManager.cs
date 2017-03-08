@@ -37,12 +37,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             permissionChecker = new PermissionChecker(currentUser);
         }
 
-        public CoffeesManager(bool skipPermissionChecks)
-        {
-            db = new CoffeeTrackerDbContext();
-            permissionChecker = new PermissionChecker(skipPermissionChecks);
-        }
-
         public IQueryable<Coffee> Get()
         {
             return db.Coffees;
