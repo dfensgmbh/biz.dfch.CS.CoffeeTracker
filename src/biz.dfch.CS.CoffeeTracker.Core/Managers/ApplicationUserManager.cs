@@ -71,11 +71,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.ApplicationUsers.Where(u => u.Id == currentUser.Id);
         }
 
-        public ApplicationUser GetUser(string name)
+        // name equals ApplicationUser.Name
+        public ApplicationUser GetUser(string email)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(name), "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace(email), "|400|");
 
-            var user = db.ApplicationUsers.FirstOrDefault(u => u.Name == name);
+            var user = db.ApplicationUsers.FirstOrDefault(u => u.Name == email);
             Contract.Assert(null != user, "|404|");
             var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
@@ -121,6 +122,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(!string.IsNullOrWhiteSpace(user.Name));
             Contract.Requires(!string.IsNullOrWhiteSpace(user.Password));
 
+            var isValidMail = ApplicationUser.IsValidEmail(user.Name);
+            Contract.Assert(isValidMail, "|400|");
+
             db.ApplicationUsers.Add(user);
             db.SaveChanges();
             return user;
@@ -131,6 +135,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < id, "|404|");
             Contract.Requires(null != update, "|400|");
 
+            var isValidMail = ApplicationUser.IsValidEmail(update.Name);
+            Contract.Assert(isValidMail, "|400|");
 
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
