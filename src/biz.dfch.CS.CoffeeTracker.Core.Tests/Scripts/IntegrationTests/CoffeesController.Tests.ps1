@@ -60,19 +60,19 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Create-CoffeeAsAdminWithoutNameThrows400" -test {
 			# Arrange
-			$invalidName = "";
+			# N/A
 
 			# Act / Assert
-			{ CRUD-User -Name $invalidName -Brand $brand -Token $adminToken -Create; } | Should Throw "400";
+			{ CRUD-User -Brand $brand -Token $adminToken -Create; } | Should Throw "400";
 			
 		}
 		
 		It "Create-CoffeeAsAdminWithoutBrandThrows400" -test {
 			# Arrange
-			$invalidBrand = "";
+			# N/A
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $adminToken -Create; } | Should Throw "400";
+			{ CRUD-Coffee -Name $name -Token $adminToken -Create; } | Should Throw "400";
 			
 		}
 
@@ -238,6 +238,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Brand | Should Be $entity.Brand;
 		}
 	}
+<#
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
@@ -255,6 +256,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
 		}
 	}
+#>
 }
 
 #
