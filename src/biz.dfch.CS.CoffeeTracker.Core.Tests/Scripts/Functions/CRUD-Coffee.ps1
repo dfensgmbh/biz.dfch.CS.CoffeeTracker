@@ -1,13 +1,13 @@
 function CRUD-Coffee{
 	PARAM
 	(
-		[Parameter(Mandatory = $true, Position = 0)]
+		[Parameter(Mandatory = $false, Position = 0)]
 		[string] $Name
 		,
-		[Parameter(Mandatory = $true, Position = 1)]
+		[Parameter(Mandatory = $false, Position = 1)]
 		[string] $Brand
 		,
-		[Parameter(Mandatory = $true, Position = 2)]
+		[Parameter(Mandatory = $false, Position = 2)]
 		[string] $Token
 		,
 		[Parameter(Mandatory = $false, Position = 3)]
