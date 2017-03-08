@@ -53,7 +53,6 @@ Describe "UsersController" -Tags "UsersController" {
 			{ CRUD-User -UserName $invalidMail -Password $password -Create; } | Should Throw "400";
 		}
 	}
-
 	Context "Update-User" {
 		BeforeEach{
 			$name = "$entityPrefix-{0}@example.com" -f [guid]::NewGuid();
@@ -153,7 +152,7 @@ Describe "UsersController" -Tags "UsersController" {
 			$newPassword = "123456789";
 			
 			$otherUserUri = "{0}({1})" -f $baseUri, $otherUser.Id;
-			$otherUser.Name = "anotherName";
+			$otherUser.Name = "anotherName@Example.com";
 			$otherUserJson = $otherUser | ConvertTo-Json;
 
 			$authString = "bearer {0}" -f $Token;
