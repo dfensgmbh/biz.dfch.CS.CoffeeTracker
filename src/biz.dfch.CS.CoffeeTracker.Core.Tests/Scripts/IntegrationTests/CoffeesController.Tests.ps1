@@ -114,6 +114,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -Brand $brand -Create } | Should Throw "401";
 		}
 	}
+
 	Context "Update-Coffee" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -129,10 +130,24 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeePutChangeNameAndBrandSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			$coffee.Name = $newName;
+			$coffee.Brand = $newBrand;
+
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBodyJson = $coffee | ConvertTo-Json;
+
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$headers.Add("Content-Type", "application/json;odata=verbose")
 
 			# Act
-			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update -UsePut;
+			$result = Invoke-RestMethod -Method Put -Uri $updateUri -Body $coffeeBodyJson -Headers $headers;
 
 			# Assert
 			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
@@ -232,9 +247,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Name | Should Be $entity.Name;
 			$result.Brand | Should Be $entity.Brand;
 		}
-#>
 	}
-<#
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
@@ -252,7 +265,6 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
 		}
 	}
-#>
 }
 
 #
