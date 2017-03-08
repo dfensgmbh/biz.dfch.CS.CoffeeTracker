@@ -31,6 +31,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
         private readonly UsersController sut = new UsersController();
         private const long INVALID_ID = 0;
         private const string userName = "usersControllerTest";
+        private const string email = "example@example.com";
         private const string password = "123456";
 
         [TestMethod]
@@ -74,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.Patch(INVALID_ID, new ApplicationUser(userName, password));
+            sut.Patch(INVALID_ID, new ApplicationUser(userName, password, email));
         }
 
 
@@ -97,7 +98,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.Put(INVALID_ID, new ApplicationUser(userName, password));
+            sut.Put(INVALID_ID, new ApplicationUser(userName, password, email));
         }
 
 
