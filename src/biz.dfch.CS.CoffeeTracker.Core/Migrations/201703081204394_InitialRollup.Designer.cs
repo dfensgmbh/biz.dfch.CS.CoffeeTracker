@@ -7,13 +7,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Initial : IMigrationMetadata
+    public sealed partial class InitialRollup : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialRollup));
         
         string IMigrationMetadata.Id
         {
-            get { return "201701111459201_Initial"; }
+            get { return "201703081204394_InitialRollup"; }
         }
         
         string IMigrationMetadata.Source

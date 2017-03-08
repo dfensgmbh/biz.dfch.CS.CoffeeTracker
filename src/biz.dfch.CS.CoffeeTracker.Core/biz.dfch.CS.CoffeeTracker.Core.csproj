@@ -301,17 +301,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Managers\CoffeeOrdersManager.cs" />
     <Compile Include="Managers\CoffeesManager.cs" />
-    <Compile Include="Migrations\201702071103548_AddedAuthorization.cs" />
-    <Compile Include="Migrations\201702071103548_AddedAuthorization.Designer.cs">
-      <DependentUpon>201702071103548_AddedAuthorization.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702081039019_UserModelChanged.cs" />
-    <Compile Include="Migrations\201702081039019_UserModelChanged.Designer.cs">
-      <DependentUpon>201702081039019_UserModelChanged.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702280858026_AddedAdminAttribute.cs" />
-    <Compile Include="Migrations\201702280858026_AddedAdminAttribute.Designer.cs">
-      <DependentUpon>201702280858026_AddedAdminAttribute.cs</DependentUpon>
+    <Compile Include="Migrations\201703081204394_InitialRollup.cs" />
+    <Compile Include="Migrations\201703081204394_InitialRollup.Designer.cs">
+      <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Provider\SimpleAuthorizationServerProvider.cs" />
@@ -329,18 +321,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Message.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701111459201_Initial.cs" />
-    <Compile Include="Migrations\201701111459201_Initial.Designer.cs">
-      <DependentUpon>201701111459201_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.cs" />
-    <Compile Include="Migrations\201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.Designer.cs">
-      <DependentUpon>201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201702011250377_AddedNameToBaseEntity.cs" />
-    <Compile Include="Migrations\201702011250377_AddedNameToBaseEntity.Designer.cs">
-      <DependentUpon>201702011250377_AddedNameToBaseEntity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\BaseEntity.cs" />
@@ -379,23 +359,8 @@
       <LastGenOutput>Message.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701111459201_Initial.resx">
-      <DependentUpon>201701111459201_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.resx">
-      <DependentUpon>201701181007437_AdjustedUserAddedCoffeeAndCoffeeOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702011250377_AddedNameToBaseEntity.resx">
-      <DependentUpon>201702011250377_AddedNameToBaseEntity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702071103548_AddedAuthorization.resx">
-      <DependentUpon>201702071103548_AddedAuthorization.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702081039019_UserModelChanged.resx">
-      <DependentUpon>201702081039019_UserModelChanged.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201702280858026_AddedAdminAttribute.resx">
-      <DependentUpon>201702280858026_AddedAdminAttribute.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703081204394_InitialRollup.resx">
+      <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

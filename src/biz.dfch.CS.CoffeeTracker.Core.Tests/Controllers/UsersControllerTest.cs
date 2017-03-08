@@ -75,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.Patch(INVALID_ID, new ApplicationUser(userName, password, email));
+            sut.Patch(INVALID_ID, new ApplicationUser(userName, password));
         }
 
 
@@ -98,7 +98,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.Put(INVALID_ID, new ApplicationUser(userName, password, email));
+            sut.Put(INVALID_ID, new ApplicationUser(userName, password));
         }
 
 

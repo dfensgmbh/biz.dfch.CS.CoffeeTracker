@@ -9,7 +9,7 @@ $entityPrefix = "UserIntegrationTest";
 Describe "UsersController" -Tags "UsersController" {
 	Context "Create-User" {
 		BeforeEach {
-			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$name = "$entityPrefix-{0}@example.com" -f [guid]::NewGuid();
 			$password = "123456";
 		}
 	
@@ -44,18 +44,25 @@ Describe "UsersController" -Tags "UsersController" {
 			# Act / Assert
 			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri } | Should Throw "400";
 		}
-	}
 
+		it "Create-UserWithInvalidMailThrows400" -test {
+			# Arrange
+			$invalidMail = "ThisIsNotAEmailAddress";
+
+			# Act / Assert
+			{ CRUD-User -UserName $invalidMail -Password $password -Create; } | Should Throw "400";
+		}
+	}
 	Context "Update-User" {
 		BeforeEach{
-			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$name = "$entityPrefix-{0}@example.com" -f [guid]::NewGuid();
 			$password = "123456";
 
 			$entityAdded = CRUD-User -UserName $name -Password $password -Create;
 			
 			$token = Get-Token -UserName $name -Password $password;
 
-			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$newName = "$entityPrefix-{0}@example.com" -f [guid]::NewGuid();
 			$newPassword = "568789";
 
 			$entityAddedUri = "{0}({1})" -f $baseUri, $entityAdded.Id;
@@ -130,6 +137,7 @@ Describe "UsersController" -Tags "UsersController" {
 			# Act/Assert
 			{ CRUD-User -UserName $name -NewUserName $AlreadyExistingUser.Name -Token $token; } | Should Throw "403";
 		}
+
 		It "Update-UsersWithInvalidTokenThrows401" -test {
 			# Arrange
 			$invalidToken = "ThatShouldDefinetlyBeInvalid";
@@ -144,7 +152,7 @@ Describe "UsersController" -Tags "UsersController" {
 			$newPassword = "123456789";
 			
 			$otherUserUri = "{0}({1})" -f $baseUri, $otherUser.Id;
-			$otherUser.Name = "anotherName";
+			$otherUser.Name = "anotherName@Example.com";
 			$otherUserJson = $otherUser | ConvertTo-Json;
 
 			$authString = "bearer {0}" -f $Token;
@@ -166,10 +174,18 @@ Describe "UsersController" -Tags "UsersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri -Headers $headers; } | Should Throw "400";
 		}
+
+		It "Update-UsersWithInvalidMailThrows400" -test {
+			# Arrange
+			$invalidMail = "ThatShouldDefinetlyBeInvalid";
+
+			# Act/Assert
+			{ CRUD-User -UserName $name -NewUserName $invalidMail -Token $token; } | Should Throw "400";
+		}
 	}
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
-		$adminToken = Get-Token -Username "Test" -Password "123456";
+		$adminToken = Get-Token -Username 'Admin@Example.com' -Password "123456";
 
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
 		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;

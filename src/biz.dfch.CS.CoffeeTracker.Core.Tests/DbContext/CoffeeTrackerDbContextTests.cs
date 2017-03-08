@@ -25,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
     public class CoffeeTrackerDbContextTests
     {
         private static readonly ApplicationUser _testApplicationUser = new ApplicationUser("Test-ApplicationUser",
-            "123456", "example@example.com");
+            "123456");
 
         private static readonly Coffee _testCoffee = new Coffee
         {
