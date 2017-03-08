@@ -23,6 +23,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [Key]
         public long Id { get; set; }
 
+        // Due to renaming complications, ApplicationUser.Name is a Email Address
         [Required]
         public string Name { get; set; }
     }
