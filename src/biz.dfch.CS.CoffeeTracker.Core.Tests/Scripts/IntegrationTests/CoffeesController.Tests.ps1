@@ -8,11 +8,11 @@ $entityPrefix = "CoffeeIntegrationTest";
 
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
-	$adminName = "Test";
+	$adminName = "Admin@Example.com";
 	$adminPassword = "123456";
 	$adminToken = Get-Token -UserName $adminName -Password $adminPassword;
 
-	$normalUserName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+	$normalUserName = "$entityPrefix-{0}@Example.com" -f [guid]::NewGuid();
 	$normalUserPassword = "123456";
 	$normalUser = CRUD-User -UserName $normalUserName -Password $normalUserPassword -Create;
 	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPassword;
@@ -22,11 +22,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 		}
-	
+<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-
+#>	
 		It "Create-CoffeeAsAdminSucceeds" -Test {
 			# Arrange
 			# N/A
@@ -39,6 +39,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Name | Should Be $name;
 			$result.Brand | Should Be $brand;
 		}
+<#
 
 		It "Create-CoffeeAsAdminWithAllPropertiesSucceeds" -Test {
 			# Arrange
@@ -237,6 +238,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Name | Should Be $entity.Name;
 			$result.Brand | Should Be $entity.Brand;
 		}
+#>
 	}
 <#
 	AfterAll {
