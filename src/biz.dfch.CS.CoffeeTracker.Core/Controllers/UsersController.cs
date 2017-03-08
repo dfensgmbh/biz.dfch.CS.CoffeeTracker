@@ -81,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != modifiedApplicationUser, "|404|");
+            Contract.Requires(null != modifiedApplicationUser, "|400|");
 
             Validate(modifiedApplicationUser);
 
@@ -90,12 +90,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = userManager.GetUser(key);
-            Contract.Assert(null != user, "|404|");
-
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            userManager.UpdateUser(key, modifiedApplicationUser);
+            var user = userManager.UpdateUser(key, modifiedApplicationUser);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
 
