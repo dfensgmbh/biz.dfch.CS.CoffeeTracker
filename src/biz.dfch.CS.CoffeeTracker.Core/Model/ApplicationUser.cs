@@ -46,17 +46,5 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [Required]
         public bool IsAdmin { get; set; }
 
-        [Pure]
-        public bool IsPasswordSafe()
-        {
-            if (!string.IsNullOrWhiteSpace(Password))
-            {
-                if (6 <= Password.Length)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
     }
 }
