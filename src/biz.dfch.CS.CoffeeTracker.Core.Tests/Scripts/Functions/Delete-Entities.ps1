@@ -8,6 +8,10 @@ function Delete-Entities {
 		[Parameter(Mandatory = $true, Position = 1)]
 		[ValidateNotNullOrEmpty()]
 		[string] $OdataComparison
+		,
+		[Parameter(Mandatory = $true)]
+		[ValidateNotNullOrEmpty()]
+		[string] $Token
 	
 	)
 	Process
@@ -16,16 +20,22 @@ function Delete-Entities {
 
 		$entityFilter = '$filter={0}' -f $OdataComparison;
 		$entityGetUri = "{0}/{1}?{2}" -f $baseUri, $EntityName, $entityFilter;
-		$entities = Invoke-RestMethod -Method Get -Uri $entityGetUri;
+
+		$authString = "bearer {0}" -f $Token;
+		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+		$headers.Add("Authorization", $authString);
 	
+		$entities = Invoke-RestMethod -Method Get -Uri $entityGetUri -Headers $headers;
+		
 		foreach ($entity in $entities.value) 
 		{
 			$deleteUri = "{0}/{1}({2})" -f $baseUri, $EntityName, $entity.Id;
-			Invoke-RestMethod -Method Delete -Uri $deleteUri;
+			Invoke-RestMethod -Method Delete -Uri $deleteUri -Headers $headers;
 		}
 
 		# Check if all was deleted
-		$entitiesAfterDeletion = Invoke-RestMethod -Method Get -Uri $entityGetUri;
+		$entitiesAfterDeletion = Invoke-RestMethod -Method Get -Uri $entityGetUri -Headers $headers;
+
 		if ($entitiesAfterDeletion.values.Count -eq 0) {
 			$OutputParameter = $true;
 		}

@@ -7,7 +7,6 @@ $baseUri = "http://CoffeeTracker/api/Users";
 $entityPrefix = "UserIntegrationTest";
 
 Describe "UsersController" -Tags "UsersController" {
-<#		
 	Context "Create-User" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -46,7 +45,7 @@ Describe "UsersController" -Tags "UsersController" {
 			{ $result = Invoke-RestMethod -Method Post -Uri $baseUri } | Should Throw "400";
 		}
 	}
-#>
+
 	Context "Update-User" {
 		BeforeEach{
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -62,10 +61,10 @@ Describe "UsersController" -Tags "UsersController" {
 			$entityAddedUri = "{0}({1})" -f $baseUri, $entityAdded.Id;
 		}
 
-<#
 		It "Warmup" -test {
 			$true | Should Be $true;
 		}
+
 		It "Update-UsersChangeNameSucceeds" -test {
 			# Arrange
 			# N/A
@@ -124,15 +123,13 @@ Describe "UsersController" -Tags "UsersController" {
 			{ CRUD-User -UserName $name -NewUserName $newName -Password $weakPassword -Token $token; } | Should Throw "400";
 		}
 
-		It "Update-UsersChangeNameToAlreadyExistingNameThrows400" -test {
+		It "Update-UsersChangeNameToAlreadyExistingNameThrows403" -test {
 			# Arrange
 			$AlreadyExistingUser = CRUD-User -UserName $newName -Password $password -Create;
 
 			# Act/Assert
-			{ CRUD-User -UserName $name -NewUserName $AlreadyExistingUser.Name -Token $token; } | Should Throw "400";
+			{ CRUD-User -UserName $name -NewUserName $AlreadyExistingUser.Name -Token $token; } | Should Throw "403";
 		}
-
-#>
 		It "Update-UsersWithInvalidTokenThrows401" -test {
 			# Arrange
 			$invalidToken = "ThatShouldDefinetlyBeInvalid";
@@ -140,34 +137,50 @@ Describe "UsersController" -Tags "UsersController" {
 			# Act/Assert
 			{ CRUD-User -UserName $name -NewUserName $NewName -Token $invalidToken; } | Should Throw "401";
 		}
-<#
 
 		It "Update-UsersAsOtherUserThrows403" -test {
 			# Arrange
 			$otherUser = CRUD-User -UserName $newName -Password $password -Create;
-			$weakPassword = "123";
+			$newPassword = "123456789";
+			
+			$otherUserUri = "{0}({1})" -f $baseUri, $otherUser.Id;
+			$otherUser.Name = "anotherName";
+			$otherUserJson = $otherUser | ConvertTo-Json;
 
+			$authString = "bearer {0}" -f $Token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json;odata=verbose")
+			
 			# Act/Assert
-			{ CRUD-User -UserName $otherUser.Name -Password $weakPassword -Token $token; } | Should Throw "403";
+			{ $result = Invoke-RestMethod -Method Put -Uri $otherUserUri -Body $otherUserJson -Headers $headers; } | Should Throw "403";
 		}
 
 		It "Update-UserPutWithoutBodyThrows400" -test {
 			# Arrange
-			# N/A
+			$authString = "bearer {0}" -f $Token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json;odata=verbose")
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri } | Should Throw "400";
+			{ Invoke-RestMethod -Method Put -Uri $entityAddedUri -Headers $headers; } | Should Throw "400";
 		}
 	}
-
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		$adminToken = Get-Token -Username "Test" -Password "123456";
+
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
 		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
 
-		Delete-Entities -EntityName "Users" -OdataComparison $queryOption;
+		Delete-Entities -EntityName "Users" -OdataComparison $queryOption -Token $adminToken;
 
-		$result = Invoke-RestMethod -Method Get -Uri $getUri;
+		$authString = "bearer {0}" -f $adminToken;
+		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+		$headers.Add("Authorization", $authString);
+
+		$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 		if($result.value.Count -gt 0)
 		{
 			Write-Host -ForegroundColor Red "Test-data was not deleted!";
@@ -176,7 +189,6 @@ Describe "UsersController" -Tags "UsersController" {
 		{
 			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
 		}
-#>
 	}
 }
 
