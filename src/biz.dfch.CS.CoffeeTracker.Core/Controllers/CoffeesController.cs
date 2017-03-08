@@ -36,7 +36,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             base.Initialize(controllerContext);
         }
 
-        // GET: odata/Coffees
         [EnableQuery]
         public IQueryable<Coffee> GetCoffees()
         {
@@ -45,7 +44,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return coffeesManager.Get();
         }
 
-        // GET: odata/Coffees(5)
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
