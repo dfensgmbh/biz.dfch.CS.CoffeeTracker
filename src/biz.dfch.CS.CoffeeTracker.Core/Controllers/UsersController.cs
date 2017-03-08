@@ -1,144 +1,173 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
+using System.Web.Http.Controllers;
 using System.Web.Http.OData;
-using System.Web.Http.OData.Routing;
-using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.CoffeeTracker.Core.Security;
+using biz.dfch.CS.CoffeeTracker.Core.Stores;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
     /*
-    The WebApiConfig class may require additional changes to add a route for this controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
+    The WebApiConfig class may require additional changes to add a route for this Controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
 
     using System.Web.Http.OData.Builder;
     using System.Web.Http.OData.Extensions;
     using biz.dfch.CS.CoffeeTracker.Core.Model;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<User>("Users");
+    builder.EntitySet<ApplicationUser>("ApplicationUsers");
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
     public class UsersController : ODataController
     {
-        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private readonly Lazy<AuthorizationManager> authorizationManagerLazy = new Lazy<AuthorizationManager>(() =>
+            new AuthorizationManager());
+        private AuthorizationManager authorizationManager => authorizationManagerLazy.Value;
+
+        private readonly Lazy<ApplicationUserManager> userManagerLazy = new Lazy<ApplicationUserManager>(() => 
+            new ApplicationUserManager(new AppUserStore()));
+        private ApplicationUserManager userManager => userManagerLazy.Value;
+
         private const string MODELNAME = ControllerLogging.ModelNames.USER;
 
-        // GET: odata/Users
+        //protected override void Initialize(HttpControllerContext controllerContext)
+        //{
+
+        //    //if (controllerContext.Request.Method.Equals(HttpMethod.Post))
+        //    //{
+        //    //    userManager = new ApplicationUserManager(new AppUserStore(), skipPermissionChecks: true);
+        //    //}
+        //    //else
+        //    //{
+
+        //    //    userManager = new ApplicationUserManager(new AppUserStore());
+        //    //}
+        //    //authorizationManager = new AuthorizationManager();
+        //    base.Initialize(controllerContext);
+        //}
+
         [EnableQuery]
-        public IQueryable<User> GetUsers()
+        [Authorize]
+        public IQueryable<ApplicationUser> Get()
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
-            return db.Users;
+            return userManager.GetUsers();
         }
 
-        // GET: odata/Users(5)
+        [Authorize]
         [EnableQuery]
-        public SingleResult<User> GetUser([FromODataUri] long key)
+        public SingleResult<ApplicationUser> Get([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(db.Users.Where(user => user.Id == key));
+            return SingleResult.Create(userManager.GetUserAsQueryable(key));
         }
 
-        // PUT: odata/Users(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] long key, User modifiedUser)
+        // PUT: odata/ApplicationUsers(5)
+        [Authorize]
+        [HttpPut]
+        public IHttpActionResult Put([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != modifiedUser, "|404|");
+            Contract.Requires(null != modifiedApplicationUser, "|400|");
 
-            Validate(modifiedUser);
+            Validate(modifiedApplicationUser);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await db.Users.FindAsync(key);
-            Contract.Assert(null != user, "|404|");
-
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            user.Name = modifiedUser.Name;
-            user.Password = modifiedUser.Password;
+            var user = userManager.UpdateUser(key, modifiedApplicationUser);
 
-            await db.SaveChangesAsync();
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, user);
 
             return Updated(user);
         }
 
-        // POST: odata/Users
-        public async Task<IHttpActionResult> Post(User user)
+        // POST: odata/ApplicationUsers
+        public async Task<IHttpActionResult> Post(ApplicationUser applicationUser)
         {
-            Contract.Requires(null != user, "|404|");
+            Contract.Requires(null != applicationUser, "|400|");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            ControllerLogging.LogInsertEntityStart(MODELNAME, user);
+            var unsecuredAuthManager = new AuthorizationManager(
+                new ApplicationUserManager(new AppUserStore(), skipPermissionChecks: true));
 
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
+            ControllerLogging.LogInsertEntityStart(MODELNAME, applicationUser);
 
-            ControllerLogging.LogInsertEntityStop(MODELNAME, user);
+            var result = await unsecuredAuthManager.RegisterUser(applicationUser);
+            Contract.Assert(result.Succeeded);
+            
 
-            return Created(user);
+            var errorResult = GetErrorResult(result);
+
+            if (errorResult != null)
+            {
+                return errorResult;
+            }
+
+            ControllerLogging.LogInsertEntityStop(MODELNAME, applicationUser);
+
+            return Created(applicationUser);
         }
 
-        // PATCH: odata/Users(5)
+        // PATCH: odata/ApplicationUsers(5)
+        [Authorize]
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<User> patch)
+        [HttpPatch]
+        public IHttpActionResult Patch([FromODataUri] long key, ApplicationUser modifiedApplicationUser)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
-
-            Validate(patch.GetEntity());
+            Contract.Requires(null != modifiedApplicationUser, "|404|");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await db.Users.FindAsync(key);
+            var user = userManager.GetUser(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            patch.Patch(user);
-            await db.SaveChangesAsync();
+            userManager.UpdateUser(key, modifiedApplicationUser);
 
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, user);
 
             return Updated(user);
         }
 
-        // DELETE: odata/Users(5)
+        // DELETE: odata/ApplicationUsers(5)
+        [Authorize]
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
-            var user = await db.Users.FindAsync(key);
+            var user = userManager.GetUser(key);
             Contract.Assert(null != user, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, user);
 
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
+            userManager.DeleteUser(key);
 
             ControllerLogging.LogDeleteEntityStop(MODELNAME, user);
 
@@ -149,9 +178,39 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                authorizationManager.Dispose();
+                userManager.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
+            {
+                return InternalServerError();
+            }
+
+            if (!result.Succeeded)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return null;
         }
     }
 }

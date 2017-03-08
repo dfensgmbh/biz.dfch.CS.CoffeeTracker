@@ -13,23 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
+
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Contracts;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
-    public class Coffee : BaseEntity
+    public class ApplicationUser : BaseEntity
     {
-        [Required]
-        public string Brand { get; set; }
+        public ApplicationUser(string name, string password)
+        {
+            this.Name = name;
+            this.Password = password;
+            this.IsAdmin = false;
+        }
+
+        public ApplicationUser()
+        {
+            IsAdmin = false;
+        }
 
         [Required]
-        public decimal Price { get; set; }
+        public string Password { get; set; }
+
+        public string AspNetUserId { get; set; }
+
+        [ForeignKey("AspNetUserId")]
+        public virtual IdentityUser CorrespondingAspNetUser { get; set; }
 
         [Required]
-        public int Stock { get; set; }
+        public bool IsAdmin { get; set; }
 
-        [Required]
-        public DateTimeOffset LastDelivery { get; set; }
     }
 }

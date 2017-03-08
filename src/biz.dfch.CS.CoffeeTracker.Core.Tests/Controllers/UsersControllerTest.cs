@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Text;
-using System.Collections.Generic;
+
 using System.Threading.Tasks;
-using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Testing.Attributes;
@@ -31,8 +28,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
     [TestClass]
     public class UsersControllerTest
     {
-        private UsersController sut = new UsersController();
+        private readonly UsersController sut = new UsersController();
         private const long INVALID_ID = 0;
+        private const string userName = "usersControllerTest";
+        private const string email = "example@example.com";
+        private const string password = "123456";
 
         [TestMethod]
         [ExpectContractFailure(MessagePattern = "key")]
@@ -42,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.GetUser(INVALID_ID);
+            sut.Get(INVALID_ID);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
         }
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "user")]
+        [ExpectContractFailure(MessagePattern = "applicationUser")]
         public async Task UsersControllerCodeContractsPostUserNullCoffeeFails()
         {
             // Arrange
@@ -75,19 +75,19 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Patch(INVALID_ID, new Delta<User>());
+            sut.Patch(INVALID_ID, new ApplicationUser(userName, password, email));
         }
 
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "patch")]
+        [ExpectContractFailure(MessagePattern = "modified")]
         public async Task UsersControllerCodeContractsPatchUserNullDeltaFails()
         {
             // Arrange
             // N/A
 
             // Act/Assert
-            await sut.Patch(42, null);
+            sut.Patch(42, null);
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Put(INVALID_ID, new User());
+            sut.Put(INVALID_ID, new ApplicationUser(userName, password, email));
         }
 
 
@@ -110,7 +110,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Put(42, null);
+            sut.Put(42, null);
         }
     }
 }

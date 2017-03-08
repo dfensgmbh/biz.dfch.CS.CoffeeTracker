@@ -117,44 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WebApiConfig_Register__Start" xml:space="preserve">
-    <value>Apply {0} config...</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="WebApiConfig_Register__SUCCEEDED" xml:space="preserve">
-    <value>Apply {0} config SUCCEEDED</value>
-  </data>
-  <data name="Get_Entities" xml:space="preserve">
-    <value>Get {0}s</value>
-  </data>
-  <data name="Get_Entity" xml:space="preserve">
-    <value>Get {0} with Id: {1}</value>
-  </data>
-  <data name="Update_Entity_Put_Start" xml:space="preserve">
-    <value>Start Update of {0} with id {1}...</value>
-  </data>
-  <data name="Update_Entity_Put_Stop" xml:space="preserve">
-    <value>{0} with id {1} modifiedCoffeed. entity: 
- {2}</value>
-  </data>
-  <data name="Insert_Entity_Start" xml:space="preserve">
-    <value>Start Insert {0}: 
- {1}...</value>
-  </data>
-  <data name="Insert_Entity_Stop" xml:space="preserve">
-    <value>Insert {0} finished. EntityId: {1}</value>
-  </data>
-  <data name="Update_Entity_Patch_Start" xml:space="preserve">
-    <value>Start Update {0} with Id: {1}...</value>
-  </data>
-  <data name="Update_Entity_Patch_Stop" xml:space="preserve">
-    <value>Stop modifiedCoffee {0} with Id: {1} 
- {2}</value>
-  </data>
-  <data name="Delete_Entity_Start" xml:space="preserve">
-    <value>Start remove {0} with Id: {1} 
- {2}</value>
-  </data>
-  <data name="Delete_Entity_Stop" xml:space="preserve">
-    <value>{0} with id {1} Removed</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

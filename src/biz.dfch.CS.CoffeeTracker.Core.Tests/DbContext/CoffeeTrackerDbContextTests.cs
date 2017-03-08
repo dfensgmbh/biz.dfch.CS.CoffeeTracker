@@ -24,11 +24,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
     [TestClass]
     public class CoffeeTrackerDbContextTests
     {
-        private static readonly User _testUser = new User
-        {
-            Name = "Test-User",
-            Password = "1234"
-        };
+        private static readonly ApplicationUser _testApplicationUser = new ApplicationUser("Test-ApplicationUser",
+            "123456", "example@example.com");
 
         private static readonly Coffee _testCoffee = new Coffee
         {
@@ -45,8 +42,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
             Created = DateTime.Now,
             Coffee = _testCoffee,
             CoffeeId = _testCoffee.Id,
-            User = _testUser,
-            UserId = _testUser.Id
+            ApplicationUser = _testApplicationUser,
+            UserId = _testApplicationUser.Id
         };
 
 
@@ -56,15 +53,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
         {
             using (var sut = new CoffeeTrackerDbContext())
             {
-                sut.Users.Add(_testUser);
+                sut.ApplicationUsers.Add(_testApplicationUser);
                 sut.SaveChanges();
 
-                var result = sut.Users.FirstOrDefault(u => u.Name == _testUser.Name);
+                var result = sut.ApplicationUsers.FirstOrDefault(u => u.Name == _testApplicationUser.Name);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(_testUser.Name, result.Name);
+                Assert.AreEqual(_testApplicationUser.Name, result.Name);
 
-                sut.Users.Remove(_testUser);
+                sut.ApplicationUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }
@@ -104,7 +101,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.DbContext
 
                 sut.CoffeeOrders.Remove(_testCoffeeOrder);
                 sut.Coffees.Remove(_testCoffee);
-                sut.Users.Remove(_testUser);
+                sut.ApplicationUsers.Remove(_testApplicationUser);
                 sut.SaveChanges();
             }
         }

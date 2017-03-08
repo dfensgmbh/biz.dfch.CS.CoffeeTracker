@@ -1,39 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
+using System.Web.Http.Controllers;
 using System.Web.Http.OData;
-using System.Web.Http.OData.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
-using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
-    /*
-    The WebApiConfig class may require additional changes to add a route for this controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
-
-    using System.Web.Http.OData.Builder;
-    using System.Web.Http.OData.Extensions;
-    using biz.dfch.CS.CoffeeTracker.Core.Model;
-    ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Coffee>("Coffees");
-    config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-    */
+    [Authorize]
     public class CoffeesController : ODataController
     {
-        private readonly CoffeeTrackerDbContext db = new CoffeeTrackerDbContext();
+        private CoffeesManager coffeesManager;
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEE;
+
+        public CoffeesController()
+        {
+        }
+
+        protected override void Initialize(HttpControllerContext controllerContext)
+        {
+            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
+            {
+                coffeesManager = new CoffeesManager(true);
+            }
+            else
+            {
+                coffeesManager = new CoffeesManager();
+            }
+            base.Initialize(controllerContext);
+        }
 
         // GET: odata/Coffees
         [EnableQuery]
@@ -41,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             ControllerLogging.LogGetEntities(MODELNAME);
 
-            return db.Coffees;
+            return coffeesManager.Get();
         }
 
         // GET: odata/Coffees(5)
@@ -52,7 +53,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(db.Coffees.Where(coffee => coffee.Id == key));
+            return SingleResult.Create(coffeesManager.GetAsQueryable(key));
         }
 
         // PUT: odata/Coffees(5)
@@ -68,18 +69,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
                 return BadRequest(ModelState);
             }
 
-            var coffee = await db.Coffees.FindAsync(key);
+            var coffee = coffeesManager.Get(key);
             Contract.Assert(null != coffee, "|404|");
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffee.Name = modifiedCoffee.Name;
-            coffee.Brand = modifiedCoffee.Brand;
-            coffee.LastDelivery = modifiedCoffee.LastDelivery;
-            coffee.Price = modifiedCoffee.Price;
-            coffee.Stock = coffee.Stock;
-
-            await db.SaveChangesAsync();
+            coffeesManager.Update(key, coffee);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
 
@@ -89,7 +84,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/Coffees
         public async Task<IHttpActionResult> Post(Coffee coffee)
         {
-            Contract.Requires(null != coffee, "|404|");
+            Contract.Requires(null != coffee, "|400|");
 
             if (!ModelState.IsValid)
             {
@@ -98,8 +93,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogInsertEntityStart(MODELNAME, coffee);
 
-            db.Coffees.Add(coffee);
-            await db.SaveChangesAsync();
+            coffeesManager.Create(coffee);
 
             ControllerLogging.LogInsertEntityStop(MODELNAME, coffee);
 
@@ -108,7 +102,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // PATCH: odata/Coffees(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<Coffee> patch)
+        public IHttpActionResult Patch([FromODataUri] long key, Delta<Coffee> patch)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
@@ -119,17 +113,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            var coffee = await db.Coffees.FindAsync(key);
+            
+            var coffee = coffeesManager.Get(key);
             Contract.Assert(null != coffee, "|404|");
             
             ControllerLogging.LogUpdateEntityStartPatch(MODELNAME, key.ToString());
 
-            patch.Patch(coffee);
-
-            await db.SaveChangesAsync();
-            coffee = await db.Coffees.FindAsync(key);
-
+            coffeesManager.Update(key, patch);
+               
             ControllerLogging.LogUpdateEntityStopPatch(MODELNAME, coffee);
 
             return Updated(coffee);
@@ -140,13 +131,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key);
 
-            var coffee = await db.Coffees.FindAsync(key);
+            var coffee = coffeesManager.Get(key);
             Contract.Assert(null != coffee, "|404|");
 
             ControllerLogging.LogDeleteEntityStart(MODELNAME, coffee);
             
-            db.Coffees.Remove(coffee);
-            await db.SaveChangesAsync();
+            coffeesManager.Delete(coffee);
 
             ControllerLogging.LogDeleteEntityStop(MODELNAME, coffee);
 
@@ -157,7 +147,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                
             }
             base.Dispose(disposing);
         }

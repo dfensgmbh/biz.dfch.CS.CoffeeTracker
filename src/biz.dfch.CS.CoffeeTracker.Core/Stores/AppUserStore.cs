@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using biz.dfch.CS.CoffeeTracker.Core.DbContext;
+using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace biz.dfch.CS.CoffeeTracker.Core.Model
+namespace biz.dfch.CS.CoffeeTracker.Core.Stores
 {
-    public class User : BaseEntity
+    public class AppUserStore : UserStore<IdentityUser>
     {
-        [Required]
-        public string Password { get; set; }
+        public AppUserStore()
+            : base(new CoffeeTrackerDbContext())
+        {
+            
+        }
     }
 }

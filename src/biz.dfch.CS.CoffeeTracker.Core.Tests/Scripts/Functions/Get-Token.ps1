@@ -1,45 +1,44 @@
-function DeleteEntities {
+function Get-Token {
 	PARAM
 	(
 		[Parameter(Mandatory = $true, Position = 0)]
 		[ValidateNotNullOrEmpty()]
-		[string] $EntityName
+		[string] $UserName
 		,
-		[Parameter(Mandatory = $true, Position = 1)]
+		[Parameter(Mandatory = $true, Position = 0)]
 		[ValidateNotNullOrEmpty()]
-		[string] $OdataComparison
-	
+		[string] $Password
 	)
 	Process
 	{
-		$baseUri = "CoffeeTracker/api";
+		$uri = "CoffeeTracker/token";
 
-		$entityFilter = '$filter={0}' -f $OdataComparison;
-		$entityGetUri = "{0}/{1}?{2}" -f $baseUri, $EntityName, $entityFilter;
-		$entities = Invoke-RestMethod -Method Get -Uri $entityGetUri;
-	
-		foreach ($entity in $entities.value) 
-		{
-			$deleteUri = "{0}/{1}({2})" -f $baseUri, $EntityName, $entity.Id;
-			Invoke-RestMethod -Method Delete -Uri $deleteUri;
+		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+		$headers.Add("Content-Type","application/json");
+		$headers.Add("Accept", "application/json");
+
+		$body = @{
+			grant_type = "password"
+			username = $UserName
+			password = $Password
 		}
 
-		# Check if all was deleted
-		$entitiesAfterDeletion = Invoke-RestMethod -Method Get -Uri $entityGetUri;
-		if ($entitiesAfterDeletion.values.Count -eq 0) {
-			$OutputParameter = $true;
-		}
-		else
+		try 
 		{
-			$OutputParameter = $false;
+			$result = Invoke-RestMethod -Method Post -Uri $uri -Headers $headers -Body $body;
+			$OutputParameter = $result.access_token;
 		}
+		catch
+		{
+			$OutputParameter = "Invalid Username/Password combination";
+		}
+		
 	}
-	End 
+	End
 	{
 		return $OutputParameter;
 	}
 }
-
 #
 # Copyright 2017 d-fens GmbH
 #

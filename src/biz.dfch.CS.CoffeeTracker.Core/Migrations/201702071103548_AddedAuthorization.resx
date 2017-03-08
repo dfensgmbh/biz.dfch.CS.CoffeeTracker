@@ -117,44 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WebApiConfig_Register__Start" xml:space="preserve">
-    <value>Apply {0} config...</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="WebApiConfig_Register__SUCCEEDED" xml:space="preserve">
-    <value>Apply {0} config SUCCEEDED</value>
-  </data>
-  <data name="Get_Entities" xml:space="preserve">
-    <value>Get {0}s</value>
-  </data>
-  <data name="Get_Entity" xml:space="preserve">
-    <value>Get {0} with Id: {1}</value>
-  </data>
-  <data name="Update_Entity_Put_Start" xml:space="preserve">
-    <value>Start Update of {0} with id {1}...</value>
-  </data>
-  <data name="Update_Entity_Put_Stop" xml:space="preserve">
-    <value>{0} with id {1} modifiedCoffeed. entity: 
- {2}</value>
-  </data>
-  <data name="Insert_Entity_Start" xml:space="preserve">
-    <value>Start Insert {0}: 
- {1}...</value>
-  </data>
-  <data name="Insert_Entity_Stop" xml:space="preserve">
-    <value>Insert {0} finished. EntityId: {1}</value>
-  </data>
-  <data name="Update_Entity_Patch_Start" xml:space="preserve">
-    <value>Start Update {0} with Id: {1}...</value>
-  </data>
-  <data name="Update_Entity_Patch_Stop" xml:space="preserve">
-    <value>Stop modifiedCoffee {0} with Id: {1} 
- {2}</value>
-  </data>
-  <data name="Delete_Entity_Start" xml:space="preserve">
-    <value>Start remove {0} with Id: {1} 
- {2}</value>
-  </data>
-  <data name="Delete_Entity_Stop" xml:space="preserve">
-    <value>{0} with id {1} Removed</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

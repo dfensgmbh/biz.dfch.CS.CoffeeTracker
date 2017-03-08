@@ -1,66 +1,123 @@
-. .\DeleteEntities.ps1;
+. ..\Functions\Delete-Entities.ps1;
+. ..\Functions\Get-Token.ps1;
+. ..\Functions\CRUD-Coffee.ps1;
+. ..\Functions\CRUD-User.ps1;
 
 $baseUri = "http://CoffeeTracker/api/Coffees";
 $entityPrefix = "CoffeeIntegrationTest";
 
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
+	$adminName = "Test";
+	$adminPassword = "123456";
+	$adminToken = Get-Token -UserName $adminName -Password $adminPassword;
+
+	$normalUserName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+	$normalUserPassword = "123456";
+	$normalUser = CRUD-User -UserName $normalUserName -Password $normalUserPassword -Create;
+	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPassword;
+
 	Context "Create-Coffee" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
-
-			$body = @{
-				Name = $name
-				Brand = $brand
-				Price = 0.00
-				Stock = 0
-				LastDelivery = [DateTime]::Now
-			}
 		}
 	
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
 
-		It "Warmup-DeleteEntitiesCalled" -Test {
-			$called = DeleteEntities -EntityName "Coffees" -OdataComparison "1 eq 2";
-
-			$called | Should Be $true;
-		}
-
-		It "Create-CoffeeSucceeds" -Test {
+		It "Create-CoffeeAsAdminSucceeds" -Test {
 			# Arrange
-			$nameCheck = "*{0}*" -f $name;
-			$brandCheck = "*{0}*" -f $brand;
+			# N/A
 
 			# Act
-			$result = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
 
 			# Assert
 			$result | Should Not Be $null;
-			$result | Should BeLike $nameCheck;
-			$result | Should BeLike $brandCheck;
+			$result.Name | Should Be $name;
+			$result.Brand | Should Be $brand;
 		}
 
-		It "Create-CoffeeWithoutNameThrows" -test {
+		It "Create-CoffeeAsAdminWithAllPropertiesSucceeds" -Test {
 			# Arrange
-			$body.Remove("Name");
+			$price = 2.10;
+			$stock = 25;
+			$lastDelivery = [DateTime]::Now;
+
+			# Act
+			$result = CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Create;
+
+			# Assert
+			$result | Should Not Be $null;
+			$result.Name | Should Be $name;
+			$result.Brand | Should Be $brand;
+			$result.Price | Should Be $price;
+			$result.stock | Should Be $stock;
+			$result.LastDelivery | Should Be $lastDelivery;
+		}
+
+		It "Create-CoffeeAsAdminWithoutNameThrows400" -test {
+			# Arrange
+			$invalidName = "";
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Post -Uri $baseUri -Body $body } | Should Throw "400";
+			{ CRUD-User -Name $invalidName -Brand $brand -Token $adminToken -Create; } | Should Throw "400";
+			
+		}
+		
+		It "Create-CoffeeAsAdminWithoutBrandThrows400" -test {
+			# Arrange
+			$invalidBrand = "";
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $adminToken -Create; } | Should Throw "400";
 			
 		}
 
-		It "Create-CoffeeWithoutBrandThrows" -test {
+		It "Create-CoffeeAsNonAdminThrows403" -test {
 			# Arrange
-			$body.Remove("Brand");
+			# N/A
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Post -Uri $baseUri -Body $body } | Should Throw "400";
+			{ CRUD-Coffee -Name $name -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
 			
 		}
 
+		It "Create-CoffeeAsNonAdminWithoutNameThrows403" -test {
+			# Arrange
+			$invalidName = "";
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $invalidName -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
+			
+		}
+
+		It "Create-CoffeeAsNonAdminWithoutBrandThrows403" -test {
+			# Arrange
+			$invalidBrand = "";
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $normalUserToken -Create; } | Should Throw "403";
+			
+		}
+
+		it "Create-CoffeeWithInvalidTokenThrows401" -test {
+			# Arrange
+			$invalidToken = "ShouldBeDefinetlyInvalid";
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken } | Should Throw "401";
+		}
+
+		it "Create-CoffeeWithoutTokenThrows401" -test {
+			# Arrange
+			# N/A
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -Brand $brand } | Should Throw "401";
+		}
 	}
 	Context "Update-Coffee" {
 		BeforeEach {
@@ -69,132 +126,86 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$newBrand = "TEST-Brand-{0}" -f [guid]::NewGuid();
-
-
-			$body = @{
-				Name = $name
-				Brand = $brand
-				Price = "0.00"
-				Stock = 0
-				LastDelivery = [DateTime]::Now
-			}
-
-			$newBody = @{
-				"odata.metadata" = 'CoffeeTracker/api/$metadata#Coffees/@Element'
-				Name = $newName
-				Brand = $NewBrand
-				Price = "0.00"
-				Stock = 0
-				LastDelivery = [DateTime]::Now
-			}
 		}
 
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
 
-		It "Update-CoffeePutSucceeds" -Test {
+		It "Update-CoffeePutChangeNameAndBrandSucceeds" -Test {
 			# Arrange
-			$nameCheck = "*{0}*" -f $name;
-			$brandCheck = "*{0}*" -f $brand;
-			
-			$newNameCheck = "*{0}*" -f $newName;
-			$newBrandCheck = "*{0}*" -f $newBrand;
-
-			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
-
-			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
-
-			$newBodyJson = ConvertTo-Json -InputObject $newBody;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken;
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
+			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update -UsePut;
 
 			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $putUri;
+			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
 
 			$result | Should Not Be $null;
-			$result | Should Not BeLike $nameCheck;
-			$result | Should Not BeLike $brandCheck;
-			$result | Should BeLike $newNameCheck;
-			$result | Should BeLike $newBrandCheck;
-		}
-
-		It "Update-CoffeePutChangeIdThrows" -test {
-			# Arrange
-			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
-
-			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
-
-			$newBody["Id"] = $resultAdd.Id - 1;
-			$newBodyJson = ConvertTo-Json -InputObject $newBody;
-
-			# Act / Assert
-			{ Invoke-RestMethod -Method Put -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose" } | Should Throw;
-		}
-
-		It "Update-CoffeePatchSucceeds" -Test {
-			# Arrange
-			$nameCheck = "*{0}*" -f $name;
-			$brandCheck = "*{0}*" -f $brand;
-			
-			$newNameCheck = "*{0}*" -f $newName;
-			$newBrandCheck = "*{0}*" -f $newBrand;
-
-			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
-
-			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
-
-			$newBodyJson = ConvertTo-Json -InputObject $newBody;
-
-			# Act
-			Invoke-RestMethod -Method Patch -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose";
-
-			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $putUri;
-
-			$result | Should Not Be $null;
-			$result | Should Not BeLike $nameCheck;
-			$result | Should Not BeLike $brandCheck;
-			$result | Should BeLike $newNameCheck;
-			$result | Should BeLike $newBrandCheck;
-		}
-
-		It "Update-CoffeePatchChangeIdThrows" -test {
-			# Arrange
-			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
-
-			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
-
-			$newBody["Id"] = $resultAdd.Id - 1;
-			$newBodyJson = ConvertTo-Json -InputObject $newBody;
-
-			# Act / Assert
-			{ Invoke-RestMethod -Method Patch -Uri $putUri -Body $newBodyJson -ContentType "application/json;odata=verbose" } | Should Throw;
-		}
-
-		It "Update-CoffeePatchChangeNameSucceeds" -test {
-			# Arrange
-			$resultAdd = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
-
-			$putUri = "$baseUri({0}L)" -f $resultAdd.Id;
-
-			$changedEntity = @{
-				Name = $newName
-				Brand = $brand
-				"odata.metadata" = 'CoffeeTracker/api/$metadata#Coffees/@Element'
-			}
-			
-			$changedEntityJson = ConvertTo-Json -InputObject $changedEntity;
-
-			# Act 
-			Invoke-RestMethod -Method Patch -Uri $putUri -Body $changedEntityJson -ContentType "application/json;odata=verbose";
-			
-			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $putUri
-
 			$result.Name | Should Be $newName;
-			$result.Id | Should Be $resultAdd.Id;
+			$result.Brand | Should Be $newBrand;
+		}
+
+		It "Update-CoffeePatchChangeNameAndBrandSucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
+
+			# Assert
+			CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Read;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $newName;
+			$result.Brand | Should Be $newBrand;
+		}
+
+		It "Update-CoffeePatchChangePriceAndStockAndLastDeliverySucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$price = 4.20;
+			$stock = 42;
+			$lastDelivery = [DateTime]::Now;
+
+			# Act
+			CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Update;
+
+			# Assert
+			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $name;
+			$result.Brand | Should Be $brand;
+			$result.Price | Should Be $price;
+			$result.Stock | Should Be $stock;
+			$result.LastDelivery | Should Be $lastDelivery;
+		}
+
+		It "Update-CoffeeChangeNameAndBrandToExistingNameAndBrandThrows400" -test {
+			# Arrange
+			$coffeeToBeChanged = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Create;
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update } | Should Throw "400";
+		}
+
+		It "Update-CoffeeChangeNameAndBrandAsNonAdminThrows403" -test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $normalUserToken -Update } | Should Throw "403";
+		}
+
+		It "Update-CoffeeChangeNameAndBrandNotLoggedInThrows401" -test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Create;
+
+			# Act / Assert
+			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $token } | Should Throw "401";
 		}
 	}
 	Context "Get-Coffee" {
@@ -229,21 +240,19 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 	}
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
-		It "Warmup-AfterAll" -test {
-			$true | Should Be $true;
+		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
+		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
+
+		Delete-Entities -EntityName "Coffees" -OdataComparison $queryOption;
+
+		$result = Invoke-RestMethod -Method Get -Uri $getUri;
+		if($result.value.Count -gt 0)
+		{
+			Write-Host -ForegroundColor Red "Test-data was not deleted!";
 		}
-
-		It "Delete-TestDataSucceeded" -test {
-			# Arrange
-			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
-			$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
-
-			# Act
-			DeleteEntities -EntityName "Coffees" -OdataComparison $queryOption;
-
-			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $getUri;
-			$result.value.Count | Should Be 0;
+		else
+		{
+			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
 		}
 	}
 }

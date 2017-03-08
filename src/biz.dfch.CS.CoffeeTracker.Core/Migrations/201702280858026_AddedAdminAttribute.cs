@@ -1,17 +1,18 @@
 namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AddedNameToBaseEntity : DbMigration
+    public partial class AddedAdminAttribute : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.CoffeeOrders", "Name", c => c.String(nullable: false));
+            AddColumn("dbo.ApplicationUsers", "IsAdmin", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.CoffeeOrders", "Name");
+            DropColumn("dbo.ApplicationUsers", "IsAdmin");
         }
     }
 }

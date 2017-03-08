@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
@@ -28,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         public long UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         [Required]
         public long CoffeeId { get; set; }
