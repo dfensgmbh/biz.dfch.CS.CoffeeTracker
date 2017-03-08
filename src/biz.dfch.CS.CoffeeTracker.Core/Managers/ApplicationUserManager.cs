@@ -64,6 +64,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             var currentUser = GetCurrentUser();
 
+            if (currentUser.IsAdmin)
+            {
+                return db.ApplicationUsers;
+            }
             return db.ApplicationUsers.Where(u => u.Id == currentUser.Id);
         }
 
@@ -130,6 +134,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var user = GetUser(id);
             Contract.Assert(null != user, "|404|");
+
             var hasPermission = PermissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
@@ -140,8 +145,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Assert(isSafe.Succeeded, "|400|");
 
             var userExists = UserExists(update.Name);
-            Contract.Assert(!userExists, "|400|");
-
+            if (userExists)
+            {
+                var existingUser = GetUser(update.Name);
+                Contract.Assert(id == existingUser.Id, "|400|");
+            }
 
             var hashedNewPassword = PasswordHasher.HashPassword(update.Password);
 
