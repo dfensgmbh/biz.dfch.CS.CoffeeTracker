@@ -36,14 +36,17 @@ function CRUD-Coffee{
 	)
 	Process
 	{
-		$uri = "CoffeeTracker/api/Coffees";
+		if(!!$LastDelivery)
+		{
+			$LastDeliveryJson = $LastDelivery | ConvertTo-Json;
+		}
 
+		$uri = "CoffeeTracker/api/Coffees";
 
 		$authString = "bearer {0}" -f $Token;
 
 		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
 		$headers.Add("Authorization", $authString);
-
 
 		if($PSCmdlet.ParameterSetName -eq 'Create')
 		{
@@ -67,7 +70,7 @@ function CRUD-Coffee{
 			}
 			if($LastDelivery)
 			{
-				$coffeeBody["LastDelivery"] = $LastDelivery;
+				$coffeeBody["LastDelivery"] = $LastDeliveryJson;
 			}
 
 			$result = Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody;
@@ -100,7 +103,7 @@ function CRUD-Coffee{
 			}
 			if($LastDelivery)
 			{
-				$body.Add("LastDelivery", $LastDelivery);
+				$body.Add("LastDelivery", $LastDeliveryJson);
 			}
 			if($NewName)
 			{
@@ -112,6 +115,11 @@ function CRUD-Coffee{
 			}
 
 			$coffeeBodyJson = $body | ConvertTo-Json;
+
+			# Json conversion bug, datetimeoffset needs to be reformatted
+			$coffeeBodyJson = $coffeeBodyJson.Replace('\"\', '')
+			$coffeeBodyJson = $coffeeBodyJson.Replace('\\/\"','\/')
+
 			$headers.Add("Content-Type", "application/json;odata=verbose")
 			$updateUri = "$uri({0})" -f $coffee.Id;
 
