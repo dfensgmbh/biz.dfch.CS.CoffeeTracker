@@ -49,6 +49,19 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.Coffees.FirstOrDefault(c => c.Id == key);
         }
 
+        public void DecreaseStock(long key)
+        {
+            Contract.Requires(0 < key, "|404|");
+
+            var coffee = db.Coffees.FirstOrDefault(c => c.Id == key);
+            Contract.Assert(null != coffee, "|404|");
+            Contract.Assert(0 < coffee.Stock, "|400|");
+
+            coffee.Stock--;
+
+            db.SaveChanges();
+        }
+
         public Coffee Get(string name, string brand)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
@@ -102,23 +115,23 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
             Contract.Assert(hasPermission, "|403|");
 
-            if (patch.GetChangedPropertyNames().Contains("Name"))
+            if (!coffee.Name.Equals(modifiedCoffee.Name))
             {
                 coffee.Name = modifiedCoffee.Name;
             }
-            if (patch.GetChangedPropertyNames().Contains("Brand"))
+            if (!coffee.Brand.Equals(modifiedCoffee.Brand))
             {
                 coffee.Brand = modifiedCoffee.Brand;
             }
-            if (patch.GetChangedPropertyNames().Contains("Price"))
+            if (coffee.Price != modifiedCoffee.Price)
             {
                 coffee.Price = modifiedCoffee.Price;
             }
-            if (patch.GetChangedPropertyNames().Contains("Stock"))
+            if (coffee.Stock != modifiedCoffee.Stock)
             {
                 coffee.Stock = modifiedCoffee.Stock;
             }
-            if (patch.GetChangedPropertyNames().Contains("LastDelivery"))
+            if (coffee.LastDelivery != modifiedCoffee.LastDelivery)
             {
                 coffee.LastDelivery = modifiedCoffee.LastDelivery;
             }

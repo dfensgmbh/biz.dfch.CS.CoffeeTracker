@@ -30,6 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly CoffeeTrackerDbContext db;
         private readonly ApplicationUserManager userManager;
+        private readonly CoffeesManager coffeesManager;
         private readonly PermissionChecker permissionChecker;
         public readonly CoffeeOrdersValidator Validator;
 
@@ -38,6 +39,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             db = new CoffeeTrackerDbContext();
             userManager = new ApplicationUserManager(new AppUserStore());
+            coffeesManager = new CoffeesManager();
             Validator = new CoffeeOrdersValidator(this);
             permissionChecker = new PermissionChecker(userManager.GetCurrentUser());
         }
@@ -122,6 +124,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < coffeeOrder.CoffeeId, "|404|");
             Contract.Requires(0 < coffeeOrder.UserId, "|404|");
 
+            coffeesManager.DecreaseStock(coffeeOrder.CoffeeId);
+            
             db.CoffeeOrders.Add(coffeeOrder);
             db.SaveChanges();
 
