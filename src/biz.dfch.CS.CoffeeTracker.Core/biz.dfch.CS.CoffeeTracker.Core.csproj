@@ -305,6 +305,10 @@
     <Compile Include="Migrations\201703081204394_InitialRollup.Designer.cs">
       <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703081344467_RemovedUnnecessaryRequires.cs" />
+    <Compile Include="Migrations\201703081344467_RemovedUnnecessaryRequires.Designer.cs">
+      <DependentUpon>201703081344467_RemovedUnnecessaryRequires.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Provider\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="DBStrings.Designer.cs">
@@ -361,6 +365,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703081204394_InitialRollup.resx">
       <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703081344467_RemovedUnnecessaryRequires.resx">
+      <DependentUpon>201703081344467_RemovedUnnecessaryRequires.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

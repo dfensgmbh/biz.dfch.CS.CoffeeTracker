@@ -37,12 +37,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             permissionChecker = new PermissionChecker(currentUser);
         }
 
-        public CoffeesManager(bool skipPermissionChecks)
-        {
-            db = new CoffeeTrackerDbContext();
-            permissionChecker = new PermissionChecker(skipPermissionChecks);
-        }
-
         public IQueryable<Coffee> Get()
         {
             return db.Coffees;
@@ -55,11 +49,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.Coffees.FirstOrDefault(c => c.Id == key);
         }
 
-        public Coffee Get(string name)
+        public Coffee Get(string name, string brand)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
 
-            return db.Coffees.FirstOrDefault(c => c.Name == name);
+            return db.Coffees.FirstOrDefault(c => c.Name == name && c.Brand == brand);
         }
 
         public IQueryable<Coffee> GetAsQueryable(long key)
@@ -76,6 +70,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
             Contract.Assert(hasPermission, "|403|");
+
+            var isExistingNameAndBrandCombination = Get(modifiedCoffee.Name, modifiedCoffee.Brand) != null;
+            Contract.Assert(!isExistingNameAndBrandCombination, "|400|");
+            
 
             var coffee = Get(id);
 
@@ -94,6 +92,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             var coffee = Get(id);
             var modifiedCoffee = patch.GetEntity();
+
+            if (!coffee.Name.Equals(modifiedCoffee.Name) || !coffee.Brand.Equals(modifiedCoffee.Brand))
+            {
+                var isExistingNameAndBrandCombination = Get(modifiedCoffee.Name, modifiedCoffee.Brand) != null;
+                Contract.Assert(!isExistingNameAndBrandCombination, "|400|");
+            }
+
+            var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
+            Contract.Assert(hasPermission, "|403|");
 
             if (patch.GetChangedPropertyNames().Contains("Name"))
             {
@@ -131,7 +138,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             db.Coffees.Add(coffee);
             db.SaveChanges();
 
-            return Get(coffee.Name);
+            return Get(coffee.Name, coffee.Brand);
         }
 
         public void Delete(long id)

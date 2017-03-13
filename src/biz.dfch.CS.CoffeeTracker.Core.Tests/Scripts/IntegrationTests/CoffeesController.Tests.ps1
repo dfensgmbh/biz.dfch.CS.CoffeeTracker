@@ -8,11 +8,11 @@ $entityPrefix = "CoffeeIntegrationTest";
 
 Describe "CoffeesController" -Tags "CoffeesController" {
 	
-	$adminName = "Test";
+	$adminName = "Admin@Example.com";
 	$adminPassword = "123456";
 	$adminToken = Get-Token -UserName $adminName -Password $adminPassword;
 
-	$normalUserName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+	$normalUserName = "$entityPrefix-{0}@Example.com" -f [guid]::NewGuid();
 	$normalUserPassword = "123456";
 	$normalUser = CRUD-User -UserName $normalUserName -Password $normalUserPassword -Create;
 	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPassword;
@@ -22,7 +22,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 		}
-	
+
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -44,7 +44,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			# Arrange
 			$price = 2.10;
 			$stock = 25;
-			$lastDelivery = [DateTime]::Now;
+			$lastDelivery = [DateTimeOffSet]::Now;
 
 			# Act
 			$result = CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Create;
@@ -55,24 +55,37 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Brand | Should Be $brand;
 			$result.Price | Should Be $price;
 			$result.stock | Should Be $stock;
-			$result.LastDelivery | Should Be $lastDelivery;
 		}
 
 		It "Create-CoffeeAsAdminWithoutNameThrows400" -test {
 			# Arrange
-			$invalidName = "";
+			$uri = "CoffeeTracker/api/Coffees";
+			$authString = "bearer {0}" -f $adminToken;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBody = @{}
+			$coffeeBody["Brand"] = $brand;
 
 			# Act / Assert
-			{ CRUD-User -Name $invalidName -Brand $brand -Token $adminToken -Create; } | Should Throw "400";
+			{ Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody; } | Should Throw "400";
 			
 		}
 		
 		It "Create-CoffeeAsAdminWithoutBrandThrows400" -test {
 			# Arrange
-			$invalidBrand = "";
+			$uri = "CoffeeTracker/api/Coffees";
+			$authString = "bearer {0}" -f $adminToken;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBody = @{}
+			$coffeeBody["Name"] = $name;
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $adminToken -Create; } | Should Throw "400";
+			{ Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody; } | Should Throw "400";
 			
 		}
 
@@ -85,30 +98,12 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			
 		}
 
-		It "Create-CoffeeAsNonAdminWithoutNameThrows403" -test {
-			# Arrange
-			$invalidName = "";
-
-			# Act / Assert
-			{ CRUD-Coffee -Name $invalidName -Brand $brand -Token $normalUserToken -Create; } | Should Throw "403";
-			
-		}
-
-		It "Create-CoffeeAsNonAdminWithoutBrandThrows403" -test {
-			# Arrange
-			$invalidBrand = "";
-
-			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $invalidBrand -Token $normalUserToken -Create; } | Should Throw "403";
-			
-		}
-
 		it "Create-CoffeeWithInvalidTokenThrows401" -test {
 			# Arrange
 			$invalidToken = "ShouldBeDefinetlyInvalid";
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken } | Should Throw "401";
+			{ CRUD-Coffee -Name $name -Brand $brand -Token $invalidToken -Create } | Should Throw "401";
 		}
 
 		it "Create-CoffeeWithoutTokenThrows401" -test {
@@ -116,7 +111,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			# N/A
 
 			# Act / Assert
-			{ CRUD-Coffee -Name $name -Brand $brand } | Should Throw "401";
+			{ CRUD-Coffee -Name $name -Brand $brand -Create } | Should Throw "401";
 		}
 	}
 	Context "Update-Coffee" {
@@ -127,20 +122,33 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$newBrand = "TEST-Brand-{0}" -f [guid]::NewGuid();
 		}
-
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-
 		It "Update-CoffeePutChangeNameAndBrandSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			$coffee.Name = $newName;
+			$coffee.Brand = $newBrand;
+
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$coffeeBodyJson = $coffee | ConvertTo-Json;
+
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$headers.Add("Content-Type", "application/json;odata=verbose")
 
 			# Act
-			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update -UsePut;
+			$result = Invoke-RestMethod -Method Put -Uri $updateUri -Body $coffeeBodyJson -Headers $headers;
 
 			# Assert
-			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
+			$response = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+			$result = $response.d;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $newName;
@@ -155,10 +163,61 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
 
 			# Assert
-			CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Read;
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $newName;
+			$result.Brand | Should Be $newBrand;
+		}
+
+		It "Update-CoffeePatchChangeNameSucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -Token $adminToken -Update;
+
+			# Assert
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $newName;
+			$result.Brand | Should Be $brand;
+		}
+
+		It "Update-CoffeePatchChangeBrandSucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $name -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
+
+			# Assert
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $name;
 			$result.Brand | Should Be $newBrand;
 		}
 
@@ -167,20 +226,26 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
 			$price = 4.20;
 			$stock = 42;
-			$lastDelivery = [DateTime]::Now;
+			$lastDelivery = [DateTimeOffset]::Now;
 
 			# Act
 			CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Update;
 
 			# Assert
-			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $name;
 			$result.Brand | Should Be $brand;
 			$result.Price | Should Be $price;
 			$result.Stock | Should Be $stock;
-			$result.LastDelivery | Should Be $lastDelivery;
 		}
 
 		It "Update-CoffeeChangeNameAndBrandToExistingNameAndBrandThrows400" -test {
@@ -208,28 +273,27 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $token } | Should Throw "401";
 		}
 	}
+
 	Context "Get-Coffee" {
 		BeforeEach{
 			$name = "$entityPrefix-GetTests-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 
-			$body = @{
-				Name = $name
-				Brand = $brand
-				Price = 0.00
-				Stock = 0
-				LastDelivery = [DateTime]::Now
-			}
-			
-			$entity = Invoke-RestMethod -Method Post -Uri $baseUri -Body $body;
+			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
 		}
 
 		It "Get-CoffeeWithIdSucceeds" -test {
 			# Arrange
 			$getUri = "{0}({1})" -f $baseUri, $entity.Id;
 
+			$authString = "bearer {0}" -f $adminToken;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+
 			# Act
-			$result = Invoke-RestMethod -Method Get -Uri $getUri;
+			$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 
 			# Assert
 			$result | Should Not Be $null;
@@ -243,9 +307,18 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
 		$getUri = '{0}?$filter={1}' -f $baseUri, $queryOption;
 
-		Delete-Entities -EntityName "Coffees" -OdataComparison $queryOption;
+		$adminName = "Admin@Example.com";
+		$adminPassword = "123456";
+		$adminToken = Get-Token -UserName $adminName -Password $adminPassword;
 
-		$result = Invoke-RestMethod -Method Get -Uri $getUri;
+		$authString = "bearer {0}" -f $adminToken;
+
+		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+		$headers.Add("Authorization", $authString);
+
+		Delete-Entities -EntityName "Coffees" -OdataComparison $queryOption -Token $adminToken;
+
+		$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 		if($result.value.Count -gt 0)
 		{
 			Write-Host -ForegroundColor Red "Test-data was not deleted!";

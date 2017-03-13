@@ -1,34 +1,28 @@
 function CRUD-Coffee{
 	PARAM
 	(
-		[Parameter(Mandatory = $true, Position = 0)]
-		[ValidateNotNullOrEmpty()]
+		[Parameter(Mandatory = $false, Position = 0)]
 		[string] $Name
 		,
-		[Parameter(Mandatory = $true, Position = 1)]
-		[ValidateNotNullOrEmpty()]
+		[Parameter(Mandatory = $false, Position = 1)]
 		[string] $Brand
 		,
-		[Parameter(Mandatory = $true, Position = 2)]
-		[ValidateNotNullOrEmpty()]
+		[Parameter(Mandatory = $false, Position = 2)]
 		[string] $Token
 		,
 		[Parameter(Mandatory = $false, Position = 3)]
 		[decimal] $Price
 		,
 		[Parameter(Mandatory = $false, Position = 4)]
-		[ValidateRange(0, [long]::MaxValue)]
 		[long] $Stock
 		,
 		[Parameter(Mandatory = $false, Position = 5)]
 		[DateTimeOffset] $LastDelivery
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Update')]
-		[ValidateNotNullOrEmpty()]
 		[string] $NewName
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Update')]
-		[ValidateNotNullOrEmpty()]
 		[string] $NewBrand
 		,
 		[Parameter(Mandatory = $false, ParameterSetName = 'Create')]
@@ -40,49 +34,45 @@ function CRUD-Coffee{
 		[Parameter(Mandatory = $false, ParameterSetName = 'Delete')]
 		[switch] $Delete
 	)
-	Begin
-	{
-		if($Price -lt 0 -or $Price -gt [decimal]::MaxValue)
-		{
-			throw "$Price is not a valid price";
-		}
-	}
 	Process
 	{
-		$uri = "CoffeeTracker/api/Coffees";
+		if(!!$LastDelivery)
+		{
+			$LastDeliveryJson = $LastDelivery | ConvertTo-Json;
+		}
 
+		$uri = "CoffeeTracker/api/Coffees";
 
 		$authString = "bearer {0}" -f $Token;
 
 		$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
 		$headers.Add("Authorization", $authString);
 
-
 		if($PSCmdlet.ParameterSetName -eq 'Create')
 		{
-			if(!$Price)
+			$coffeeBody = @{}
+
+			if($Name)
 			{
-				$Price = 0;
+				$coffeeBody["Name"] = $Name;
+			}
+			if($Brand)
+			{
+				$coffeeBody["Brand"] = $Brand;
+			}
+			if($Price)
+			{
+				$coffeeBody["Price"] = $Price;
+			}
+			if($Stock)
+			{
+				$coffeeBody["Stock"] = $Stock;
+			}
+			if($LastDelivery)
+			{
+				$coffeeBody["LastDelivery"] = $LastDelivery;
 			}
 
-			if(!$Stock)
-			{
-				$Stock = 0;
-			}
-
-			if(!$LastDelivery)
-			{
-				$LastDelivery = [DateTime]::Now;
-			}
-
-			$coffeeBody = @{
-					Name = $Name
-					Brand = $Brand
-					Price = $Price
-					Stock = $Stock
-					LastDelivery = $LastDelivery
-			}
-			
 			$result = Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody;
 		}
 		elseif($PSCmdlet.ParameterSetName -eq 'Update')
@@ -94,9 +84,15 @@ function CRUD-Coffee{
 			$coffee = $coffeeResult.value;
 			
 			$body = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
-			$body.Add("Name", $Name);
-			$body.Add("Brand", $Brand);
 
+			if($Name)
+			{
+				$body.Add("Name", $Name);
+			}
+			if($Brand)
+			{
+				$body.Add("Brand", $Brand);
+			}
 			if($Price)
 			{
 				$body.Add("Price", $Price);
@@ -107,7 +103,7 @@ function CRUD-Coffee{
 			}
 			if($LastDelivery)
 			{
-				$body.Add("LastDelivery", $LastDelivery);
+				$body.Add("LastDelivery", $LastDeliveryJson);
 			}
 			if($NewName)
 			{
@@ -119,6 +115,11 @@ function CRUD-Coffee{
 			}
 
 			$coffeeBodyJson = $body | ConvertTo-Json;
+
+			# Json conversion bug, datetimeoffset needs to be reformatted
+			$coffeeBodyJson = $coffeeBodyJson.Replace('\"\', '')
+			$coffeeBodyJson = $coffeeBodyJson.Replace('\\/\"','\/')
+
 			$headers.Add("Content-Type", "application/json;odata=verbose")
 			$updateUri = "$uri({0})" -f $coffee.Id;
 

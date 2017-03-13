@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,27 +17,16 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     [Authorize]
     public class CoffeesController : ODataController
     {
-        private CoffeesManager coffeesManager;
+        private readonly Lazy<CoffeesManager> coffeesManagerLazy = new Lazy<CoffeesManager>(() =>
+            new CoffeesManager());
+        private CoffeesManager coffeesManager => coffeesManagerLazy.Value;
+
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEE;
 
         public CoffeesController()
         {
         }
 
-        protected override void Initialize(HttpControllerContext controllerContext)
-        {
-            if (controllerContext.Request.Method.Equals(HttpMethod.Post))
-            {
-                coffeesManager = new CoffeesManager(true);
-            }
-            else
-            {
-                coffeesManager = new CoffeesManager();
-            }
-            base.Initialize(controllerContext);
-        }
-
-        // GET: odata/Coffees
         [EnableQuery]
         public IQueryable<Coffee> GetCoffees()
         {
@@ -45,7 +35,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return coffeesManager.Get();
         }
 
-        // GET: odata/Coffees(5)
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
@@ -74,7 +63,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffeesManager.Update(key, coffee);
+            coffeesManager.Update(key, modifiedCoffee);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
 
@@ -105,7 +94,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult Patch([FromODataUri] long key, Delta<Coffee> patch)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
+            Contract.Requires(null != patch, "|400|");
 
             Validate(patch.GetEntity());
 

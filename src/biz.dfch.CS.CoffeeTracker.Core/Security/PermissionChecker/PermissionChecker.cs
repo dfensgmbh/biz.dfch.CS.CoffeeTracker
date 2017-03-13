@@ -55,15 +55,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
         public bool HasPermission(Coffee coffee)
         {
             Contract.Requires(null != coffee, "|400|");
-            if (SkipPermissionChecks)
-            {
-                return true;
-            }
             Contract.Assert(null != currentUser, "|500|");
-            if (SkipPermissionChecks)
-            {
-                return true;
-            }
             return currentUser.IsAdmin;
         }
 

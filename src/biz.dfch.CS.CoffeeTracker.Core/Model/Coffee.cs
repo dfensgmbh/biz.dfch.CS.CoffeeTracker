@@ -20,16 +20,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
 {
     public class Coffee : BaseEntity
     {
+        public Coffee()
+        {
+            this.Price = 0;
+            this.Stock = 0;
+            this.LastDelivery = DateTimeOffset.Now;
+        }
+        
         [Required]
         public string Brand { get; set; }
 
-        [Required]
         public decimal Price { get; set; }
 
-        [Required]
         public int Stock { get; set; }
 
-        [Required]
         public DateTimeOffset LastDelivery { get; set; }
     }
 }
