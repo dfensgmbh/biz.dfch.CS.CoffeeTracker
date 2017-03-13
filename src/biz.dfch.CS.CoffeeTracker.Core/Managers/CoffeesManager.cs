@@ -93,8 +93,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var coffee = Get(id);
             var modifiedCoffee = patch.GetEntity();
 
-            var isExistingNameAndBrandCombination = Get(modifiedCoffee.Name, modifiedCoffee.Brand) != null;
-            Contract.Assert(!isExistingNameAndBrandCombination, "|400|");
+            if (!coffee.Name.Equals(modifiedCoffee.Name) || !coffee.Brand.Equals(modifiedCoffee.Brand))
+            {
+                var isExistingNameAndBrandCombination = Get(modifiedCoffee.Name, modifiedCoffee.Brand) != null;
+                Contract.Assert(!isExistingNameAndBrandCombination, "|400|");
+            }
+
+            var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
+            Contract.Assert(hasPermission, "|403|");
 
             if (patch.GetChangedPropertyNames().Contains("Name"))
             {
