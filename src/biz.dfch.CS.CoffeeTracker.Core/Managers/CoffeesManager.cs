@@ -115,23 +115,23 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var hasPermission = permissionChecker.HasPermission(modifiedCoffee);
             Contract.Assert(hasPermission, "|403|");
 
-            if (patch.GetChangedPropertyNames().Contains("Name"))
+            if (!coffee.Name.Equals(modifiedCoffee.Name))
             {
                 coffee.Name = modifiedCoffee.Name;
             }
-            if (patch.GetChangedPropertyNames().Contains("Brand"))
+            if (!coffee.Brand.Equals(modifiedCoffee.Brand))
             {
                 coffee.Brand = modifiedCoffee.Brand;
             }
-            if (patch.GetChangedPropertyNames().Contains("Price"))
+            if (coffee.Price != modifiedCoffee.Price)
             {
                 coffee.Price = modifiedCoffee.Price;
             }
-            if (patch.GetChangedPropertyNames().Contains("Stock"))
+            if (coffee.Stock != modifiedCoffee.Stock)
             {
                 coffee.Stock = modifiedCoffee.Stock;
             }
-            if (patch.GetChangedPropertyNames().Contains("LastDelivery"))
+            if (coffee.LastDelivery != modifiedCoffee.LastDelivery)
             {
                 coffee.LastDelivery = modifiedCoffee.LastDelivery;
             }
