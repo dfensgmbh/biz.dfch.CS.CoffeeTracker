@@ -167,12 +167,64 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
 
 			# Assert
-			CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Read;
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $newName;
 			$result.Brand | Should Be $newBrand;
 		}
+
+		It "Update-CoffeePatchChangeNameSucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -Token $adminToken -Update;
+
+			# Assert
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $newName;
+			$result.Brand | Should Be $brand;
+		}
+
+		It "Update-CoffeePatchChangeBrandSucceeds" -Test {
+			# Arrange
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $name -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
+
+			# Assert
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+
+			$result | Should Not Be $null;
+			$result.Name | Should Be $name;
+			$result.Brand | Should Be $newBrand;
+		}
+#>
 
 		It "Update-CoffeePatchChangePriceAndStockAndLastDeliverySucceeds" -Test {
 			# Arrange
@@ -185,7 +237,14 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Update;
 
 			# Assert
-			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
+			$uri = "CoffeeTracker/api/Coffees";
+			$updateUri = "$uri({0})" -f $coffee.Id;
+			
+			$authString = "bearer {0}" -f $adminToken;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$result = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $name;
