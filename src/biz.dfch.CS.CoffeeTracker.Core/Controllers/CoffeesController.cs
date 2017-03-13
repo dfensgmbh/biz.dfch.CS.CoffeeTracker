@@ -94,7 +94,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult Patch([FromODataUri] long key, Delta<Coffee> patch)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != patch, "|404|");
+            Contract.Requires(null != patch, "|400|");
 
             Validate(patch.GetEntity());
 
