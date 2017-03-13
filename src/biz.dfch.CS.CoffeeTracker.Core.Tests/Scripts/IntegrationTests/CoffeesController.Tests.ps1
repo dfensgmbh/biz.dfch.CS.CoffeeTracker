@@ -16,7 +16,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 	$normalUserPassword = "123456";
 	$normalUser = CRUD-User -UserName $normalUserName -Password $normalUserPassword -Create;
 	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPassword;
-
+<#
 	Context "Create-Coffee" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -114,7 +114,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			{ CRUD-Coffee -Name $name -Brand $brand -Create } | Should Throw "401";
 		}
 	}
-
+#>
 	Context "Update-Coffee" {
 		BeforeEach {
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -123,11 +123,11 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$newName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$newBrand = "TEST-Brand-{0}" -f [guid]::NewGuid();
 		}
-
+<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-
+#>
 		It "Update-CoffeePutChangeNameAndBrandSucceeds" -Test {
 			# Arrange
 			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
@@ -150,13 +150,15 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result = Invoke-RestMethod -Method Put -Uri $updateUri -Body $coffeeBodyJson -Headers $headers;
 
 			# Assert
-			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Read;
+			$response = Invoke-RestMethod -Method Get -Uri $updateUri -Headers $headers;
+			$result = $response.d;
 
 			$result | Should Not Be $null;
 			$result.Name | Should Be $newName;
 			$result.Brand | Should Be $newBrand;
 		}
 
+<#
 		It "Update-CoffeePatchChangeNameAndBrandSucceeds" -Test {
 			# Arrange
 			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
@@ -247,7 +249,9 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$result.Name | Should Be $entity.Name;
 			$result.Brand | Should Be $entity.Brand;
 		}
+#>
 	}
+<#
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
 		$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
@@ -265,6 +269,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			Write-Host -ForegroundColor Green "Test-data deleted successfully!";
 		}
 	}
+#>
 }
 
 #
