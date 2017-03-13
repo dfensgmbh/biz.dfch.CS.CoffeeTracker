@@ -49,6 +49,19 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return db.Coffees.FirstOrDefault(c => c.Id == key);
         }
 
+        public void DecreaseStock(long key)
+        {
+            Contract.Requires(0 < key, "|404|");
+
+            var coffee = db.Coffees.FirstOrDefault(c => c.Id == key);
+            Contract.Assert(null != coffee, "|404|");
+            Contract.Assert(0 < coffee.Stock, "|400|");
+
+            coffee.Stock--;
+
+            db.SaveChanges();
+        }
+
         public Coffee Get(string name, string brand)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(name), "|404|");
