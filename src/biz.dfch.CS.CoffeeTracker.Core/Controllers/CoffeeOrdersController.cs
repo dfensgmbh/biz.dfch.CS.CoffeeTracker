@@ -39,12 +39,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // GET: api/CoffeeOrders(5)
         [EnableQuery]
-        public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
+        public IHttpActionResult GetCoffeeOrder([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(coffeeOrdersManager.GetAsQueryable(key));
+            return Ok(coffeeOrdersManager.Get(key));
         }
 
         // PUT: api/CoffeeOrders(5)

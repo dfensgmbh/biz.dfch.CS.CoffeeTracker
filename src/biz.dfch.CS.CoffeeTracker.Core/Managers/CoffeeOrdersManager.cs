@@ -86,19 +86,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return coffeeOrder;
         }
 
-        public IQueryable<CoffeeOrder> GetAsQueryable(long id)
-        {
-            Contract.Requires(0 < id, "|404|");
-            var coffeeOrder = db.CoffeeOrders.Where(c => c.Id == id);
-            Contract.Assert(null != coffeeOrder, "|404|");
-
-            var hasPermission = permissionChecker.HasPermission(Get(id));
-            Contract.Assert(hasPermission, "|403|");
-
-            return db.CoffeeOrders.Where(c => c.Id == id);
-        }
-
-
         public CoffeeOrder Update(long key, CoffeeOrder update)
         {
             Contract.Requires(null != update, "|400|");

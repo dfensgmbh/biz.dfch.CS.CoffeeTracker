@@ -66,13 +66,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         [Authorize]
         [EnableQuery]
-        public SingleResult<ApplicationUser> Get([FromODataUri] long key)
+        public IHttpActionResult Get([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(userManager.GetUserAsQueryable(key));
+            return Ok(userManager.GetUser(key));
         }
 
         // PUT: odata/ApplicationUsers(5)
