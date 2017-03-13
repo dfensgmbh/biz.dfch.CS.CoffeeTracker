@@ -63,7 +63,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogUpdateEntityStartPut(MODELNAME, key.ToString());
 
-            coffeesManager.Update(key, coffee);
+            coffeesManager.Update(key, modifiedCoffee);
 
             ControllerLogging.LogUpdateEntityStopPut(MODELNAME, coffee);
 
