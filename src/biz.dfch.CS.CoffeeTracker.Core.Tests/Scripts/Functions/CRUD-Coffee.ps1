@@ -70,7 +70,7 @@ function CRUD-Coffee{
 			}
 			if($LastDelivery)
 			{
-				$coffeeBody["LastDelivery"] = $LastDeliveryJson;
+				$coffeeBody["LastDelivery"] = $LastDelivery;
 			}
 
 			$result = Invoke-RestMethod -Method Post -Uri $Uri -Headers $headers -Body $coffeeBody;
