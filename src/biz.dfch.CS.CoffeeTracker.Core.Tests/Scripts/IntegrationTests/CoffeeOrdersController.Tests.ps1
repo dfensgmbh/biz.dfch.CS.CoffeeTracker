@@ -1,32 +1,33 @@
-. ./DeleteEntities.ps1
+. ../Functions/Delete-Entities.ps1
 . ../Functions/Get-Token.ps1
-. ../Functions/Create-User.ps1
-. ../Functions/Create-Coffee.ps1
+. ../Functions/CRUD-User.ps1
+. ../Functions/CRUD-Coffee.ps1
 
 $usedEntitieSets = @("Coffees", "Users", "CoffeeOrders");
 $entityPrefix = "CoffeeOrdersIntegrationTest";
 $baseUri = "CoffeeTracker/api/";
 
 Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
-		BeforeEach {
-			# Create user
-			$userName = "$entityPrefix{0}" -f [guid]::NewGuid();
-			$userPassword = "123456";
+	$adminName = "Admin@Example.com";
+	$adminPassword = "123456";
+	$adminToken = Get-Token -UserName $adminName -Password $adminPassword;
+	
+	BeforeEach {
+		# Create user
+		$userName = "$entityPrefix-{0}@Example.com" -f [guid]::NewGuid();;
+		$userPassword = "123456";
 
-			# # Username can only contain letters or digits
-			$userName = $userName.Replace("-","");
+		$user = CRUD-User -UserName $userName -Password $userPassword -Create;
+		$token = Get-Token -UserName $userName -Password $userPassword;
 
-			$user = Create-User -UserName $userName -Password $userPassword;
-			$token = Get-Token -UserName $userName -Password $userPassword;
+		# Create Coffee
+		$coffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+		$coffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
+		$coffeeStock = 10;
 
-			# Create Coffee
-			$coffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
-			$coffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
+		$coffee = CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock $coffeeStock -Token $adminToken -Create;
+	}
 
-			$coffee = Create-Coffee -Name $coffeeName -Brand $coffeeBrand -Token $token;
-
-		}
-<#		
 	Context "Create-CoffeeOrder" {
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
@@ -44,10 +45,12 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 				Created = [DateTime]::Now;
 			}
 		}
+
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-		It "Create-CoffeeOrderSucceeds" -test {
+
+		It "Create-CoffeeOrderDecreasesStockFromCoffeeSucceeds" -test {
 			# Arrange
 			# N/A
 
@@ -55,10 +58,37 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers;
 
 			# Assert
+			$coffeeUri = "{0}{1}({2})" -f $baseUri, "Coffees", $coffee.Id;
+			$resultCoffee = Invoke-RestMethod -Method Get -Uri $coffeeUri -Headers $headers;
+			$expectedStock = $coffeeStock - 1;
+
 			$result | Should Not Be $null;
 			$result.UserId | Should Be $user.Id;
 			$result.CoffeeId | Should Be $coffee.Id;
+			$resultCoffee.Stock | Should Be $expectedStock;
 		}
+
+		It "Create-CoffeeOrderWithCoffeeNotOnStockThrows400" -test {
+			# Arrange
+			CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock 0 -Token $adminToken -Update;
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers; } | Should Throw "400";
+		}
+
+		It "Create-CoffeeOrderAsOtherUserThrows403" -test {
+			# Arrange
+			$otherUserName = "$entityPrefix{0}@Example.com" -f [Guid]::NewGuid();
+			$otherUserPassword = "123456";
+			
+			$otherUser = CRUD-User -UserName $otherUserName -Password $otherUserPassword -Create;
+			$body["UserId"] = $otherUser.Id;
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers; } | Should Throw "403";
+		}
+		<#
+
 		It "Create-CoffeeOrderWithoutCoffeeIdThrows" -test {
 			# Arrange
 			$body.Remove("CoffeeId");
@@ -74,8 +104,10 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers } | Should Throw "400";
 		}
+		#>
 	}
-#>
+
+	<#
 	Context "Update-CoffeeOrder" {
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
@@ -95,11 +127,11 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers;
 		}
-<#		
+		
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
-#>
+
 		It "Update-CoffeeOrderCoffeeForeignKeySucceeds" -test {
 			# Arrange
 
@@ -134,7 +166,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$result.UserId | Should Be $user.Id;
 			$result.CoffeeId | Should Be $newCoffee.Id;
 		}
-<#
+
 		It "Update-CoffeeOrderChangeCoffeeOrderIdThrows" -test {
 			# Arrange
 			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
@@ -144,9 +176,10 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -Headers $headers } | Should Throw;
 		}
-#>
+
 	}
-<#
+	#>
+	<#
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
 
@@ -158,7 +191,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			DeleteEntities -EntityName $entitySet -OdataComparison $queryOption;
 		}
 	}
-#>
+	#>
 }
 
 #
