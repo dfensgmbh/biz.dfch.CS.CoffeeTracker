@@ -13,18 +13,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
-    /*
-    The WebApiConfig class may require additional changes to add a route for this Controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
-
-    using System.Web.Http.OData.Builder;
-    using System.Web.Http.OData.Extensions;
-    using biz.dfch.CS.CoffeeTracker.Core.Model;
-    ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<CoffeeOrder>("CoffeeOrders");
-    builder.EntitySet<Coffee>("Coffees"); 
-    builder.EntitySet<ApplicationUser>("Users"); 
-    config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-    */
     [Authorize]
     public class CoffeeOrdersController : ODataController
     {
@@ -40,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             userManager = new ApplicationUserManager(new AppUserStore());
         }
 
-        // GET: odata/CoffeeOrders
+        // GET: api/CoffeeOrders
         [EnableQuery]
         public IQueryable<CoffeeOrder> GetCoffeeOrders()
         {
@@ -49,7 +37,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return coffeeOrdersManager.Get().AsQueryable();
         }
 
-        // GET: odata/CoffeeOrders(5)
+        // GET: api/CoffeeOrders(5)
         [EnableQuery]
         public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
         {
@@ -59,7 +47,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return SingleResult.Create(coffeeOrdersManager.GetAsQueryable(key));
         }
 
-        // PUT: odata/CoffeeOrders(5)
+        // PUT: api/CoffeeOrders(5)
         public async Task<IHttpActionResult> Put([FromODataUri] long key, CoffeeOrder modifiedCoffeeOrder)
         {
             Contract.Requires(0 < key, "|404|");
@@ -81,7 +69,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Updated(coffeeOrder);
         }
 
-        // POST: odata/CoffeeOrders
+        // POST: api/CoffeeOrders
         public async Task<IHttpActionResult> Post(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|404|");
@@ -100,7 +88,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Created(coffeeOrder);
         }
 
-        // PATCH: odata/CoffeeOrders(5)
+        // PATCH: api/CoffeeOrders(5)
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
@@ -126,7 +114,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Updated(coffeeOrder);
         }
 
-        // DELETE: odata/CoffeeOrders(5)
+        // DELETE: api/CoffeeOrders(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
@@ -143,7 +131,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/CoffeeOrders(5)/Coffee
+        // GET: api/CoffeeOrders(5)/Coffee
         [EnableQuery]
         public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
         {
