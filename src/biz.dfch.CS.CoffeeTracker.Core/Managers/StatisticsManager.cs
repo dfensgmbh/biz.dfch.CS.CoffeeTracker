@@ -37,9 +37,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             permissionChecker = new PermissionChecker(currentUser);
         }
 
-        public Coffee MostOrderedCoffee()
+        public Coffee MostOrderedCoffeeByUser(ApplicationUser user)
         {
-            var coffeeOrders = db.CoffeeOrders;
+            var coffeeOrders = db.CoffeeOrders.Where(co => co.UserId == user.Id);
 
             var mostOrdered = coffeeOrders
                 .GroupBy(c => c)
@@ -96,6 +96,59 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
                 .ToList();
 
             return coffeeOrders.Count;
+        }
+
+        public long CoffeeConsumptionByCoffee(Coffee coffee)
+        {
+            var zeroTicks = DateTimeOffset.MinValue;
+            var now = DateTimeOffset.Now;
+
+            return CoffeeConsumptionByCoffee(coffee, zeroTicks, now);
+        }
+
+        public long CoffeeConsumptionByCoffee(Coffee coffee, DateTimeOffset from, DateTimeOffset until)
+        {
+            Contract.Requires(null != coffee, "|400|");
+            Contract.Requires(null != until, "|400|");
+            Contract.Requires(null != from, "|400|");
+
+            var coffeeOrders = db.CoffeeOrders
+                .Where(co => co.CoffeeId == coffee.Id
+                             && co.Created >= from
+                             && co.Created <= until)
+                .ToList();
+
+            return coffeeOrders.Count;
+        }
+
+        public Coffee MostOrderedCoffee()
+        {
+            var from = DateTimeOffset.MinValue;
+            var until = DateTimeOffset.Now;
+
+            return MostOrderedCoffee(from, until);
+        }
+
+        public Coffee MostOrderedCoffee(DateTimeOffset from, DateTimeOffset until)
+        {
+            Contract.Requires(null != from, "|400|");
+            Contract.Requires(null != until, "|400|");
+
+            var coffeeOrderList = db.CoffeeOrders.Where(co => co.Created >= from && co.Created <= until);
+
+            var coffeeOrderListOrdered = coffeeOrderList.GroupBy(x => x.CoffeeId)
+                .OrderByDescending(g => g.Count())
+                .Take(5)
+                .Select(g => g.Key)
+                .ToList();
+
+            var coffeeOrder = db.CoffeeOrders.FirstOrDefault(co => co.Id == coffeeOrderListOrdered[0]);
+            Contract.Assert(null != coffeeOrder, "|500|");
+
+            var coffee = db.Coffees.FirstOrDefault(c => c.Id == coffeeOrder.CoffeeId);
+            Contract.Assert(null != coffee, "|500|");
+
+            return coffee;
         }
 
         public void Dispose()
