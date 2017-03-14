@@ -19,16 +19,35 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPw;
 	$normalUserOrders = 10;
 
+	# Create second new User and Get Token
+	$secondUserName = "$entityPrefix{0}@example.com" -f [Guid]::NewGuid();
+	$secondUserPw = "123456";
+	$secondUser = CRUD-User -UserName $secondUserName -Password $secondUserPw -Create;
+	$secondUserToken = Get-Token -UserName $secondUserName -Password $secondUserPw;
+	$secondUserOrders = 4;
+
 	# Create Coffee
 	$coffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
 	$coffeeBrand = "$entityPrefix-BRAND-{0}" -f [Guid]::NewGuid();
-	$coffee = CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock 50 -Token $adminToken -Create;
+	$coffeeStock = 50;
+	$coffee = CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock $coffeeStock -Token $adminToken -Create;
 
-	# Create headers for requests below
+	# Create arbitrary different coffee
+	$differentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+	$differentCoffeeBrand = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+	$differentCoffeeStock = 5;
+	$differentCoffee = CRUD-Coffee -Name $differentCoffeeName -Brand $differentCoffeeBrand -Stock $differentCoffeeStock -Token $adminToken -Create;
+
+	# Create headers for normal user for requests below
 	$authString = "bearer {0}" -f $normalUserToken;
 	$normalUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
 	$normalUserHeaders.Add("Authorization", $authString);
 
+	# Create headers for second user for requests below
+	$authString = "bearer {0}" -f $secondUserToken;
+	$secondUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+	$secondUserHeaders.Add("Authorization", $authString);
+	
 	## Needed for tests later
 	$timeBeforeTestDataCreationRequests = [DateTimeOffset]::Now;
 
@@ -45,11 +64,25 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		
 		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
 	}
+
+	# Create CoffeOrders test data for second user
+	for($i = 0; $i -lt $secondUserOrders; $i++)
+	{
+		$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+		
+		$coffeeOrderRequestBody = @{
+			Name = $coffeeOrderName
+			UserId = $secondUser.Id
+			CoffeeId = $differentCoffee.Id
+		}
+		
+		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $secondUserHeaders -Body $coffeeOrderRequestBody;
+	}
 	
 	## Needed for tests later
 	$timeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
 
-	Context "CoffeeConsumption" {
+	Context "StatisticTests" {
 		
 		It "Warmup" -Test {
 			$true | Should Be $true;
@@ -102,14 +135,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 			
-			# Create arbitrary different coffee and corresponding coffeeorder
+			# Create arbitrary coffeeorder of different coffee
 			$orderOfDifferentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
-
-			$differentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
-			$differentCoffeeBrand = "$entityPrefix-{0}" -f [Guid]::NewGuid();
-			$differentCoffeeStock = 5;
-
-			$differentCoffee = CRUD-Coffee -Name $differentCoffeeName -Brand $differentCoffeeBrand -Stock $differentCoffeeStock -Token $adminToken -Create;
 
 			$coffeeOrderRequestBody = @{
 				Name = $orderOfDifferentCoffeeName
@@ -126,6 +153,38 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Not Be $null;
 			$result.Id | Should Be $coffee.Id;
+		}
+
+		It "FavouriteCoffee-ReturnMostOrderedCoffeeOfASpecifiedUser" -test {
+			$requestUri = "$baseUri/GetMostOrderedCoffee";
+
+			# Arrange
+			$requestBody = @{
+				Name = $secondUserName
+			};
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+			$currentTestRequestHeaders = $secondUserHeaders;
+			$currentTestRequestHeaders.Add("Content-Type","application/json")
+
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentTestRequestHeaders -Body $requestBodyJson;
+			$result = $response.value;
+
+			# Assert
+			$result.Id | Should Be $differentCoffee.Id;
+		}
+
+		It "FavouriteCoffee-OfOtherSpecifiedUserThanRequestedUserThrows403" -test {
+			$requestUri = "$baseUri/GetMostOrderedCoffee";
+
+			# Arrange
+			$requestBody = @{
+				Name = $secondUserName
+			};
+
+			# Act / Assert
+			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBody; } | Should Throw "403";
 		}
 	}
 }
