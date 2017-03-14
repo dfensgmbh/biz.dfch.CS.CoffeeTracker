@@ -136,7 +136,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.value | Should Be $normalUserOrders;
 		}
 
-		It "CoffeeConsumption-ReturnsMostOrderedCoffee" -test {
+		It "MostOrderedCoffee-ReturnsMostOrderedCoffeeOfAllUsers" -test {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 
@@ -148,7 +148,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $coffee.Id;
 		}
 
-		It "CoffeeConsumption-ReturnsMostOrderedCoffeeOfSpecifiedTime" -test {
+		It "MostOrderedCoffee-ReturnsMostOrderedCoffeeOfSpecifiedTimeOfAllUsers" -test {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 
@@ -170,7 +170,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $differentCoffee.Id;
 		}
 
-		It "FavouriteCoffees-ReturnMostOrdersCoffeesOfAllUsers" -test {
+		It "MostOrderedCoffee-ReturnMostOrdersCoffeesOfAllUsers" -test {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 			
@@ -194,8 +194,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $coffee.Id;
 		}
 
-		It "FavouriteCoffee-ReturnMostOrderedCoffeeOfASpecifiedUser" -test {
-			$requestUri = "$baseUri/GetMostOrderedCoffee";
+		It "MostOrderedCoffeeByUser-ReturnMostOrderedCoffeeOfASpecifiedUser" -test {
+			$requestUri = "$baseUri/GetMostOrderedCoffeeByUser";
 
 			# Arrange
 			$requestBody = @{
@@ -214,9 +214,9 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $differentCoffee.Id;
 		}
 
-		It "FavouriteCoffee-ReturnMostOrderedCoffeeOfCurrentUser" -test {
+		It "MostOrderedCoffeeByUser-ReturnMostOrderedCoffeeOfCurrentUser" -test {
 			# Arrange
-			$requestUri = "$baseUri/GetMostOrderedCoffee";
+			$requestUri = "$baseUri/GetMostOrderedCoffeeByUser";
 
 			# Act
 			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $secondUserHeaders;
@@ -226,8 +226,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $differentCoffee.Id;
 		}
 
-		It "FavouriteCoffee-OfOtherSpecifiedUserThanRequestedUserThrows403" -test {
-			$requestUri = "$baseUri/GetMostOrderedCoffee";
+		It "MostOrderedCoffeeByUser-OfOtherSpecifiedUserThanRequestedUserThrows403" -test {
+			$requestUri = "$baseUri/GetMostOrderedCoffeeByUser";
 
 			# Arrange
 			$requestBody = @{
