@@ -52,15 +52,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return mostOrdered.Coffee;
         }
 
-        public long CoffeeConsumption(ApplicationUser user)
+        public long CoffeeConsumptionByUser(ApplicationUser user)
         {
             var beginOfTime = DateTimeOffset.MinValue;
-            var endOfTime = DateTimeOffset.MaxValue;
+            var endOfTime = DateTimeOffset.Now;
 
-            return CoffeeConsumption(user, beginOfTime, endOfTime);
+            return CoffeeConsumptionByUser(user, beginOfTime, endOfTime);
         }
 
-        public long CoffeeConsumption(ApplicationUser user, DateTimeOffset from, DateTimeOffset until)
+        public long CoffeeConsumptionByUser(ApplicationUser user, DateTimeOffset from, DateTimeOffset until)
         {
             Contract.Requires(null != user, "|400|");
             Contract.Requires(null != from, "|400|");
@@ -70,9 +70,32 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Assert(hasPermission, "|403|");
 
             var ordersOfUser = db.CoffeeOrders
-                .Where(co => co.UserId == user.Id && co.Created >= from && co.Created <= until);
+                .Where(co => co.UserId == user.Id 
+                    && co.Created >= from 
+                    && co.Created <= until);
             
             return ordersOfUser.Count();
+        }
+
+        public long CoffeeConsumption()
+        {
+            var zeroTicks = DateTimeOffset.MinValue;
+            var now = DateTimeOffset.Now;
+
+            return CoffeeConsumption(zeroTicks, now);
+        }
+
+        public long CoffeeConsumption(DateTimeOffset from, DateTimeOffset until)
+        {
+            Contract.Requires(null != from, "|400|");
+            Contract.Requires(null != until, "|400|");
+
+            var coffeeOrders = db.CoffeeOrders
+                .Where(co => co.Created >= from
+                    && co.Created <= until)
+                .ToList();
+
+            return coffeeOrders.Count;
         }
 
         public void Dispose()
