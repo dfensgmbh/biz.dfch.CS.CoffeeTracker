@@ -52,14 +52,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return mostOrdered.Coffee;
         }
 
-        public long CoffeeConsumptionByUser(ApplicationUser user)
-        {
-            var beginOfTime = DateTimeOffset.MinValue;
-            var endOfTime = DateTimeOffset.Now;
-
-            return CoffeeConsumptionByUser(user, beginOfTime, endOfTime);
-        }
-
         public long CoffeeConsumptionByUser(ApplicationUser user, DateTimeOffset from, DateTimeOffset until)
         {
             Contract.Requires(null != user, "|400|");
@@ -77,14 +69,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return ordersOfUser.Count();
         }
 
-        public long CoffeeConsumption()
-        {
-            var zeroTicks = DateTimeOffset.MinValue;
-            var now = DateTimeOffset.Now;
-
-            return CoffeeConsumption(zeroTicks, now);
-        }
-
         public long CoffeeConsumption(DateTimeOffset from, DateTimeOffset until)
         {
             Contract.Requires(null != from, "|400|");
@@ -96,14 +80,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
                 .ToList();
 
             return coffeeOrders.Count;
-        }
-
-        public long CoffeeConsumptionByCoffee(Coffee coffee)
-        {
-            var zeroTicks = DateTimeOffset.MinValue;
-            var now = DateTimeOffset.Now;
-
-            return CoffeeConsumptionByCoffee(coffee, zeroTicks, now);
         }
 
         public long CoffeeConsumptionByCoffee(Coffee coffee, DateTimeOffset from, DateTimeOffset until)
@@ -119,14 +95,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
                 .ToList();
 
             return coffeeOrders.Count;
-        }
-
-        public Coffee MostOrderedCoffee()
-        {
-            var from = DateTimeOffset.MinValue;
-            var until = DateTimeOffset.Now;
-
-            return MostOrderedCoffee(from, until);
         }
 
         public Coffee MostOrderedCoffee(DateTimeOffset from, DateTimeOffset until)
