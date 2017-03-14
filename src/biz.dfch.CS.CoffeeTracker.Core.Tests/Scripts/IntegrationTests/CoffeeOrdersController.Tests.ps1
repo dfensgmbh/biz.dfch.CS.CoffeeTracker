@@ -41,8 +41,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$body = @{
 				Name = $name
 				UserId = $user.Id
-				CoffeeId = $coffee.Id;
-				Created = [DateTime]::Now;
+				CoffeeId = $coffee.Id
 			}
 		}
 
