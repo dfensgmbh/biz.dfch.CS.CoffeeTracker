@@ -52,7 +52,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 }
 
 #
-# Copyright $year$ d-fens GmbH
+# Copyright 2017 d-fens GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
