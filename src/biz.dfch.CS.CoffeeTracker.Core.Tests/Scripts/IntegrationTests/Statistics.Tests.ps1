@@ -38,6 +38,11 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	$differentCoffeeStock = 5;
 	$differentCoffee = CRUD-Coffee -Name $differentCoffeeName -Brand $differentCoffeeBrand -Stock $differentCoffeeStock -Token $adminToken -Create;
 
+	# Create headers for admin for requests below
+	$authString = "bearer {0}" -f $adminToken;
+	$adminHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+	$adminHeaders.Add("Authorization", $authString);
+
 	# Create headers for normal user for requests below
 	$authString = "bearer {0}" -f $normalUserToken;
 	$normalUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
@@ -93,14 +98,18 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$true | Should Be $true;
 		}
 
-		It "CoffeeConsumption-ReturnsCountOfAllCoffees" -test {
+		It "CoffeeConsumption-ReturnsCountOfAllOrderedCoffees" -test {
 			# Arrange
-
+			$requestUri = "$baseUri/GetCoffeeConsumption";
+			$coffeeOrders = Invoke-RestMethod -Method Get -Uri $baseUri -Headers $adminHeaders;
+			$coffeeOrdersCount = $coffeeOrders.Count;
 
 			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$result = $response.value;
 
 			# Assert
-
+			$result | Should Be $coffeeOrdersCount;
 		}
 	}
 
