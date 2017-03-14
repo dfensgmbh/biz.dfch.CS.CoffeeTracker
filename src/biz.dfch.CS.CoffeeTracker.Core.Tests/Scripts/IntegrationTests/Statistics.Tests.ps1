@@ -17,6 +17,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	$normalUserPw = "123456";
 	$normalUser = CRUD-User -UserName $normalUserName -Password $normalUserPw -Create;
 	$normalUserToken = Get-Token -UserName $normalUserName -Password $normalUserPw;
+	$normalUserOrders = 10;
 
 	# Create Coffee
 	$coffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
@@ -25,11 +26,14 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 	# Create headers for requests below
 	$authString = "bearer {0}" -f $normalUserToken;
-	$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
-	$headers.Add("Authorization", $authString);
+	$normalUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+	$normalUserHeaders.Add("Authorization", $authString);
+
+	## Needed for tests later
+	$timeBeforeTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	# Create CoffeeOrders test data
-	for($i = 0; $i -lt 10; $i++)
+	for($i = 0; $i -lt $normalUserOrders; $i++)
 	{
 		$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
 		
@@ -39,8 +43,11 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			CoffeeId = $coffee.Id
 		}
 		
-		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $headers -Body $coffeeOrderRequestBody;
+		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
 	}
+	
+	## Needed for tests later
+	$timeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	Context "CoffeeConsumption" {
 		
@@ -48,6 +55,46 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$true | Should Be $true;
 		}
 
+		It "CoffeeConsumption-ReturnsCountOfCoffeeTheUserOrdered" -Test {
+			# Arrange
+			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
+
+			# Act
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+
+			# Assert
+			$result.value | Should Be $normalUserOrders;
+		}
+
+		It "CoffeeConsumption-ReturnsCoffeesOrderdSpecifiedByTime" -Test {
+			# Arrange
+			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
+			$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+		
+			## CoffeeOrder which should not be counted from the api
+			$coffeeOrderRequestBody = @{
+				Name = $coffeeOrderName
+				UserId = $normalUser.Id
+				CoffeeId = $coffee.Id
+			}
+			Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
+		
+			$requestBody = @{
+				From = $timeBeforeTestDataCreationRequests
+				Until = $timeAfterTestDataCreationRequests
+			}
+
+			$currentTestRequestHeaders = $normalUserHeaders;
+			$currentTestRequestHeaders.Add("Content-Type","application/json")
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			# Act
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Body $requestBodyJson -Headers $currentTestRequestHeaders;
+
+			# Assert
+			$result.value | Should Be $normalUserOrders;
+		}
 	}
 }
 
