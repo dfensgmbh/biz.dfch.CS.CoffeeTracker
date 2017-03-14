@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
@@ -47,9 +48,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
 
             // Custom Actions
-            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumption");
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumptionByUser");
             getCoffeeConsumptionActionConfiguration.Returns<int>();
-            getCoffeeConsumptionActionConfiguration.Parameter<int>("GetBack");
+            getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
 
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
 

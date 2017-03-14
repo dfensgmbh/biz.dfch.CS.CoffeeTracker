@@ -31,6 +31,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             new CoffeeOrdersManager());
         private CoffeeOrdersManager coffeeOrdersManager => coffeeOrdersManagerLazy.Value;
 
+        private readonly Lazy<StatisticsManager> statisticsManagerLazy = new Lazy<StatisticsManager>(() =>
+            new StatisticsManager());
+        private StatisticsManager statisticsManager => statisticsManagerLazy.Value;
+
         public CoffeeOrdersController()
         {
         }
@@ -161,17 +165,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
+        public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
-            Contract.Requires(null != parameters, "|400|");
-
-            object value;
-            var hasValue = parameters.TryGetValue("GetBack", out value);
-            Contract.Assert(hasValue, "|400|");
-
-            int getBack = (int) value;
-            return Ok(getBack);
-            
+            var coffeesOrdered = statisticsManager.CoffeeConsumption(userManager.GetCurrentUser());
+            return Ok(coffeesOrdered);
         }
 
         protected override void Dispose(bool disposing)
