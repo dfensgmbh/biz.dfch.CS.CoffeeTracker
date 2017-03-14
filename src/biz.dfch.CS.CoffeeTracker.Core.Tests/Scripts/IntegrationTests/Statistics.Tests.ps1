@@ -64,6 +64,11 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		
 		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
 	}
+	## Needed for tests later
+	$timeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
+
+	## Needed for tests later
+	$timeBeforeSecondTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	# Create CoffeOrders test data for second user
 	for($i = 0; $i -lt $secondUserOrders; $i++)
@@ -78,9 +83,9 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		
 		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $secondUserHeaders -Body $coffeeOrderRequestBody;
 	}
-	
+
 	## Needed for tests later
-	$timeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
+	$timeBeforeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	Context "StatisticTests" {
 		
@@ -141,6 +146,28 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Assert
 			$result.Id | Should Be $coffee.Id;
+		}
+
+		It "CoffeeConsumption-ReturnsMostOrderedCoffeeOfSpecifiedTime" -test {
+			# Arrange
+			$requestUri = "$baseUri/GetMostOrderedCoffee";
+
+			$requestBody = @{
+				From = $timeBeforeSecondTestDataCreationRequests;
+				Until = $timeAfterSecondTestDataCreationRequests;
+			}
+
+			$currentRequestHeaders = $normalUserHeaders;
+			$currentRequestHeaders.Add("Content-Type","application/json");
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Body $requestBodyJson -Headers $currentRequestHeaders;
+			$result = $response.value;
+			
+			# Assert
+			$result.Id | Should Be $differentCoffee.Id;
 		}
 
 		It "FavouriteCoffees-ReturnMostOrdersCoffeesOfAllUsers" -test {
