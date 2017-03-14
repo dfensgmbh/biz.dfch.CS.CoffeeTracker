@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
+using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
@@ -48,8 +49,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
 
             // Custom Actions
-            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumptionByUser");
-            getCoffeeConsumptionActionConfiguration.Returns<int>();
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByUser))
+                .Returns<int>();
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
 
