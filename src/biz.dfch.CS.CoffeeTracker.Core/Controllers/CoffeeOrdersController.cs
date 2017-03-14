@@ -167,6 +167,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
+            Contract.Requires(null != parameters);
+
             var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser());
             return Ok(coffeesOrdered);
         }
