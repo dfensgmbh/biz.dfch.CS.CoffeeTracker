@@ -71,14 +71,16 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
 			$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
 		
-			## CoffeeOrder which should not be counted from the api
+			## Create CoffeeOrder which should not be counted from the api
 			$coffeeOrderRequestBody = @{
 				Name = $coffeeOrderName
 				UserId = $normalUser.Id
 				CoffeeId = $coffee.Id
 			}
+
 			Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
 		
+			# prepare request
 			$requestBody = @{
 				From = $timeBeforeTestDataCreationRequests
 				Until = $timeAfterTestDataCreationRequests
@@ -94,6 +96,36 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Assert
 			$result.value | Should Be $normalUserOrders;
+		}
+
+		It "FavouriteCoffees-ReturnMostOrdersCoffeesOfAllUsers" -test {
+			# Arrange
+			$requestUri = "$baseUri/GetMostOrderedCoffee";
+			
+			# Create arbitrary different coffee and corresponding coffeeorder
+			$orderOfDifferentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+
+			$differentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+			$differentCoffeeBrand = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+			$differentCoffeeStock = 5;
+
+			$differentCoffee = CRUD-Coffee -Name $differentCoffeeName -Brand $differentCoffeeBrand -Stock $differentCoffeeStock -Token $adminToken -Create;
+
+			$coffeeOrderRequestBody = @{
+				Name = $orderOfDifferentCoffeeName
+				UserId = $normalUser.Id
+				CoffeeId = $differentCoffee.Id
+			}
+
+			Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
+		
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$result = $response.value;
+
+			# Assert
+			$result | Should Not Be $null;
+			$result.Id | Should Be $coffee.Id;
 		}
 	}
 }
