@@ -131,6 +131,18 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.value | Should Be $normalUserOrders;
 		}
 
+		It "CoffeeConsumption-ReturnsMostOrderedCoffee" -test {
+			# Arrange
+			$requestUri = "$baseUri/GetMostOrderedCoffee";
+
+			# Act 
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$result = $response.value;
+
+			# Assert
+			$result.Id | Should Be $coffee.Id;
+		}
+
 		It "FavouriteCoffees-ReturnMostOrdersCoffeesOfAllUsers" -test {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
