@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,15 +18,21 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
-        private readonly CoffeesManager coffeesManager;
-        private readonly ApplicationUserManager userManager;
-        private readonly CoffeeOrdersManager coffeeOrdersManager;
+
+        private readonly Lazy<CoffeesManager> coffeesManagerLazy = new Lazy<CoffeesManager>(() =>
+            new CoffeesManager());
+        private CoffeesManager coffeesManager => coffeesManagerLazy.Value;
+
+        private readonly Lazy<ApplicationUserManager> userManagerLazy = new Lazy<ApplicationUserManager>(() =>
+           new ApplicationUserManager(new AppUserStore()));
+        private ApplicationUserManager userManager => userManagerLazy.Value;
+
+        private readonly Lazy<CoffeeOrdersManager> coffeeOrdersManagerLazy = new Lazy<CoffeeOrdersManager>(() =>
+            new CoffeeOrdersManager());
+        private CoffeeOrdersManager coffeeOrdersManager => coffeeOrdersManagerLazy.Value;
 
         public CoffeeOrdersController()
         {
-            coffeeOrdersManager = new CoffeeOrdersManager();
-            coffeesManager = new CoffeesManager();
-            userManager = new ApplicationUserManager(new AppUserStore());
         }
 
         // GET: api/CoffeeOrders
@@ -151,6 +158,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
             return SingleResult.Create(userManager.GetUserAsQueryable(key));
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
+        {
+            return Ok(2);
         }
 
         protected override void Dispose(bool disposing)

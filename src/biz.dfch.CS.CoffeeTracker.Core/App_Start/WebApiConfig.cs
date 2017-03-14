@@ -23,6 +23,7 @@ using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
 using biz.dfch.CS.Web.Utilities.OData;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Data.Edm;
 using static biz.dfch.CS.CoffeeTracker.Core.Logging.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
@@ -44,6 +45,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<IdentityUser>("IdentityUsers");
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
+
+            // Custom Actions
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumption");
+            getCoffeeConsumptionActionConfiguration.Returns<int>();
+
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
 
             // Exception filters
