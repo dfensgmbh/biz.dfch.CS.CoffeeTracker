@@ -87,13 +87,30 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	## Needed for tests later
 	$timeBeforeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
 
-	Context "StatisticTests" {
+	Context "CoffeeConsumptionOfAllUsers" {
+	
+		It "Warmup" -Test {
+			$true | Should Be $true;
+		}
+
+		It "CoffeeConsumption-ReturnsCountOfAllCoffees" -test {
+			# Arrange
+
+
+			# Act
+
+			# Assert
+
+		}
+	}
+
+	Context "CoffeeConsumptionByUser" {
 		
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
 
-		It "CoffeeConsumption-ReturnsCountOfCoffeeTheUserOrdered" -Test {
+		It "CoffeeConsumptionByUser-ReturnsCountOfCoffeeTheUserOrdered" -Test {
 			# Arrange
 			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
 
@@ -104,7 +121,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.value | Should Be $normalUserOrders;
 		}
 
-		It "CoffeeConsumption-ReturnsCoffeesOrderdSpecifiedByTime" -Test {
+		It "CoffeeConsumptionByUser-ReturnsCoffeesOrderdByUserOfASpecifiedTime" -Test {
 			# Arrange
 			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
 			$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
@@ -134,6 +151,12 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Assert
 			$result.value | Should Be $normalUserOrders;
+		}
+	}
+	Context "MostOrderedCoffee" {
+		
+		It "Warmup" -Test {
+			$true | Should Be $true;
 		}
 
 		It "MostOrderedCoffee-ReturnsMostOrderedCoffeeOfAllUsers" -test {
@@ -170,7 +193,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.Id | Should Be $differentCoffee.Id;
 		}
 
-		It "MostOrderedCoffee-ReturnMostOrdersCoffeesOfAllUsers" -test {
+		It "MostOrderedCoffee-ReturnMostOrderedCoffeesOfAllUsers" -test {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 			
@@ -192,6 +215,12 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Not Be $null;
 			$result.Id | Should Be $coffee.Id;
+		}
+	}
+	Context "MostOrderedCoffeeByUser" {
+
+		It "Warmup" -Test {
+			$true | Should Be $true;
 		}
 
 		It "MostOrderedCoffeeByUser-ReturnMostOrderedCoffeeOfASpecifiedUser" -test {
