@@ -21,7 +21,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	# Create Coffee
 	$coffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
 	$coffeeBrand = "$entityPrefix-BRAND-{0}" -f [Guid]::NewGuid();
-	$coffee = CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Token $adminToken -Create;
+	$coffee = CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock 50 -Token $adminToken -Create;
 
 	# Create headers for requests below
 	$authString = "bearer {0}" -f $normalUserToken;
@@ -36,7 +36,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		$coffeeOrderRequestBody = @{
 			Name = $coffeeOrderName
 			UserId = $normalUser.Id
-			CoffeeId = $coffeeName.Id
+			CoffeeId = $coffee.Id
 		}
 		
 		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $headers -Body $coffeeOrderRequestBody;
