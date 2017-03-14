@@ -90,7 +90,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	}
 
 	## Needed for tests later
-	$timeBeforeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
+	$timeAfterSecondTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	Context "CoffeeConsumptionOfAllUsers" {
 	
@@ -110,6 +110,80 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Assert
 			$result | Should Be $coffeeOrdersCount;
+		}
+
+		It "CoffeeConsumption-ReturnsCountOfAllOrderedCoffeesOfSpecifiedTime" -test {
+			# Arrange
+			$requestUri = "$baseUri/GetCoffeeConsumption";
+
+			$requestBody = @{
+				From = $timeBeforeTestDataCreationRequests
+				Until = $timeAfterTestDataCreationRequests
+			}
+
+			$currentTestRequestHeaders = $normalUserHeaders;
+			$currentTestRequestHeaders.Add("Content-Type","application/json")
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentTestRequestHeaders -Body $requestBodyJson;
+			$result = $response.value;
+
+			# Assert
+			$result | Should Be $normalUserOrders;
+		}
+	}
+	Context "CoffeeConsumptionByCoffee" {
+		
+		It "Warmup" -Test {
+			$true | Should Be $true;
+		}
+
+		It "CoffeeConsumptionByCoffee-ReturnsCoffeeOrderCountOfSpecifiedCoffee" -test {
+			# Arrange
+			$requestUri = "$baseUri/CoffeeConsumptionByCoffee";
+
+			$requestBody = @{
+				Name = $coffee.Name
+				Brand = $coffee.Brand
+			};
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			$currentRequestHeaders = $normalUserHeaders;
+			$currentRequestHeaders.Add("Content-Type","application/json");
+
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentRequestHeaders -Body $requestBodyJson;
+			$result = response.value;
+
+			# Assert
+			$result | Should Be $normalUserOrders;
+		}
+
+		It "CoffeeConsumptionByCoffee-ReturnsCoffeeOrderCountOfSpecifiedCoffeeAndSpecifiedTime" -test {
+			# Arrange
+			$requestUri = "$baseUri/CoffeeConsumptionByCoffee";
+
+			$requestBody = @{
+				Name = $coffee.Name
+				Brand = $coffee.Brand
+				From = $timeBeforeSecondTestDataCreationRequests
+				Until = $timeAfterSecondTestDataCreationRequests
+			};
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			$currentRequestHeaders = $normalUserHeaders;
+			$currentRequestHeaders.Add("Content-Type","application/json");
+
+			# Act
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentRequestHeaders -Body $requestBodyJson;
+			$result = response.value;
+
+			# Assert
+			$result | Should Be $normalUserOrders;
 		}
 	}
 
