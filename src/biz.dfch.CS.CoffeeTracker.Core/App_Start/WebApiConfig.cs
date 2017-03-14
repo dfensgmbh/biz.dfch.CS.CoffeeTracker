@@ -49,6 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             // Custom Actions
             var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumption");
             getCoffeeConsumptionActionConfiguration.Returns<int>();
+            getCoffeeConsumptionActionConfiguration.Parameter<int>("GetBack");
 
             config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
 

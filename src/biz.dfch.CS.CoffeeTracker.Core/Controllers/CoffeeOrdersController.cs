@@ -163,7 +163,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
         {
-            return Ok(2);
+            Contract.Requires(null != parameters, "|400|");
+
+            object value;
+            var hasValue = parameters.TryGetValue("GetBack", out value);
+            Contract.Assert(hasValue, "|400|");
+
+            int getBack = (int) value;
+            return Ok(getBack);
+            
         }
 
         protected override void Dispose(bool disposing)
