@@ -301,6 +301,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Managers\CoffeeOrdersManager.cs" />
     <Compile Include="Managers\CoffeesManager.cs" />
+    <Compile Include="Managers\StatisticsManager.cs" />
     <Compile Include="Migrations\201703081204394_InitialRollup.cs" />
     <Compile Include="Migrations\201703081204394_InitialRollup.Designer.cs">
       <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>

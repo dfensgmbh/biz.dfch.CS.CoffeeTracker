@@ -37,8 +37,35 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             permissionChecker = new PermissionChecker(currentUser);
         }
 
+        public Coffee MostOrderedCoffee()
+        {
+            var coffeeOrders = db.CoffeeOrders;
+
+            var mostOrdered = coffeeOrders
+                .GroupBy(c => c)
+                .OrderByDescending(d => d.Count())
+                .Take(1)
+                .Select(d => d.Key)
+                .FirstOrDefault();
+
+            Contract.Assert(null != mostOrdered, "|404|");
+            return mostOrdered.Coffee;
+        }
+
+        public long CoffeeConsumption(ApplicationUser user)
+        {
+            var beginOfTime = DateTimeOffset.MinValue;
+            var endOfTime = DateTimeOffset.MaxValue;
+
+            return CoffeeConsumption(user, beginOfTime, endOfTime);
+        }
+
         public long CoffeeConsumption(ApplicationUser user, DateTimeOffset from, DateTimeOffset until)
         {
+            Contract.Requires(null != user, "|400|");
+            Contract.Requires(null != from, "|400|");
+            Contract.Requires(null != until, "|400|");
+
             var hasPermission = permissionChecker.HasPermission(user);
             Contract.Assert(hasPermission, "|403|");
 
