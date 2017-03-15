@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
@@ -221,6 +222,24 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             var coffeesOrdered = statisticsManager.CoffeeConsumptionByCoffee(coffee, from, until);
             return Ok(coffeesOrdered);
         }
+
+        [HttpPost]
+        public IHttpActionResult GetMostOrderedCoffee(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var mostOrderedCoffee = statisticsManager.MostOrderedCoffee(from, until);
+            return Ok(mostOrderedCoffee);
+        }
+        
 
         protected override void Dispose(bool disposing)
         {

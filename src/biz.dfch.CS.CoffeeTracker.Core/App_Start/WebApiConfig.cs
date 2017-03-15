@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
@@ -65,6 +66,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("Until");
 
+            var getMostOrderedCoffeeActionCofiguration = builder.Entity<CoffeeOrder>()
+                .Collection.Action(nameof(CoffeeOrdersController.GetMostOrderedCoffee))
+                .ReturnsFromEntitySet<Coffee>("Coffees");
+            getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("From");
+            getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("Until");
 
             config.Routes.MapODataServiceRoute
             (
