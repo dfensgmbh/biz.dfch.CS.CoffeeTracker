@@ -144,24 +144,24 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // GET: api/CoffeeOrders(5)/Coffee
         [EnableQuery]
-        public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
+        public IHttpActionResult GetCoffee([FromODataUri] long key)
         {
-            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(0 < key, "|400|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
-            return SingleResult.Create(coffeesManager.GetAsQueryable(key));
+            return Ok(coffeesManager.Get(key));
         }
 
         // GET: api/CoffeeOrders(5)/ApplicationUser
         [EnableQuery]
-        public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
+        public IHttpActionResult GetApplicationUser([FromODataUri] long key)
         {
-            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(0 < key, "|400|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
-            return SingleResult.Create(userManager.GetUserAsQueryable(key));
+            return Ok(userManager.GetUser(key));
         }
 
         [HttpPost]
