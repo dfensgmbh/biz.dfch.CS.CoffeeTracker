@@ -185,14 +185,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
-            var from = DateTimeOffset.MinValue;
-            var until = DateTimeOffset.Now;
-
-            if (parameters != null)
-            {
-                from = (DateTimeOffset) parameters["From"];
-                until = (DateTimeOffset) parameters["Until"];
-            }
+            Contract.Assert(null != parameters, "|400|");
+            var from = (DateTimeOffset) parameters["From"];
+            var until = (DateTimeOffset) parameters["Until"];
 
             var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
             return Ok(coffeesOrdered);
@@ -201,14 +196,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
         {
-            var from = DateTimeOffset.MinValue;
-            var until = DateTimeOffset.Now;
+            Contract.Assert(null != parameters, "|400|");
 
-            if (parameters != null)
-            {
-                from = (DateTimeOffset)parameters["From"];
-                until = (DateTimeOffset)parameters["Until"];
-            }
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
 
             var coffeesOrdered = statisticsManager.CoffeeConsumption(from, until);
             return Ok(coffeesOrdered);

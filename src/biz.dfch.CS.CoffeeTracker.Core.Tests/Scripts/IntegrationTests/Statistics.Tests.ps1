@@ -112,8 +112,18 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$coffeeOrders = Invoke-RestMethod -Method Get -Uri $baseUri -Headers $adminHeaders;
 			$coffeeOrdersCount = $coffeeOrders.value.Count;
 
+			$requestBody = @{
+				From = [DateTimeOffset]::MinValue.ToString($dateTimeFormat)
+				Until = [DateTimeOffset]::Now.ToString($dateTimeFormat)
+			}
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
+			$currentTestRequestHeaders = $normalUserHeaders;
+			$currentTestRequestHeaders.Add("Content-Type","application/json")
+
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentTestRequestHeaders -Body $requestBodyJson;
 			$result = $response.value;
 
 			# Assert
@@ -205,8 +215,15 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Arrange
 			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
 
+			$requestBody = @{
+				From = $timeBeforeTestDataCreationRequests.ToString($dateTimeFormat)
+				Until = $timeAfterTestDataCreationRequests.ToString($dateTimeFormat)
+			}
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
 			# Act
-			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 
 			# Assert
 			$result.value | Should Be $normalUserOrders;
@@ -224,8 +241,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 				CoffeeId = $coffee.Id
 			}
 
+			$normalUserHeaders.Remove("Content-Type");
+
 			Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
-		
+
 			# prepare request
 			$requestBody = @{
 				From = $timeBeforeTestDataCreationRequests.ToString($dateTimeFormat)
