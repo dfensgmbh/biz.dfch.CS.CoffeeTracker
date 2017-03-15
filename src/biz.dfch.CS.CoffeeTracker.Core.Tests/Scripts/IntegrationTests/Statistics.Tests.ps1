@@ -343,6 +343,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBodyJson; } | Should Throw "403";
 		}
 	}
+
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Delete Test-Data...";
 		$entityPrefix = "StatisticsTest";
