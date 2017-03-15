@@ -110,7 +110,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Arrange
 			$requestUri = "$baseUri/GetCoffeeConsumption";
 			$coffeeOrders = Invoke-RestMethod -Method Get -Uri $baseUri -Headers $adminHeaders;
-			$coffeeOrdersCount = $coffeeOrders.Count;
+			$coffeeOrdersCount = $coffeeOrders.value.Count;
 
 			# Act
 			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
