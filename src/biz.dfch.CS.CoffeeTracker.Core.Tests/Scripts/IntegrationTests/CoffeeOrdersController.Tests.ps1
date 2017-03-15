@@ -177,15 +177,20 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$result.CoffeeId | Should Be $newCoffee.Id;
 		}
 
-	<#
-		It "Update-CoffeeOrderChangeCoffeeOrderIdThrows" -test {
+		It "Update-CoffeeOrderUserIdThrows403" -test {
 			# Arrange
-			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
-			$coffeeOrder.Id = $coffeeOrder.Id + 1;
-			$coffeeOrderJson = $coffeeOrder | ConvertTo-Json;
+			$body["UserId"] = $secondUser.Id;
+			$coffeeOrdersUpdateUri = "{0}({1})" -f $coffeeOrdersUpdateUri, $coffeeOrder.Id;
+
+			$updatedCoffeeBodyJson = $body | ConvertTo-Json;
+
+			$authString = "bearer {0}" -f $token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json");
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -Headers $headers } | Should Throw;
+			{ Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Headers $headers -Body $updatedCoffeeBodyJson } | Should Throw "403";
 		}
 
 	#>
