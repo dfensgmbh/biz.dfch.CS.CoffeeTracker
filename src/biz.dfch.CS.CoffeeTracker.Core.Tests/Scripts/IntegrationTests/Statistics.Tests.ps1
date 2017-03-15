@@ -157,11 +157,13 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 		It "CoffeeConsumptionByCoffee-ReturnsCoffeeOrderCountOfSpecifiedCoffee" -test {
 			# Arrange
-			$requestUri = "$baseUri/CoffeeConsumptionByCoffee";
+			$requestUri = "$baseUri/GetCoffeeConsumptionByCoffee";
 
 			$requestBody = @{
 				Name = $coffee.Name
 				Brand = $coffee.Brand
+				From = [DateTimeOffset]::MinValue.ToString($dateTimeFormat);
+				Until = [DateTimeOffset]::Now.ToString($dateTimeFormat);
 			};
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
@@ -171,7 +173,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Act
 			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentRequestHeaders -Body $requestBodyJson;
-			$result = response.value;
+			$result = $response.value;
 
 			# Assert
 			$result | Should Be $normalUserOrders;
@@ -179,26 +181,23 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 		It "CoffeeConsumptionByCoffee-ReturnsCoffeeOrderCountOfSpecifiedCoffeeAndSpecifiedTime" -test {
 			# Arrange
-			$requestUri = "$baseUri/CoffeeConsumptionByCoffee";
+			$requestUri = "$baseUri/GetCoffeeConsumptionByCoffee";
 
 			$requestBody = @{
-				Name = $coffee.Name
-				Brand = $coffee.Brand
-				From = $timeBeforeSecondTestDataCreationRequests
-				Until = $timeAfterSecondTestDataCreationRequests
+				Name = $differentCoffee.Name
+				Brand = $differentCoffee.Brand
+				From = $timeBeforeSecondTestDataCreationRequests.ToString($dateTimeFormat);
+				Until = $timeAfterSecondTestDataCreationRequests.ToString($dateTimeFormat);
 			};
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
-			$currentRequestHeaders = $normalUserHeaders;
-			$currentRequestHeaders.Add("Content-Type","application/json");
-
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentRequestHeaders -Body $requestBodyJson;
-			$result = response.value;
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
+			$result = $response.value;
 
 			# Assert
-			$result | Should Be $normalUserOrders;
+			$result | Should Be $secondUserOrders;
 		}
 		#>
 	}
