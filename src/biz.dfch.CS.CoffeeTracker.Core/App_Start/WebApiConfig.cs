@@ -58,6 +58,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
 
+            var getCoffeeConsumptionByCoffeeActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByCoffee))
+                .Returns<int>();
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<string>("Name");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<string>("Brand");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("Until");
+
+
             config.Routes.MapODataServiceRoute
             (
                 routeName: "odata", 

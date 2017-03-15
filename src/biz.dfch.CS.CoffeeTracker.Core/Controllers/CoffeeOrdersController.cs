@@ -185,7 +185,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
-            Contract.Assert(null != parameters, "|400|");
+            Contract.Requires(null != parameters, "|400|");
+
             var from = (DateTimeOffset) parameters["From"];
             var until = (DateTimeOffset) parameters["Until"];
 
@@ -196,12 +197,28 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         [HttpPost]
         public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
         {
-            Contract.Assert(null != parameters, "|400|");
+            Contract.Requires(null != parameters, "|400|");
 
             var from = (DateTimeOffset)parameters["From"];
             var until = (DateTimeOffset)parameters["Until"];
 
             var coffeesOrdered = statisticsManager.CoffeeConsumption(from, until);
+            return Ok(coffeesOrdered);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumptionByCoffee(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+
+            var coffeeName = (string)parameters["Name"];
+            var coffeeBrand = (string)parameters["Brand"];
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var coffee = coffeesManager.Get(coffeeName, coffeeBrand);
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumptionByCoffee(coffee, from, until);
             return Ok(coffeesOrdered);
         }
 
