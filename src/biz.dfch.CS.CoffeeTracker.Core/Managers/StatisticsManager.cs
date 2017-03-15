@@ -102,13 +102,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var coffeeOrderList = db.CoffeeOrders.Where(co => co.Created >= from && co.Created <= until);
 
-            var coffeesListFiltered = coffeeOrderList.GroupBy(x => x.CoffeeId)
+            var coffeeIdListFiltered = coffeeOrderList.GroupBy(x => x.CoffeeId)
                 .OrderByDescending(g => g.Count())
                 .Take(5)
                 .Select(g => g.Key)
                 .ToList();
 
-            var coffeeId = coffeesListFiltered[0];
+            var coffeeId = coffeeIdListFiltered[0];
             var coffee = db.Coffees.FirstOrDefault(c => c.Id == coffeeId);
             Contract.Assert(null != coffee, "|500|");
 
