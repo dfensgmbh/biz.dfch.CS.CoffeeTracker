@@ -278,9 +278,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
+			$normalUserHeaders["Content-Type"] = "application/json";
+
 			# Act 
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
-			$result = $response.value;
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 
 			# Assert
 			$result.Id | Should Be $coffee.Id;
