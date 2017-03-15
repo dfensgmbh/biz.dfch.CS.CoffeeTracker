@@ -21,18 +21,22 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         private readonly Lazy<CoffeesManager> coffeesManagerLazy = new Lazy<CoffeesManager>(() =>
             new CoffeesManager());
+
         private CoffeesManager coffeesManager => coffeesManagerLazy.Value;
 
         private readonly Lazy<ApplicationUserManager> userManagerLazy = new Lazy<ApplicationUserManager>(() =>
-           new ApplicationUserManager(new AppUserStore()));
+            new ApplicationUserManager(new AppUserStore()));
+
         private ApplicationUserManager userManager => userManagerLazy.Value;
 
         private readonly Lazy<CoffeeOrdersManager> coffeeOrdersManagerLazy = new Lazy<CoffeeOrdersManager>(() =>
             new CoffeeOrdersManager());
+
         private CoffeeOrdersManager coffeeOrdersManager => coffeeOrdersManagerLazy.Value;
 
         private readonly Lazy<StatisticsManager> statisticsManagerLazy = new Lazy<StatisticsManager>(() =>
             new StatisticsManager());
+
         private StatisticsManager statisticsManager => statisticsManagerLazy.Value;
 
         public CoffeeOrdersController()
@@ -165,9 +169,36 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
+        public async Task<IHttpActionResult> GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
-            var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser());
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var from = DateTimeOffset.MinValue;
+            var until = DateTimeOffset.Now;
+
+            try
+            {
+                var fromStr = (DateTimeOffset)parameters["From"];
+                var untilStr = (string)parameters["Until"];
+                from = new DateTimeOffset();
+            }
+            catch(ArgumentException)
+            {
+                
+            }
+            object value;
+            if (parameters.TryGetValue("From", out value))
+            {
+                int credits = (int)value;
+                credits = credits + 3;
+                return Ok(credits);
+            }
+
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
             return Ok(coffeesOrdered);
         }
 
