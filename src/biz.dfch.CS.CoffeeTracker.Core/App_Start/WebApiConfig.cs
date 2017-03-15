@@ -52,7 +52,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
 
-            config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
+            config.Routes.MapODataServiceRoute
+            (
+                routeName: "odata", 
+                routePrefix: "api", 
+                model: builder.GetEdmModel()
+            );
 
             // Exception filters
             // filter are processed from bottom (first called) to top (last called)
