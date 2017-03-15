@@ -226,7 +226,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
 			$price = 4.20;
 			$stock = 42;
-			$lastDelivery = [DateTimeOffset]::Now;
+			$lastDelivery = [DateTimeOffset]::Now.ToString('yyyy-MM-ddTHH:mm:sszzz');
 
 			# Act
 			CRUD-Coffee -Name $name -Brand $brand -Price $price -Stock $stock -LastDelivery $lastDelivery -Token $adminToken -Update;
