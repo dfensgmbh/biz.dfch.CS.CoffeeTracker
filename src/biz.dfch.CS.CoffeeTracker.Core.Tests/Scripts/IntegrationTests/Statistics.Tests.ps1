@@ -308,30 +308,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result.Id | Should Be $differentCoffee.Id;
 		}
-
-		It "MostOrderedCoffee-ReturnMostOrderedCoffeesOfAllUsers" -test {
-			# Arrange
-			$requestUri = "$baseUri/GetMostOrderedCoffee";
-			
-			# Create arbitrary coffeeorder of different coffee
-			$orderOfDifferentCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
-
-			$coffeeOrderRequestBody = @{
-				Name = $orderOfDifferentCoffeeName
-				UserId = $normalUser.Id
-				CoffeeId = $differentCoffee.Id
-			}
-
-			Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
-		
-			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
-			$result = $response.value;
-
-			# Assert
-			$result | Should Not Be $null;
-			$result.Id | Should Be $coffee.Id;
-		}
 		#>
 	}
 	Context "MostOrderedCoffeeByUser" {
