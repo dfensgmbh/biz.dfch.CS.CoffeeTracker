@@ -19,7 +19,6 @@ using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using biz.dfch.CS.Testing.Attributes;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
 {

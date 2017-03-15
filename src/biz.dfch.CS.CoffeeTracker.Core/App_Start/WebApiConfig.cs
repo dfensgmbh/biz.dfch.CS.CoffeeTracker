@@ -19,12 +19,12 @@ using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
+using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
 using biz.dfch.CS.Web.Utilities.OData;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Edm;
 using static biz.dfch.CS.CoffeeTracker.Core.Logging.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
@@ -48,12 +48,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
 
             // Custom Actions
-            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action("GetCoffeeConsumptionByUser");
-            getCoffeeConsumptionActionConfiguration.Returns<int>();
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByUser))
+                .Returns<int>();
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
 
-            config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
+            config.Routes.MapODataServiceRoute
+            (
+                routeName: "odata", 
+                routePrefix: "api", 
+                model: builder.GetEdmModel()
+            );
 
             // Exception filters
             // filter are processed from bottom (first called) to top (last called)

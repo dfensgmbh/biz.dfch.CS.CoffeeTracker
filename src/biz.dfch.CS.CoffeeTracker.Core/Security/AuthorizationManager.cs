@@ -19,9 +19,7 @@ using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
-using biz.dfch.CS.CoffeeTracker.Core.Provider;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
-using biz.dfch.CS.CoffeeTracker.Core.Validation;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 

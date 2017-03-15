@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -22,7 +23,6 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {

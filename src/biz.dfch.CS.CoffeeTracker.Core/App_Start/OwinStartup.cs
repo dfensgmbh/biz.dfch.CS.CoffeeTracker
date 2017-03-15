@@ -15,7 +15,6 @@
  */
 using System;
 using System.Web.Http;
-using biz.dfch.CS.CoffeeTracker.Core;
 using biz.dfch.CS.CoffeeTracker.Core.Provider;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;

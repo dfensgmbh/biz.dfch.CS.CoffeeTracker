@@ -21,7 +21,6 @@ using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {

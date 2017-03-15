@@ -59,7 +59,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            sut.GetUser(INVALID_ID);
+            sut.GetApplicationUser(INVALID_ID);
         }
 
         [TestMethod]

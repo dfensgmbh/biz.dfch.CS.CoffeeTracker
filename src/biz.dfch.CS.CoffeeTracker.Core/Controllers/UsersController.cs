@@ -2,10 +2,8 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.OData;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
@@ -13,7 +11,6 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
