@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
+using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
@@ -44,7 +47,45 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<IdentityUser>("IdentityUsers");
             builder.EntitySet<Coffee>("Coffees");
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
-            config.Routes.MapODataServiceRoute("odata", "api", builder.GetEdmModel());
+
+            // Custom Actions
+            var getCoffeeConsumptionByUserActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByCurrentUser))
+                .Returns<int>();
+            getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("Until");
+
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumption))
+                .Returns<int>();
+            getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
+
+            var getCoffeeConsumptionByCoffeeActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByCoffee))
+                .Returns<int>();
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<string>("Name");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<string>("Brand");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionByCoffeeActionConfiguration.Parameter<DateTimeOffset>("Until");
+
+            var getMostOrderedCoffeeActionCofiguration = builder.Entity<CoffeeOrder>()
+                .Collection.Action(nameof(CoffeeOrdersController.GetMostOrderedCoffee))
+                .ReturnsFromEntitySet<Coffee>("Coffees");
+            getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("From");
+            getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("Until");
+
+            var getMostOrderedCoffeeByUserActionCofiguration = builder.Entity<CoffeeOrder>()
+                .Collection.Action(nameof(CoffeeOrdersController.GetMostOrderedCoffeeByUser))
+                .ReturnsFromEntitySet<Coffee>("Coffees");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<DateTimeOffset>("From");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<DateTimeOffset>("Until");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<string>("Email");
+
+
+            config.Routes.MapODataServiceRoute
+            (
+                routeName: "odata", 
+                routePrefix: "api", 
+                model: builder.GetEdmModel()
+            );
 
             // Exception filters
             // filter are processed from bottom (first called) to top (last called)

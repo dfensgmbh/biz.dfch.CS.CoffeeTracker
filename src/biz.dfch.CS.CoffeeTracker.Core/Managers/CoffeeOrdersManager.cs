@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
@@ -22,7 +23,6 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using biz.dfch.CS.CoffeeTracker.Core.Validation;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
@@ -86,19 +86,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             return coffeeOrder;
         }
 
-        public IQueryable<CoffeeOrder> GetAsQueryable(long id)
-        {
-            Contract.Requires(0 < id, "|404|");
-            var coffeeOrder = db.CoffeeOrders.Where(c => c.Id == id);
-            Contract.Assert(null != coffeeOrder, "|404|");
-
-            var hasPermission = permissionChecker.HasPermission(Get(id));
-            Contract.Assert(hasPermission, "|403|");
-
-            return db.CoffeeOrders.Where(c => c.Id == id);
-        }
-
-
         public CoffeeOrder Update(long key, CoffeeOrder update)
         {
             Contract.Requires(null != update, "|400|");
@@ -124,6 +111,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < coffeeOrder.CoffeeId, "|404|");
             Contract.Requires(0 < coffeeOrder.UserId, "|404|");
 
+            coffeeOrder.Created = DateTimeOffset.Now;
             coffeesManager.DecreaseStock(coffeeOrder.CoffeeId);
             
             db.CoffeeOrders.Add(coffeeOrder);

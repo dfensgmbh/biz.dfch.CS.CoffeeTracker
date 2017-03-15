@@ -19,11 +19,7 @@ using System.Diagnostics.Contracts;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
-using biz.dfch.CS.CoffeeTracker.Core.Model;
-using biz.dfch.CS.CoffeeTracker.Core.Security;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
-using biz.dfch.CS.CoffeeTracker.Core.Validation;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security.OAuth;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Provider

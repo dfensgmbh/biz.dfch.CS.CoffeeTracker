@@ -2,7 +2,7 @@ function Delete-Entities {
 	PARAM
 	(
 		[Parameter(Mandatory = $true, Position = 0)]
-		[ValidateNotNullOrEmpty()]
+		[ValidateSet("Users","Coffees","CoffeeOrders")]
 		[string] $EntityName
 		,
 		[Parameter(Mandatory = $true, Position = 1)]

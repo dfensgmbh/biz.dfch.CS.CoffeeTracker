@@ -2,12 +2,9 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.OData;
-using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
@@ -36,13 +33,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         [EnableQuery]
-        public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
+        public IHttpActionResult GetCoffee([FromODataUri] long key)
         {
             Contract.Requires(0 < key);
 
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(coffeesManager.GetAsQueryable(key));
+            return Ok(coffeesManager.Get(key));
         }
 
         // PUT: odata/Coffees(5)

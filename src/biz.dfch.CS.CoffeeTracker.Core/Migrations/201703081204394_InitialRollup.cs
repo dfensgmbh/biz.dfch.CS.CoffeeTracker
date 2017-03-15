@@ -117,21 +117,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
-            DropTable("dbo.Users");
         }
         
         public override void Down()
         {
-            CreateTable(
-                "dbo.Users",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.CoffeeOrders", "CoffeeId", "dbo.Coffees");
             DropForeignKey("dbo.CoffeeOrders", "UserId", "dbo.ApplicationUsers");

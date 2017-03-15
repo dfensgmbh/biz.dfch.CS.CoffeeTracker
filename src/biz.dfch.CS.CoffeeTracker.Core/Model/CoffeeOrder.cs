@@ -33,7 +33,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [ForeignKey("CoffeeId")]
         public virtual Coffee Coffee { get; set; }
 
-        [Required]
         public DateTimeOffset Created { get; set; }
     }
 }

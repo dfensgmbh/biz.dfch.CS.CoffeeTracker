@@ -1,4 +1,22 @@
-﻿using System.Diagnostics.Contracts;
+﻿/**
+ * Copyright 2017 d-fens GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,8 +26,6 @@ using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Logging;
 using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
-using biz.dfch.CS.CoffeeTracker.Core.Validation;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 {
@@ -17,15 +33,29 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
     public class CoffeeOrdersController : ODataController
     {
         private const string MODELNAME = ControllerLogging.ModelNames.COFFEEORDER;
-        private readonly CoffeesManager coffeesManager;
-        private readonly ApplicationUserManager userManager;
-        private readonly CoffeeOrdersManager coffeeOrdersManager;
+
+        private readonly Lazy<CoffeesManager> coffeesManagerLazy = new Lazy<CoffeesManager>(() =>
+            new CoffeesManager());
+
+        private CoffeesManager coffeesManager => coffeesManagerLazy.Value;
+
+        private readonly Lazy<ApplicationUserManager> userManagerLazy = new Lazy<ApplicationUserManager>(() =>
+            new ApplicationUserManager(new AppUserStore()));
+
+        private ApplicationUserManager userManager => userManagerLazy.Value;
+
+        private readonly Lazy<CoffeeOrdersManager> coffeeOrdersManagerLazy = new Lazy<CoffeeOrdersManager>(() =>
+            new CoffeeOrdersManager());
+
+        private CoffeeOrdersManager coffeeOrdersManager => coffeeOrdersManagerLazy.Value;
+
+        private readonly Lazy<StatisticsManager> statisticsManagerLazy = new Lazy<StatisticsManager>(() =>
+            new StatisticsManager());
+
+        private StatisticsManager statisticsManager => statisticsManagerLazy.Value;
 
         public CoffeeOrdersController()
         {
-            coffeeOrdersManager = new CoffeeOrdersManager();
-            coffeesManager = new CoffeesManager();
-            userManager = new ApplicationUserManager(new AppUserStore());
         }
 
         // GET: api/CoffeeOrders
@@ -39,12 +69,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // GET: api/CoffeeOrders(5)
         [EnableQuery]
-        public SingleResult<CoffeeOrder> GetCoffeeOrder([FromODataUri] long key)
+        public IHttpActionResult GetCoffeeOrder([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
             ControllerLogging.LogGetEntity(MODELNAME, key.ToString());
 
-            return SingleResult.Create(coffeeOrdersManager.GetAsQueryable(key));
+            return Ok(coffeeOrdersManager.Get(key));
         }
 
         // PUT: api/CoffeeOrders(5)
@@ -133,25 +163,125 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // GET: api/CoffeeOrders(5)/Coffee
         [EnableQuery]
-        public SingleResult<Coffee> GetCoffee([FromODataUri] long key)
+        public IHttpActionResult GetCoffee([FromODataUri] long key)
         {
-            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(0 < key, "|400|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
 
-            return SingleResult.Create(coffeesManager.GetAsQueryable(key));
+            return Ok(coffeesManager.Get(key));
         }
 
         // GET: api/CoffeeOrders(5)/ApplicationUser
         [EnableQuery]
-        public SingleResult<ApplicationUser> GetUser([FromODataUri] long key)
+        public IHttpActionResult GetApplicationUser([FromODataUri] long key)
         {
-            Contract.Requires(0 < key, "|404|");
+            Contract.Requires(0 < key, "|400|");
 
             ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
 
-            return SingleResult.Create(userManager.GetUserAsQueryable(key));
+            return Ok(userManager.GetUser(key));
         }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var orderedCoffeesCount = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
+            return Ok(orderedCoffeesCount);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumptionByCurrentUser(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+
+            var from = (DateTimeOffset) parameters["From"];
+            var until = (DateTimeOffset) parameters["Until"];
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
+            return Ok(coffeesOrdered);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumption(from, until);
+            return Ok(coffeesOrdered);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumptionByCoffee(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Name"]), "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Brand"]), "|400|");
+
+            var coffeeName = (string)parameters["Name"];
+            var coffeeBrand = (string)parameters["Brand"];
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var coffee = coffeesManager.Get(coffeeName, coffeeBrand);
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumptionByCoffee(coffee, from, until);
+            return Ok(coffeesOrdered);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetMostOrderedCoffee(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var mostOrderedCoffee = statisticsManager.MostOrderedCoffee(from, until);
+            return Ok(mostOrderedCoffee);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetMostOrderedCoffeeByUser(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Email"]), "|400|");
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+            var userEmail = (string) parameters["Email"];
+
+            var isValidMail = ApplicationUser.IsValidEmail(userEmail);
+            Contract.Assert(isValidMail, "|400|");
+
+            var user = userManager.GetUser(userEmail);
+            Contract.Assert(null != user, "|404|");
+
+            var favouriteCoffee = statisticsManager.MostOrderedCoffeeByUser(user, from, until);
+            return Ok(favouriteCoffee);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

@@ -235,6 +235,7 @@
     <None Include="Scripts\IntegrationTests\CoffeeOrdersController.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\CoffeesController.Tests.ps1" />
     <None Include="Scripts\Functions\Delete-Entities.ps1" />
+    <None Include="Scripts\IntegrationTests\Statistics.Tests.ps1" />
     <None Include="Scripts\IntegrationTests\UsersController.Tests.ps1" />
   </ItemGroup>
   <ItemGroup />

@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http.OData;
-using System.Web.Routing;
 using biz.dfch.CS.CoffeeTracker.Core.DbContext;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
