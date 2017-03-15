@@ -271,8 +271,15 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 
+			$requestBody = @{
+				From = [DateTimeOffset]::MinValue.ToString($dateTimeFormat)
+				Until = [DateTimeOffset]::Now.ToString($dateTimeFormat)
+			}
+
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
 			# Act 
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders;
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 			$result = $response.value;
 
 			# Assert
