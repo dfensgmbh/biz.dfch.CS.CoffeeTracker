@@ -168,11 +168,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
-			$currentRequestHeaders = $normalUserHeaders;
-			$currentRequestHeaders.Add("Content-Type","application/json");
+			$normalUserHeaders["Content-Type"] = "application/json";
 
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentRequestHeaders -Body $requestBodyJson;
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 			$result = $response.value;
 
 			# Assert
