@@ -198,6 +198,22 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             return Ok(coffeesOrdered);
         }
 
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
+        {
+            var from = DateTimeOffset.MinValue;
+            var until = DateTimeOffset.Now;
+
+            if (parameters != null)
+            {
+                from = (DateTimeOffset)parameters["From"];
+                until = (DateTimeOffset)parameters["Until"];
+            }
+
+            var coffeesOrdered = statisticsManager.CoffeeConsumption(from, until);
+            return Ok(coffeesOrdered);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

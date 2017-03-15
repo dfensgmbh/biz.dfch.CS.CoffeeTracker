@@ -144,7 +144,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		#>
 	}
 	Context "CoffeeConsumptionByCoffee" {
-		<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}

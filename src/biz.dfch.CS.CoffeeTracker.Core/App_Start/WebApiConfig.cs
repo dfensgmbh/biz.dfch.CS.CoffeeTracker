@@ -48,7 +48,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
 
             // Custom Actions
-            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByUser))
+            var getCoffeeConsumptionByUserActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByUser))
+                .Returns<int>();
+            getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("From");
+            getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("Until");
+
+            var getCoffeeConsumptionActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumption))
                 .Returns<int>();
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionActionConfiguration.Parameter<DateTimeOffset>("Until");
