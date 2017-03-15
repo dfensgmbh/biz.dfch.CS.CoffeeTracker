@@ -17,6 +17,7 @@
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
+using biz.dfch.CS.Testing.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
