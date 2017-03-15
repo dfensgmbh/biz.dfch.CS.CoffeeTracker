@@ -81,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public async Task<IHttpActionResult> Put([FromODataUri] long key, CoffeeOrder modifiedCoffeeOrder)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != modifiedCoffeeOrder, "|404|");
+            Contract.Requires(null != modifiedCoffeeOrder, "|400|");
 
             Validate(modifiedCoffeeOrder);
 
@@ -111,7 +111,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogInsertEntityStart(MODELNAME, coffeeOrder);
 
-            coffeeOrdersManager.Create(coffeeOrder);
+            coffeeOrder = coffeeOrdersManager.Create(coffeeOrder);
 
             ControllerLogging.LogInsertEntityStop(MODELNAME, coffeeOrder);
 

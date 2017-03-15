@@ -125,7 +125,8 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 	Context "Update-CoffeeOrder" {
 		BeforeEach {
-			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+			$coffeeOrdersUpdateUri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 
 			$authString = "bearer {0}" -f $token;
@@ -137,10 +138,9 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 				Name = $name
 				UserId = $user.Id
 				CoffeeId = $coffee.Id;
-				Created = [DateTime]::Now;
 			}
 
-			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers;
+			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $coffeeOrdersUpdateUri -Body $body -Headers $headers;
 		}
 		
 		It "Warmup" -Test {
@@ -149,6 +149,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 		It "Update-CoffeeOrderCoffeeForeignKeySucceeds" -test {
 			# Arrange
+			$coffeeOrdersUpdateUri = "{0}({1})" -f $coffeeOrdersUpdateUri, $coffeeOrder.Id;
 
 			# # Create Coffee
 			$newCoffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -156,18 +157,21 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 			$newCoffee = CRUD-Coffee -Name $newCoffeeName -Brand $newCoffeeBrand -Token $adminToken -Create;
 
-			$body.Add("odata.metadata", 'CoffeeTracker/api/$metadata#CoffeeOrders/@Element');
-			$body.CoffeeId = $newCoffee.Id;
+			$body["CoffeeId"] = $newCoffee.Id;
 
-			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
-			$coffeeOrderJson = $body | ConvertTo-Json;
-			$headers.Add("Content-Type", "application/json;odata=verbose")
+			$updatedCoffeeOrderBodyJson = $body | ConvertTo-Json;
+
+			$authString = "bearer {0}" -f $token;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json");
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -Headers $headers;
+			Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Body $updatedCoffeeOrderBodyJson -Headers $headers;
 
 			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $uri;
+			$result = Invoke-RestMethod -Method Get -Uri $coffeeOrdersUpdateUri -Headers $headers;
 			$result | Should Not Be $null;
 			$result.UserId | Should Be $user.Id;
 			$result.CoffeeId | Should Be $newCoffee.Id;
