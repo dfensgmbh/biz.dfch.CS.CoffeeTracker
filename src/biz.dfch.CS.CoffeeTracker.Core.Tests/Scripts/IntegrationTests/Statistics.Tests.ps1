@@ -292,18 +292,16 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$requestUri = "$baseUri/GetMostOrderedCoffee";
 
 			$requestBody = @{
-				From = $timeBeforeSecondTestDataCreationRequests;
-				Until = $timeAfterSecondTestDataCreationRequests;
+				From = $timeBeforeSecondTestDataCreationRequests.ToString($dateTimeFormat);
+				Until = $timeAfterSecondTestDataCreationRequests.ToString($dateTimeFormat);
 			}
 
-			$currentRequestHeaders = $normalUserHeaders;
-			$currentRequestHeaders.Add("Content-Type","application/json");
-
+			$normalUserHeaders["Content-Type"] = "application/json";
+			
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Body $requestBodyJson -Headers $currentRequestHeaders;
-			$result = $response.value;
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Body $requestBodyJson -Headers $normalUserHeaders;
 			
 			# Assert
 			$result.Id | Should Be $differentCoffee.Id;
