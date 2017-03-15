@@ -49,7 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core
             builder.EntitySet<CoffeeOrder>("CoffeeOrders");
 
             // Custom Actions
-            var getCoffeeConsumptionByUserActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByUser))
+            var getCoffeeConsumptionByUserActionConfiguration = builder.Entity<CoffeeOrder>().Collection.Action(nameof(CoffeeOrdersController.GetCoffeeConsumptionByCurrentUser))
                 .Returns<int>();
             getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("From");
             getCoffeeConsumptionByUserActionConfiguration.Parameter<DateTimeOffset>("Until");
@@ -71,6 +71,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core
                 .ReturnsFromEntitySet<Coffee>("Coffees");
             getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("From");
             getMostOrderedCoffeeActionCofiguration.Parameter<DateTimeOffset>("Until");
+
+            var getMostOrderedCoffeeByUserActionCofiguration = builder.Entity<CoffeeOrder>()
+                .Collection.Action(nameof(CoffeeOrdersController.GetMostOrderedCoffeeByUser))
+                .ReturnsFromEntitySet<Coffee>("Coffees");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<DateTimeOffset>("From");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<DateTimeOffset>("Until");
+            getMostOrderedCoffeeByUserActionCofiguration.Parameter<string>("Email");
+
 
             config.Routes.MapODataServiceRoute
             (

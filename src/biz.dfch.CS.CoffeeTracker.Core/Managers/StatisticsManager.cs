@@ -35,9 +35,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             permissionChecker = new PermissionChecker(currentUser);
         }
 
-        public Coffee MostOrderedCoffeeByUser(ApplicationUser user)
+        public Coffee MostOrderedCoffeeByUser(ApplicationUser user, DateTimeOffset from, DateTimeOffset until)
         {
-            var coffeeOrders = db.CoffeeOrders.Where(co => co.UserId == user.Id);
+            var coffeeOrders = db.CoffeeOrders.Where(co => co.UserId == user.Id
+                && co.Created >= from && co.Created <= until);
 
             var mostOrdered = coffeeOrders
                 .GroupBy(c => c)

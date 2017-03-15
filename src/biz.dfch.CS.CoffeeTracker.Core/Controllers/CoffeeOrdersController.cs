@@ -187,6 +187,23 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult GetCoffeeConsumptionByUser(ODataActionParameters parameters)
         {
             Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+
+            var orderedCoffeesCount = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
+            return Ok(orderedCoffeesCount);
+        }
+
+        [HttpPost]
+        public IHttpActionResult GetCoffeeConsumptionByCurrentUser(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
 
             var from = (DateTimeOffset) parameters["From"];
             var until = (DateTimeOffset) parameters["Until"];
@@ -199,6 +216,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult GetCoffeeConsumption(ODataActionParameters parameters)
         {
             Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
 
             var from = (DateTimeOffset)parameters["From"];
             var until = (DateTimeOffset)parameters["Until"];
@@ -211,6 +230,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult GetCoffeeConsumptionByCoffee(ODataActionParameters parameters)
         {
             Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Name"]), "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Brand"]), "|400|");
 
             var coffeeName = (string)parameters["Name"];
             var coffeeBrand = (string)parameters["Brand"];
@@ -227,11 +250,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public IHttpActionResult GetMostOrderedCoffee(ODataActionParameters parameters)
         {
             Contract.Requires(null != parameters, "|400|");
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
 
             var from = (DateTimeOffset)parameters["From"];
             var until = (DateTimeOffset)parameters["Until"];
@@ -239,7 +259,29 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             var mostOrderedCoffee = statisticsManager.MostOrderedCoffee(from, until);
             return Ok(mostOrderedCoffee);
         }
-        
+
+        [HttpPost]
+        public IHttpActionResult GetMostOrderedCoffeeByUser(ODataActionParameters parameters)
+        {
+            Contract.Requires(null != parameters, "|400|");
+            Contract.Requires(null != parameters["From"], "|400|");
+            Contract.Requires(null != parameters["Until"], "|400|");
+            Contract.Requires(!string.IsNullOrWhiteSpace((string)parameters["Email"]), "|400|");
+
+            var from = (DateTimeOffset)parameters["From"];
+            var until = (DateTimeOffset)parameters["Until"];
+            var userEmail = (string) parameters["Email"];
+
+            var isValidMail = ApplicationUser.IsValidEmail(userEmail);
+            Contract.Assert(isValidMail, "|400|");
+
+            var user = userManager.GetUser(userEmail);
+            Contract.Assert(null != user, "|404|");
+
+            var favouriteCoffee = statisticsManager.MostOrderedCoffeeByUser(user, from, until);
+            return Ok(favouriteCoffee);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

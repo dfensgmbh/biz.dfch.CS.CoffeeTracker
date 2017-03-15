@@ -101,7 +101,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	Write-Host -ForegroundColor Magenta "Done! starting tests";
 
 	Context "CoffeeConsumptionOfAllUsers" {
-	<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -148,7 +147,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Be $normalUserOrders;
 		}
-		#>
 	}
 	Context "CoffeeConsumptionByCoffee" {
 		It "Warmup" -Test {
@@ -198,17 +196,16 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Be $secondUserOrders;
 		}
-		#>
 	}
 
-	Context "CoffeeConsumptionByUser" {
+	Context "CoffeeConsumptionByCurrentUser" {
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
 
-		It "CoffeeConsumptionByUser-ReturnsCountOfCoffeeTheUserOrdered" -Test {
+		It "CoffeeConsumptionByCurrentUser-ReturnsCountOfCoffeeTheUserOrdered" -Test {
 			# Arrange
-			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
+			$requestUri = "$baseUri/GetCoffeeConsumptionByCurrentUser";
 
 			$requestBody = @{
 				From = $timeBeforeTestDataCreationRequests.ToString($dateTimeFormat)
@@ -217,6 +214,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
+			$normalUserHeaders["Content-Type"] = "application/json";
+
 			# Act
 			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 
@@ -224,9 +223,9 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result.value | Should Be $normalUserOrders;
 		}
 
-		It "CoffeeConsumptionByUser-ReturnsCoffeesOrderdByUserOfASpecifiedTime" -Test {
+		It "CoffeeConsumptionByCurrentUser-ReturnsCoffeesOrderdByUserOfASpecifiedTime" -Test {
 			# Arrange
-			$requestUri = "$baseUri/GetCoffeeConsumptionByUser";
+			$requestUri = "$baseUri/GetCoffeeConsumptionByCurrentUser";
 			$coffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
 		
 			## Create CoffeeOrder which should not be counted from the api
@@ -257,11 +256,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result.value | Should Be $normalUserOrders;
 		}
-		<#
-		#>
 	}
 	Context "MostOrderedCoffee" {
-		<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -305,10 +301,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result.Id | Should Be $differentCoffee.Id;
 		}
-		#>
 	}
 	Context "MostOrderedCoffeeByUser" {
-	<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -318,45 +312,36 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 
 			# Arrange
 			$requestBody = @{
-				Name = $secondUserName
+				Email = $secondUserName
+				From = [DateTimeOffset]::MinValue.ToString($dateTimeFormat);
+				Until = [DateTimeOffset]::Now.ToString($dateTimeFormat);
 			};
 
 			$requestBodyJson = $requestBody | ConvertTo-Json;
-			$currentTestRequestHeaders = $secondUserHeaders;
-			$currentTestRequestHeaders.Add("Content-Type","application/json")
+			$secondUserHeaders["Content-Type"] = "application/json";
 
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentTestRequestHeaders -Body $requestBodyJson;
-			$result = $response.value;
-
-			# Assert
-			$result.Id | Should Be $differentCoffee.Id;
-		}
-
-		It "MostOrderedCoffeeByUser-ReturnMostOrderedCoffeeOfCurrentUser" -test {
-			# Arrange
-			$requestUri = "$baseUri/GetMostOrderedCoffeeByUser";
-
-			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $secondUserHeaders;
-			$result = $response.value;
+			$result = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $secondUserHeaders -Body $requestBodyJson;
 
 			# Assert
 			$result.Id | Should Be $differentCoffee.Id;
 		}
 
 		It "MostOrderedCoffeeByUser-OfOtherSpecifiedUserThanRequestedUserThrows403" -test {
+			# Arrange
 			$requestUri = "$baseUri/GetMostOrderedCoffeeByUser";
 
-			# Arrange
 			$requestBody = @{
-				Name = $secondUserName
+				Email = $secondUserName
+				From = [DateTimeOffset]::MinValue.ToString($dateTimeFormat);
+				Until = [DateTimeOffset]::Now.ToString($dateTimeFormat);
 			};
 
+			$requestBodyJson = $requestBody | ConvertTo-Json;
+
 			# Act / Assert
-			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBody; } | Should Throw "403";
+			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBodyJson; } | Should Throw "403";
 		}
-		#>
 	}
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Delete Test-Data...";
