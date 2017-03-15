@@ -139,13 +139,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 				Until = $timeAfterTestDataCreationRequests.ToString($dateTimeFormat)
 			}
 
-			$currentTestRequestHeaders = $normalUserHeaders;
-			$currentTestRequestHeaders.Add("Content-Type","application/json")
-
 			$requestBodyJson = $requestBody | ConvertTo-Json;
 
 			# Act
-			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $currentTestRequestHeaders -Body $requestBodyJson;
+			$response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserHeaders -Body $requestBodyJson;
 			$result = $response.value;
 
 			# Assert
