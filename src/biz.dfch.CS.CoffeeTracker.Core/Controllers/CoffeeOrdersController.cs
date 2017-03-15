@@ -188,6 +188,12 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
             var from = DateTimeOffset.MinValue;
             var until = DateTimeOffset.Now;
 
+            if (parameters != null)
+            {
+                from = (DateTimeOffset) parameters["From"];
+                until = (DateTimeOffset) parameters["Until"];
+            }
+
             var coffeesOrdered = statisticsManager.CoffeeConsumptionByUser(userManager.GetCurrentUser(), from, until);
             return Ok(coffeesOrdered);
         }

@@ -4,8 +4,11 @@
 . ..\Functions\CRUD-Coffee.ps1
 
 Describe "StatisticsTest" -Tags "StatisticsTest" {
+	Write-Host -ForegroundColor Magenta "Create test data pls wait";
+	Write-Host -ForegroundColor Magenta "This process will take at least 30 seconds...";
 	$entityPrefix = "StatisticsTest";
 	$baseuri = "CoffeeTracker/api/CoffeeOrders"
+	$dateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
 
 	# Admin Creds
 	$adminName = "admin@example.com";
@@ -55,6 +58,7 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	
 	## Needed for tests later
 	$timeBeforeTestDataCreationRequests = [DateTimeOffset]::Now;
+	Start-Sleep -Seconds 5;
 
 	# Create CoffeeOrders test data
 	for($i = 0; $i -lt $normalUserOrders; $i++)
@@ -70,9 +74,11 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		Invoke-RestMethod -Method Post -Uri $baseuri -Headers $normalUserHeaders -Body $coffeeOrderRequestBody;
 	}
 	## Needed for tests later
+	Start-Sleep -Seconds 10;
 	$timeAfterTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	## Needed for tests later
+	Start-Sleep -Seconds 2;
 	$timeBeforeSecondTestDataCreationRequests = [DateTimeOffset]::Now;
 
 	# Create CoffeOrders test data for second user
@@ -90,10 +96,12 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 	}
 
 	## Needed for tests later
+	Start-Sleep -Seconds 10;
 	$timeAfterSecondTestDataCreationRequests = [DateTimeOffset]::Now;
+	Write-Host -ForegroundColor Magenta "Done! starting tests";
 
 	Context "CoffeeConsumptionOfAllUsers" {
-	
+	<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -117,8 +125,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$requestUri = "$baseUri/GetCoffeeConsumption";
 
 			$requestBody = @{
-				From = $timeBeforeTestDataCreationRequests
-				Until = $timeAfterTestDataCreationRequests
+				From = $timeBeforeTestDataCreationRequests.ToString($dateTimeFormat)
+				Until = $timeAfterTestDataCreationRequests.ToString($dateTimeFormat)
 			}
 
 			$currentTestRequestHeaders = $normalUserHeaders;
@@ -133,9 +141,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Be $normalUserOrders;
 		}
+		#>
 	}
 	Context "CoffeeConsumptionByCoffee" {
-		
+		<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -185,10 +194,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result | Should Be $normalUserOrders;
 		}
+		#>
 	}
 
 	Context "CoffeeConsumptionByUser" {
-		
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -220,8 +229,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 		
 			# prepare request
 			$requestBody = @{
-				From = $timeBeforeTestDataCreationRequests
-				Until = $timeAfterTestDataCreationRequests
+				From = $timeBeforeTestDataCreationRequests.ToString($dateTimeFormat)
+				Until = $timeAfterTestDataCreationRequests.ToString($dateTimeFormat)
 			}
 
 			$currentTestRequestHeaders = $normalUserHeaders;
@@ -235,9 +244,11 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			$result.value | Should Be $normalUserOrders;
 		}
+		<#
+		#>
 	}
 	Context "MostOrderedCoffee" {
-		
+		<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -299,9 +310,10 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result | Should Not Be $null;
 			$result.Id | Should Be $coffee.Id;
 		}
+		#>
 	}
 	Context "MostOrderedCoffeeByUser" {
-
+	<#
 		It "Warmup" -Test {
 			$true | Should Be $true;
 		}
@@ -349,6 +361,21 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Act / Assert
 			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBody; } | Should Throw "403";
 		}
+		#>
+	}
+	AfterAll {
+		Write-Host -ForegroundColor Magenta "Delete Test-Data...";
+		$entityPrefix = "StatisticsTest";
+		$queryOption = "startswith(Name, '$entityPrefix')";
+
+		$adminName = "admin@example.com";
+		$adminPw = "123456";
+		$adminToken = Get-Token -UserName $adminName -Password $adminPw;
+
+		Delete-Entities -EntityName "CoffeeOrders" -OdataComparison $queryOption -Token $adminToken;
+		Delete-Entities -EntityName "Coffees" -OdataComparison $queryOption -Token $adminToken;
+		Delete-Entities -EntityName "Users" -OdataComparison $queryOption -Token $adminToken;
+		Write-Host -ForegroundColor Green "TestData Deleted!";
 	}
 }
 
