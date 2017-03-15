@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Diagnostics;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
@@ -25,7 +24,6 @@ using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
 using biz.dfch.CS.Web.Utilities.OData;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Edm;
 using static biz.dfch.CS.CoffeeTracker.Core.Logging.Logging;
 
 namespace biz.dfch.CS.CoffeeTracker.Core
