@@ -342,6 +342,47 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Act / Assert
 			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBodyJson; } | Should Throw "403";
 		}
+
+		It "OutOfStock-EmailSentWhenCoffeeRanOutOfStockByCoffeeOrderCration" -test {
+			# Arrange
+			$currentTestCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+			$currentTestCoffeeBrand = "$entityPrefix-BRAND-{0}" -f [Guid]::NewGuid();
+			$currentTestCoffeeStock = 5;
+
+			$currentTestCoffee = CRUD-Coffee -Name $currentTestCoffeeName -Brand $currentTestCoffeeBrand -Stock $currentTestCoffeeStock -Token $adminToken -Create;
+
+			# Act
+			for($i = 0; $i -lt $currentTestCoffeeStock; $i++)
+			{
+				$currentTestCoffeeOrderName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+		
+				$currentTestCoffeeOrderRequestBody = @{
+					Name = $currentTestCoffeeOrderName
+					UserId = $secondUser.Id
+					CoffeeId = $currentTestCoffee.Id
+				}
+		
+				Invoke-RestMethod -Method Post -Uri $baseuri -Headers $secondUserHeaders -Body $currentTestCoffeeOrderRequestBody;
+			}
+
+			# Assert
+			Write-Host -ForegroundColor Yellow "[INFO] Email sent. To verify it worked check the mailbox of the admin/s.";
+		}
+
+		It "OutOfStock-EmailSentWhenCoffeeRanOutOfStockByUpdatingCoffee" -test {
+			# Arrange
+			$currentTestCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
+			$currentTestCoffeeBrand = "$entityPrefix-BRAND-{0}" -f [Guid]::NewGuid();
+			$currentTestCoffeeStock = 5;
+
+			$currentTestCoffee = CRUD-Coffee -Name $currentTestCoffeeName -Brand $currentTestCoffeeBrand -Stock $currentTestCoffeeStock -Token $adminToken -Create;
+
+			# Act
+			CRUD-Coffee -Name $currentTestCoffeeName -Brand $currentTestCoffeeBrand -Stock 0 -Token $adminToken -Update;
+
+			# Assert
+			Write-Host -ForegroundColor Yellow "[INFO] Email sent. To verify it worked check the mailbox of the admin/s.";
+		}
 	}
 
 	AfterAll {
