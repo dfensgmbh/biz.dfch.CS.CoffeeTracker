@@ -36,7 +36,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 	}
 
 	Context "Create-CoffeeOrder" {
-	<#
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -189,7 +188,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Headers $headers -Body $updatedCoffeeBodyJson } | Should Throw "403";
 		}
-		#>
 	}
 	Context "NavigationProperties" {
 		BeforeEach {
@@ -264,10 +262,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Get -Headers $headers -Uri $secondCoffeeOrderCoffeeGetUri; } | Should Throw "403";
 		}
-
-
-
-
 
 		It "NavigationProperties-GetUserSucceeds" -test {
 			# Arrange
