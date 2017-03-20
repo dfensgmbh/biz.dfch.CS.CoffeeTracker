@@ -80,6 +80,23 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Good day,&lt;br&gt;
+        ///&lt;br&gt;
+        /// A coffee just now ran out of stock. Consider to buy new coffee of this sort:&lt;br&gt; 
+        /// Coffee Name: &lt;blockquote&gt;{0}&lt;/blockquote&gt; 
+        /// Coffee Brand: &lt;blockquote&gt;{1}&lt;/blockquote&gt; 
+        ///&lt;br&gt;
+        /// Regards&lt;br&gt; 
+        ///&lt;br&gt;
+        /// The CoffeeTracker Api.
+        /// </summary>
+        internal static string EmailManager_CreateAndSendOutOfStockEmail_ {
+            get {
+                return ResourceManager.GetString("EmailManager_CreateAndSendOutOfStockEmail_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Get {0}s.
         /// </summary>
         internal static string Get_Entities {
@@ -126,7 +143,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop update {0} with Id: {1} 
+        ///   Looks up a localized string similar to Stop modifiedCoffee {0} with Id: {1} 
         /// {2}.
         /// </summary>
         internal static string Update_Entity_Patch_Stop {
@@ -145,7 +162,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} with id {1} updated. entity: 
+        ///   Looks up a localized string similar to {0} with id {1} modifiedCoffeed. entity: 
         /// {2}.
         /// </summary>
         internal static string Update_Entity_Put_Stop {

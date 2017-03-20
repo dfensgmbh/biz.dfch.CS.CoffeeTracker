@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
@@ -23,6 +24,7 @@ using biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker;
 using biz.dfch.CS.CoffeeTracker.Core.Stores;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Exchange.WebServices.Data;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 {
@@ -200,6 +202,19 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         {
             var result = db.Users.FirstOrDefault(u => u.UserName == name);
             return null != result;
+        }
+
+        public List<EmailAddress> GetAdminEmailAddresses()
+        {
+            var admins = db.ApplicationUsers.Where(a => a.IsAdmin).ToList();
+            
+            var adminEmailAdresses = new List<EmailAddress>();
+            foreach (var admin in admins)
+            {
+                adminEmailAdresses.Add(admin.Name);
+            }
+
+            return adminEmailAdresses;
         }
     }
 }
