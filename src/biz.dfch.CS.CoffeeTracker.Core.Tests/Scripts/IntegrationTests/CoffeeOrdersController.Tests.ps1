@@ -36,6 +36,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 	}
 
 	Context "Create-CoffeeOrder" {
+	<#
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -187,6 +188,140 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 			# Act / Assert
 			{ Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Headers $headers -Body $updatedCoffeeBodyJson } | Should Throw "403";
+		}
+		#>
+	}
+	Context "NavigationProperties" {
+		BeforeEach {
+			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
+
+			$authString = "bearer {0}" -f $token;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			$body = @{
+				Name = $name
+				UserId = $user.Id
+				CoffeeId = $coffee.Id
+			}
+
+			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers;
+		}
+
+		It "NavigationProperties-GetCoffeeSucceeds" -test {
+			# Arrange
+			$getUri = "$uri({0})/Coffee" -f $coffeeOrder.Id;
+
+			# Act
+			$result = Invoke-RestMethod -Method Get -Headers $headers -Uri $getUri;
+
+			# Assert
+			$result.Id | Should Be $coffee.Id;
+			$result.Name | Should Be $coffee.Name;
+		}
+
+		It "NavigationProperties-GetCoffeeFromCoffeeOrderOfOtherUserAsAdminSucceeds" -test {
+			# Arrange
+			$authString = "bearer {0}" -f $adminToken;
+
+			$adminHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$adminHeaders.Add("Authorization", $authString);
+
+			$getUri = "$uri({0})/Coffee" -f $coffeeOrder.Id;
+
+			# Act
+			$result = Invoke-RestMethod -Method Get -Headers $adminHeaders -Uri $getUri;
+
+			# Assert
+			$result.Id | Should Be $coffee.Id;
+			$result.Name | Should Be $coffee.Name;
+		}
+		
+		It "NavigationProperties-GetCoffeeFromCoffeeOrderOfOtherUserAsNormalUserThrows403" -test {
+			# Arrange
+			$secondCoffeeOrderName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+
+			$authString = "bearer {0}" -f $secondUsertoken;
+
+			$secondUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$secondUserHeaders.Add("Authorization", $authString);
+
+			$secondBody = @{
+				Name = $secondCoffeeOrderName
+				UserId = $secondUser.Id
+				CoffeeId = $coffee.Id
+			}
+
+			$secondCoffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $secondBody -Headers $secondUserHeaders;
+			$secondCoffeeOrderCoffeeGetUri = "$uri({0})/Coffee" -f $secondCoffeeOrder.Id;
+
+			$authString = "bearer {0}" -f $token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Get -Headers $headers -Uri $secondCoffeeOrderCoffeeGetUri; } | Should Throw "403";
+		}
+
+
+
+
+
+		It "NavigationProperties-GetUserSucceeds" -test {
+			# Arrange
+			$getUri = "$uri({0})/ApplicationUser" -f $coffeeOrder.Id;
+
+			# Act
+			$result = Invoke-RestMethod -Method Get -Headers $headers -Uri $getUri;
+
+			# Assert
+			$result.Id | Should Be $user.Id;
+			$result.Name | Should Be $user.Name;
+		}
+
+		It "NavigationProperties-GetUserFromCoffeeOrderOfOtherUserAsAdminSucceeds" -test {
+			# Arrange
+			$authString = "bearer {0}" -f $adminToken;
+
+			$adminHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$adminHeaders.Add("Authorization", $authString);
+
+			$getUri = "$uri({0})/ApplicationUser" -f $coffeeOrder.Id;
+
+			# Act
+			$result = Invoke-RestMethod -Method Get -Headers $adminHeaders -Uri $getUri;
+
+			# Assert
+			$result.Id | Should Be $user.Id;
+			$result.Name | Should Be $user.Name;
+		}
+		
+		It "NavigationProperties-GetUserFromCoffeeOrderOfOtherUserAsNormalUserThrows403" -test {
+			# Arrange
+			$secondCoffeeOrderName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+
+			$authString = "bearer {0}" -f $secondUsertoken;
+
+			$secondUserHeaders = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$secondUserHeaders.Add("Authorization", $authString);
+
+			$secondBody = @{
+				Name = $secondCoffeeOrderName
+				UserId = $secondUser.Id
+				CoffeeId = $coffee.Id
+			}
+
+			$secondCoffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $secondBody -Headers $secondUserHeaders;
+			$secondCoffeeOrderCoffeeGetUri = "$uri({0})/ApplicationUser" -f $secondCoffeeOrder.Id;
+
+			$authString = "bearer {0}" -f $token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+
+			# Act / Assert
+			{ Invoke-RestMethod -Method Get -Headers $headers -Uri $secondCoffeeOrderCoffeeGetUri; } | Should Throw "403";
 		}
 	}
 	AfterAll {
