@@ -158,14 +158,14 @@
     <value>{0} with id {1} Removed</value>
   </data>
   <data name="EmailManager_CreateAndSendOutOfStockEmail_" xml:space="preserve">
-    <value>Good day, 
-
- a coffee just now ran out of stock. Consider to buy new coffee of this sort: 
- Coffee Name 	 {0}  
- Coffee Brand 	 {1} 
-
- Regards
-
+    <value>Good day,&lt;br&gt;
+&lt;br&gt;
+ A coffee just now ran out of stock. Consider to buy new coffee of this sort:&lt;br&gt; 
+ Coffee Name: &lt;blockquote&gt;{0}&lt;/blockquote&gt; 
+ Coffee Brand: &lt;blockquote&gt;{1}&lt;/blockquote&gt; 
+&lt;br&gt;
+ Regards&lt;br&gt; 
+&lt;br&gt;
  The CoffeeTracker Api</value>
   </data>
 </root>

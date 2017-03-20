@@ -312,6 +312,11 @@
     <Compile Include="Managers\CoffeesManager.cs" />
     <Compile Include="Managers\EmailManager.cs" />
     <Compile Include="Managers\StatisticsManager.cs" />
+    <Compile Include="Message.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Message.resx</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201703081204394_InitialRollup.cs" />
     <Compile Include="Migrations\201703081204394_InitialRollup.Designer.cs">
       <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>
@@ -332,11 +337,6 @@
     <Compile Include="Controllers\CoffeeOrdersController.cs" />
     <Compile Include="Controllers\CoffeesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Message.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Message.resx</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="DbContext\CoffeeTrackerDbContext.cs" />
@@ -371,8 +371,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Message.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Message.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Message.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703081204394_InitialRollup.resx">
       <DependentUpon>201703081204394_InitialRollup.cs</DependentUpon>

@@ -47,7 +47,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(null != recipients);
 
             var text = Message.EmailManager_CreateAndSendOutOfStockEmail_;
-            text = string.Format(text, coffee.Name, coffee.Stock);
+            text = string.Format(text, coffee.Name, coffee.Brand);
 
             var message = new EmailMessage(service)
             {

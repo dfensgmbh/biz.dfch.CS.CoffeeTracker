@@ -80,14 +80,14 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Good day, 
-        ///
-        /// a coffee just now ran out of stock. Consider to buy new coffee of this sort: 
-        /// Coffee Name 	 {0}  
-        /// Coffee Brand 	 {1} 
-        ///
-        /// Regards
-        ///
+        ///   Looks up a localized string similar to Good day,&lt;br&gt;
+        ///&lt;br&gt;
+        /// A coffee just now ran out of stock. Consider to buy new coffee of this sort:&lt;br&gt; 
+        /// Coffee Name: &lt;blockquote&gt;{0}&lt;/blockquote&gt; 
+        /// Coffee Brand: &lt;blockquote&gt;{1}&lt;/blockquote&gt; 
+        ///&lt;br&gt;
+        /// Regards&lt;br&gt; 
+        ///&lt;br&gt;
         /// The CoffeeTracker Api.
         /// </summary>
         internal static string EmailManager_CreateAndSendOutOfStockEmail_ {
