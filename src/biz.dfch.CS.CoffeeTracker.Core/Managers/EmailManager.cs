@@ -37,8 +37,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             service.AutodiscoverUrl(userMail);
         }
                 
-        public void CreateAndSendOutOfStockEmail(EmailAddress[] recipients)
+        public void CreateAndSendOutOfStockEmail(IEnumerable<EmailAddress> recipients)
         {
+            Contract.Requires(null != recipients);
+
             var message = new EmailMessage(service)
             {
                 Subject = "Coffeestock",

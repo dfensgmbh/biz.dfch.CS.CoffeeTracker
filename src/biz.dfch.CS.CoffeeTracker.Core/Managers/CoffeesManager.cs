@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web.Http.OData;
@@ -27,6 +28,9 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     public class CoffeesManager
     {
         private readonly CoffeeTrackerDbContext db;
+
+        private readonly Lazy<EmailManager> emailManagerLazy = new Lazy<EmailManager>(() => new EmailManager());
+        private EmailManager emailManager => emailManagerLazy.Value;
         private readonly PermissionChecker permissionChecker;
 
         public CoffeesManager()
@@ -59,6 +63,20 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             coffee.Stock--;
 
             db.SaveChanges();
+        }
+
+        public void CheckStock(long key)
+        {
+            Contract.Requires(0 < key, "|404|");
+            var coffee = db.Coffees.FirstOrDefault(c => c.Id == key);
+            Contract.Assert(null != coffee, "|404|");
+
+            var adminMails = new ApplicationUserManager(new AppUserStore()).GetAdminEmailAddresses();
+
+            if (0 == coffee.Stock)
+            {
+                emailManager.CreateAndSendOutOfStockEmail(adminMails);
+            }
         }
 
         public Coffee Get(string name, string brand)
@@ -96,6 +114,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             coffee.Stock = modifiedCoffee.Stock;
 
             db.SaveChanges();
+
+            CheckStock(coffee.Id);
 
             return Get(coffee.Id);
         }
@@ -136,6 +156,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             }
 
             db.SaveChanges();
+
+            CheckStock(coffee.Id);
 
             return coffee;
         }
