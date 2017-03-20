@@ -76,10 +76,20 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 		It "Create-CoffeeOrderWithCoffeeNotOnStockThrows400" -test {
 			# Arrange
-			CRUD-Coffee -Name $coffeeName -Brand $coffeeBrand -Stock 0 -Token $adminToken -Update;
+			$currentTestCoffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
+			$currentTestCoffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
+
+			$currentTestCoffee = CRUD-Coffee -Name $currentTestCoffeeName -Brand $currentTestCoffeeBrand -Stock 0 -Token $adminToken -Create;
+			
+			$currentTestCoffeeOrderBody = @{
+				Name = $name
+				UserId = $user.Id
+				CoffeeId = $currentTestCoffee.Id
+			}
+
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers; } | Should Throw "400";
+			{ Invoke-RestMethod -Method Post -Uri $uri -Body $currentTestCoffeeOrderBody -Headers $headers; } | Should Throw "400";
 		}
 
 		It "Create-CoffeeOrderAsOtherUserThrows403" -test {
