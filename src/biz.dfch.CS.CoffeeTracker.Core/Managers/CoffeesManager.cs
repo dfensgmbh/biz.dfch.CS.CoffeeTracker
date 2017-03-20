@@ -30,7 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         private readonly CoffeeTrackerDbContext db;
 
         private readonly Lazy<EmailManager> emailManagerLazy = new Lazy<EmailManager>(() => new EmailManager());
-        private EmailManager emailManager => emailManagerLazy.Value;
+        private EmailManager EmailManager => emailManagerLazy.Value;
         private readonly PermissionChecker permissionChecker;
 
         public CoffeesManager()
@@ -75,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             if (0 == coffee.Stock)
             {
-                emailManager.CreateAndSendOutOfStockEmail(adminMails);
+                EmailManager.CreateAndSendOutOfStockEmail(adminMails);
             }
         }
 
