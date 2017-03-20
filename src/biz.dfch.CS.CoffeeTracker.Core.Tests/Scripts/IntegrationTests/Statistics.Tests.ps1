@@ -197,7 +197,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$result | Should Be $secondUserOrders;
 		}
 	}
-
 	Context "CoffeeConsumptionByCurrentUser" {
 		It "Warmup" -Test {
 			$true | Should Be $true;
@@ -351,6 +350,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			$currentTestCoffeeStock = 5;
 
 			$currentTestCoffee = CRUD-Coffee -Name $currentTestCoffeeName -Brand $currentTestCoffeeBrand -Stock $currentTestCoffeeStock -Token $adminToken -Create;
+
+			$secondUserHeaders.Remove("Content-Type");
 
 			# Act
 			for($i = 0; $i -lt $currentTestCoffeeStock; $i++)

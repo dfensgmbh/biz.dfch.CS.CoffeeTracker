@@ -112,6 +112,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             Contract.Requires(0 < coffeeOrder.UserId, "|404|");
 
             coffeeOrder.Created = DateTimeOffset.Now;
+
+            var coffee = coffeesManager.Get(coffeeOrder.CoffeeId);
+            Contract.Assert(0 < coffee.Stock, "|400|");
+
             coffeesManager.DecreaseStock(coffeeOrder.CoffeeId);
             
             db.CoffeeOrders.Add(coffeeOrder);

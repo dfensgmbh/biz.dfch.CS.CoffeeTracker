@@ -127,7 +127,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		}
 		It "Update-CoffeePutChangeNameAndBrandSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Stock 1 -Create;
 
 			$coffee.Name = $newName;
 			$coffee.Brand = $newBrand;
@@ -157,7 +157,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeePatchChangeNameAndBrandSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 
 			# Act
 			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
@@ -179,7 +179,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeePatchChangeNameSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 
 			# Act
 			CRUD-Coffee -Name $name -NewName $newName -Brand $brand -Token $adminToken -Update;
@@ -201,7 +201,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeePatchChangeBrandSucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 
 			# Act
 			CRUD-Coffee -Name $name -Brand $brand -NewBrand $newBrand -Token $adminToken -Update;
@@ -223,7 +223,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeePatchChangePriceAndStockAndLastDeliverySucceeds" -Test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 			$price = 4.20;
 			$stock = 42;
 			$lastDelivery = [DateTimeOffset]::Now.ToString('yyyy-MM-ddTHH:mm:sszzz');
@@ -250,7 +250,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeeChangeNameAndBrandToExistingNameAndBrandThrows400" -test {
 			# Arrange
-			$coffeeToBeChanged = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffeeToBeChanged = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 			$coffee = CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Create;
 
 			# Act / Assert
@@ -259,7 +259,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeeChangeNameAndBrandAsNonAdminThrows403" -test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 
 			# Act / Assert
 			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $normalUserToken -Update } | Should Throw "403";
@@ -267,7 +267,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 
 		It "Update-CoffeeChangeNameAndBrandNotLoggedInThrows401" -test {
 			# Arrange
-			$coffee = CRUD-Coffee -Name $newName -Brand $newBrand -Token $adminToken -Create;
+			$coffee = CRUD-Coffee -Name $newName -Brand $newBrand -Stock 1 -Token $adminToken -Create;
 
 			# Act / Assert
 			{ CRUD-Coffee -Name $name -NewName $newName -Brand $brand -NewBrand $newBrand -Token $token } | Should Throw "401";
@@ -279,7 +279,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$name = "$entityPrefix-GetTests-{0}" -f [guid]::NewGuid();
 			$brand = "Test-Brand-{0}" -f [guid]::NewGuid();
 
-			$result = CRUD-Coffee -Name $name -Brand $brand -Token $adminToken -Create;
+			$result = CRUD-Coffee -Name $name -Brand $brand -Stock 1 -Token $adminToken -Create;
 		}
 
 		It "Get-CoffeeWithIdSucceeds" -test {
