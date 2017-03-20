@@ -28,8 +28,8 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
         public EmailManager()
         {
-            var userMail = "user";
-            var password = "pw";
+            var userMail = ExchangeCredentials.EXCHANGE_USERNAME;
+            var password = ExchangeCredentials.EXCHANGE_PASSWORD;
 
             service = new ExchangeService();
             service.Credentials = new WebCredentials(userMail, password);
