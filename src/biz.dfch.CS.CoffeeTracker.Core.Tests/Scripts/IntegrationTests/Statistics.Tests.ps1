@@ -342,7 +342,8 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Act / Assert
 			{ $response = Invoke-RestMethod -Method Post -Uri $requestUri -Headers $normalUserheaders -Body $requestBodyJson; } | Should Throw "403";
 		}
-
+	}
+	Context "OutOfStock" {
 		It "OutOfStock-EmailSentWhenCoffeeRanOutOfStockByCoffeeOrderCration" -test {
 			# Arrange
 			$currentTestCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
@@ -368,7 +369,6 @@ Describe "StatisticsTest" -Tags "StatisticsTest" {
 			# Assert
 			Write-Host -ForegroundColor Yellow "[INFO] Email sent. To verify it worked check the mailbox of the admin/s.";
 		}
-
 		It "OutOfStock-EmailSentWhenCoffeeRanOutOfStockByUpdatingCoffee" -test {
 			# Arrange
 			$currentTestCoffeeName = "$entityPrefix-{0}" -f [Guid]::NewGuid();
