@@ -167,9 +167,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|400|");
 
-            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, key.ToString());
+            var coffeeOrder = coffeeOrdersManager.Get(key);
+            Contract.Assert(null != coffeeOrder, "|404|");
 
-            return Ok(coffeesManager.Get(key));
+            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.COFFEE, coffeeOrder.CoffeeId.ToString());
+
+            var coffee = coffeesManager.Get(coffeeOrder.CoffeeId);
+            Contract.Assert(null != coffee, "|500|");
+
+            return Ok(coffee);
         }
 
         // GET: api/CoffeeOrders(5)/ApplicationUser
@@ -178,9 +184,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         {
             Contract.Requires(0 < key, "|400|");
 
-            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, key.ToString());
+            var coffeeOrder = coffeeOrdersManager.Get(key);
+            Contract.Assert(null != coffeeOrder, "|404|");
 
-            return Ok(userManager.GetUser(key));
+            ControllerLogging.LogGetEntity(ControllerLogging.ModelNames.USER, coffeeOrder.CoffeeId.ToString());
+
+            var user = userManager.GetUser(coffeeOrder.UserId);
+            Contract.Assert(null != user, "|500|");
+
+            return Ok(user);
         }
 
         [HttpPost]
