@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web;
 using Microsoft.Exchange.WebServices.Data;
@@ -50,6 +51,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             }
 
             message.Send();
+            Contract.Assert(message.IsSubmitted, "|500|");
         }
     }
 }
