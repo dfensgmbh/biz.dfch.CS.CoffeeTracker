@@ -94,7 +94,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             var exists = Validator.ExistsInDatabase(key);
             Contract.Assert(exists, "|404|");
 
-            var hasPermission = permissionChecker.HasPermission(Get(key));
+            var hasPermission = permissionChecker.HasPermission(Get(key), update);
             Contract.Assert(hasPermission, "|403|");
 
             var coffeeOrder = Get(key);

@@ -36,7 +36,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 	}
 
 	Context "Create-CoffeeOrder" {
-		<#
 		BeforeEach {
 			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
@@ -118,9 +117,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers } | Should Throw "403";
 		}
-
-
-		#>
 	}
 
 	Context "Update-CoffeeOrder" {
@@ -177,7 +173,7 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			$result.CoffeeId | Should Be $newCoffee.Id;
 		}
 
-		It "Update-CoffeeOrderUserIdThrows403" -test {
+		It "Update-CoffeeOrderChangeUserIdAsNormalUserThrows403" -test {
 			# Arrange
 			$body["UserId"] = $secondUser.Id;
 			$coffeeOrdersUpdateUri = "{0}({1})" -f $coffeeOrdersUpdateUri, $coffeeOrder.Id;
@@ -192,8 +188,6 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Headers $headers -Body $updatedCoffeeBodyJson } | Should Throw "403";
 		}
-
-	#>
 	}
 	AfterAll {
 		Write-Host -ForegroundColor Magenta "Delete Test data..."
