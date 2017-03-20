@@ -20,6 +20,13 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 		$user = CRUD-User -UserName $userName -Password $userPassword -Create;
 		$token = Get-Token -UserName $userName -Password $userPassword;
 
+		# Create second user
+		$userSecondName = "$entityPrefix-{0}@Example.com" -f [guid]::NewGuid();;
+		$userSecondPassword = "123456";
+
+		$Seconduser = CRUD-User -UserName $userSecondName -Password $userSecondPassword -Create;
+		$SecondUsertoken = Get-Token -UserName $userSecondName -Password $userSecondPassword;
+
 		# Create Coffee
 		$coffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 		$coffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
@@ -86,9 +93,8 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			# Act / Assert
 			{ Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers; } | Should Throw "403";
 		}
-		<#
 
-		It "Create-CoffeeOrderWithoutCoffeeIdThrows" -test {
+		It "Create-CoffeeOrderWithoutCoffeeIdThrows400" -test {
 			# Arrange
 			$body.Remove("CoffeeId");
 
@@ -96,20 +102,27 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers } | Should Throw "400";
 		}
 
-		It "Create-CoffeeOrderWithoutUserIdThrows" -test {
+		It "Create-CoffeeOrderWithoutUserIdThrows400" -test {
 			# Arrange
 			$body.Remove("UserId");
 
 			# Act / Assert
 			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers } | Should Throw "400";
 		}
-		#>
+
+		It "Create-CoffeeOrderAsOtherUserThrows403" -test {
+			# Arrange
+			$body["UserId"] = $secondUser.Id;
+
+			# Act / Assert
+			{ $result = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers } | Should Throw "403";
+		}
 	}
 
-	<#
 	Context "Update-CoffeeOrder" {
 		BeforeEach {
-			$uri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+			$coffeeOrdersUpdateUri = "{0}{1}" -f $baseUri, "CoffeeOrders"
+
 			$name = "$entityPrefix-{0}" -f [guid]::NewGuid();
 
 			$authString = "bearer {0}" -f $token;
@@ -121,10 +134,9 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 				Name = $name
 				UserId = $user.Id
 				CoffeeId = $coffee.Id;
-				Created = [DateTime]::Now;
 			}
 
-			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $uri -Body $body -Headers $headers;
+			$coffeeOrder = Invoke-RestMethod -Method Post -Uri $coffeeOrdersUpdateUri -Body $body -Headers $headers;
 		}
 		
 		It "Warmup" -Test {
@@ -133,64 +145,65 @@ Describe "CoffeeOrdersController" -Tags "CoffeeOrdersController" {
 
 		It "Update-CoffeeOrderCoffeeForeignKeySucceeds" -test {
 			# Arrange
+			$coffeeOrdersUpdateUri = "{0}({1})" -f $coffeeOrdersUpdateUri, $coffeeOrder.Id;
 
 			# # Create Coffee
 			$newCoffeeName = "$entityPrefix-{0}" -f [guid]::NewGuid();
 			$newCoffeeBrand = "Test-Brand-{0}" -f [guid]::NewGuid();
-			$newCoffeeUri = "{0}{1}" -f $baseUri, "Coffees";
 
-			$newCoffeeBody = @{
-				Name = $coffeeName
-				Brand = $coffeeBrand
-				Price = 0.00
-				Stock = 0
-				LastDelivery = [DateTime]::Now
-			}
+			$newCoffee = CRUD-Coffee -Name $newCoffeeName -Brand $newCoffeeBrand -Token $adminToken -Create;
 
-			$newCoffee = Invoke-RestMethod -Method Post -Uri $newCoffeeUri -Body $newCoffeeBody -Headers $headers;
+			$body["CoffeeId"] = $newCoffee.Id;
 
-			$body.Add("odata.metadata", 'CoffeeTracker/api/$metadata#CoffeeOrders/@Element');
-			$body.CoffeeId = $newCoffee.Id;
+			$updatedCoffeeOrderBodyJson = $body | ConvertTo-Json;
 
-			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
-			$coffeeOrderJson = $body | ConvertTo-Json;
-			$headers.Add("Content-Type", "application/json;odata=verbose")
+			$authString = "bearer {0}" -f $token;
+
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json");
 
 			# Act
-			Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -Headers $headers;
+			Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Body $updatedCoffeeOrderBodyJson -Headers $headers;
 
 			# Assert
-			$result = Invoke-RestMethod -Method Get -Uri $uri;
+			$result = Invoke-RestMethod -Method Get -Uri $coffeeOrdersUpdateUri -Headers $headers;
 			$result | Should Not Be $null;
 			$result.UserId | Should Be $user.Id;
 			$result.CoffeeId | Should Be $newCoffee.Id;
 		}
 
-		It "Update-CoffeeOrderChangeCoffeeOrderIdThrows" -test {
+		It "Update-CoffeeOrderChangeUserIdAsNormalUserThrows403" -test {
 			# Arrange
-			$uri = "{0}{1}({2}L)" -f $baseUri, "CoffeeOrders", $coffeeOrder.Id;
-			$coffeeOrder.Id = $coffeeOrder.Id + 1;
-			$coffeeOrderJson = $coffeeOrder | ConvertTo-Json;
+			$body["UserId"] = $secondUser.Id;
+			$coffeeOrdersUpdateUri = "{0}({1})" -f $coffeeOrdersUpdateUri, $coffeeOrder.Id;
+
+			$updatedCoffeeBodyJson = $body | ConvertTo-Json;
+
+			$authString = "bearer {0}" -f $token;
+			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
+			$headers.Add("Authorization", $authString);
+			$headers.Add("Content-Type", "application/json");
 
 			# Act / Assert
-			{ Invoke-RestMethod -Method Put -Uri $uri -Body $coffeeOrderJson -Headers $headers } | Should Throw;
+			{ Invoke-RestMethod -Method Put -Uri $coffeeOrdersUpdateUri -Headers $headers -Body $updatedCoffeeBodyJson } | Should Throw "403";
 		}
-
 	}
-	#>
-	<#
 	AfterAll {
-		Write-Host -ForegroundColor Magenta "Check if test data was deleted..."
+		Write-Host -ForegroundColor Magenta "Delete Test data..."
 
 		foreach($entitySet in $usedEntitieSets) {
 
 			$queryOption = "startswith(Name, '{0}')" -f $entityPrefix;
 			$getUri = '{0}{1}?$filter={2}' -f $baseUri, $entitySet ,$queryOption;
 
-			DeleteEntities -EntityName $entitySet -OdataComparison $queryOption;
+			$adminName = "Admin@Example.com";
+			$adminPW = "123456";
+			$adminToken = Get-Token -UserName $adminName -Password $adminPW;
+
+			Delete-Entities -EntityName $entitySet -OdataComparison $queryOption -Token $adminToken;
 		}
 	}
-	#>
 }
 
 #

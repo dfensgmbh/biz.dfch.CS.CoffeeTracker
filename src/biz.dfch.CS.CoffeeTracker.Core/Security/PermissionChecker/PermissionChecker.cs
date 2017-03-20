@@ -73,5 +73,24 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Security.PermissionChecker
             }
             return currentUser.Id == coffeeOrder.UserId;
         }
+
+        public bool HasPermission(CoffeeOrder toBeUpdated, CoffeeOrder update)
+        {
+            Contract.Requires(null != toBeUpdated, "|400|");
+            Contract.Requires(null != update, "|400|");
+            if (SkipPermissionChecks)
+            {
+                return true;
+            }
+            Contract.Assert(null != currentUser, "|500|");
+            if (currentUser.IsAdmin || SkipPermissionChecks)
+            {
+                return true;
+            }
+            var isNotChangedUserId = toBeUpdated.UserId == update.UserId;
+            var isSameUserIdAsCurrentUser = toBeUpdated.UserId == currentUser.Id;
+
+            return isNotChangedUserId && isSameUserIdAsCurrentUser;
+        }
     }
 }

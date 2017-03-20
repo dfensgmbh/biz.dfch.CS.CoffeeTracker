@@ -81,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         public async Task<IHttpActionResult> Put([FromODataUri] long key, CoffeeOrder modifiedCoffeeOrder)
         {
             Contract.Requires(0 < key, "|404|");
-            Contract.Requires(null != modifiedCoffeeOrder, "|404|");
+            Contract.Requires(null != modifiedCoffeeOrder, "|400|");
 
             Validate(modifiedCoffeeOrder);
 
@@ -100,7 +100,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // POST: api/CoffeeOrders
-        public async Task<IHttpActionResult> Post(CoffeeOrder coffeeOrder)
+        public IHttpActionResult Post(CoffeeOrder coffeeOrder)
         {
             Contract.Requires(null != coffeeOrder, "|404|");
 
@@ -111,7 +111,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
             ControllerLogging.LogInsertEntityStart(MODELNAME, coffeeOrder);
 
-            coffeeOrdersManager.Create(coffeeOrder);
+            coffeeOrder = coffeeOrdersManager.Create(coffeeOrder);
 
             ControllerLogging.LogInsertEntityStop(MODELNAME, coffeeOrder);
 
@@ -120,7 +120,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
 
         // PATCH: api/CoffeeOrders(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
+        public IHttpActionResult Patch([FromODataUri] long key, Delta<CoffeeOrder> patch)
         {
             Contract.Requires(0 < key, "|404|");
             Contract.Requires(null != patch, "|404|");
@@ -145,7 +145,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         }
 
         // DELETE: api/CoffeeOrders(5)
-        public async Task<IHttpActionResult> Delete([FromODataUri] long key)
+        public IHttpActionResult Delete([FromODataUri] long key)
         {
             Contract.Requires(0 < key, "|404|");
 

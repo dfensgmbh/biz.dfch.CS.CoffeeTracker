@@ -291,7 +291,6 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 			$headers = [System.Collections.Generic.Dictionary[[String],[String]]]::New();
 			$headers.Add("Authorization", $authString);
 
-
 			# Act
 			$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 
@@ -317,6 +316,7 @@ Describe "CoffeesController" -Tags "CoffeesController" {
 		$headers.Add("Authorization", $authString);
 
 		Delete-Entities -EntityName "Coffees" -OdataComparison $queryOption -Token $adminToken;
+		Delete-Entities -EntityName "Users" -OdataComparison $queryOption -Token $adminToken;
 
 		$result = Invoke-RestMethod -Method Get -Uri $getUri -Headers $headers;
 		if($result.value.Count -gt 0)
