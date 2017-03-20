@@ -157,4 +157,15 @@
   <data name="Delete_Entity_Stop" xml:space="preserve">
     <value>{0} with id {1} Removed</value>
   </data>
+  <data name="EmailManager_CreateAndSendOutOfStockEmail_" xml:space="preserve">
+    <value>Good day, 
+
+ a coffee just now ran out of stock. Consider to buy new coffee of this sort: 
+ Coffee Name 	 {0}  
+ Coffee Brand 	 {1} 
+
+ Regards
+
+ The CoffeeTracker Api</value>
+  </data>
 </root>

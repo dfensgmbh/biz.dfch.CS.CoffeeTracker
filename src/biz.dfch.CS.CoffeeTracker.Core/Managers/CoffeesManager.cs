@@ -63,6 +63,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             coffee.Stock--;
 
             db.SaveChanges();
+            CheckStock(coffee.Id);
         }
 
         public void CheckStock(long key)
@@ -75,7 +76,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             if (0 == coffee.Stock)
             {
-                EmailManager.CreateAndSendOutOfStockEmail(adminMails);
+                EmailManager.CreateAndSendOutOfStockEmail(adminMails, coffee);
             }
         }
 

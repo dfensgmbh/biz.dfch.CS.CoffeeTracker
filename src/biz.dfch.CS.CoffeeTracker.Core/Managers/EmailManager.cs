@@ -21,6 +21,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
+using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.Exchange.WebServices.Data;
 
 namespace biz.dfch.CS.CoffeeTracker.Core.Managers
@@ -41,14 +42,17 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
             service.AutodiscoverUrl(userMail, RedirectionUrlValidationCallback);
         }
                 
-        public void CreateAndSendOutOfStockEmail(IEnumerable<EmailAddress> recipients)
+        public void CreateAndSendOutOfStockEmail(IEnumerable<EmailAddress> recipients, Coffee coffee)
         {
             Contract.Requires(null != recipients);
+
+            var text = Message.EmailManager_CreateAndSendOutOfStockEmail_;
+            text = string.Format(text, coffee.Name, coffee.Stock);
 
             var message = new EmailMessage(service)
             {
                 Subject = "Coffeestock",
-                Body = new MessageBody("A coffee is about to run out of stock m8")
+                Body = new MessageBody(text)
             };
 
             foreach (var recipient in recipients)
