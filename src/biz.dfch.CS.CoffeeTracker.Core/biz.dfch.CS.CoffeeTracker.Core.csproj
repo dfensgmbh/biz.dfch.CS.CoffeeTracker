@@ -307,6 +307,7 @@
     </Compile>
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="CoffeeStockWarningConfigurationSection.cs" />
     <Compile Include="MailDeliveryConfigurationSection.cs" />
     <Compile Include="Managers\CoffeeOrdersManager.cs" />
     <Compile Include="Managers\CoffeesManager.cs" />

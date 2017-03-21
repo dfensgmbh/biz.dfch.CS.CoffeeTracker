@@ -23,13 +23,13 @@ namespace biz.dfch.CS.CoffeeTracker.Core
 {
     public class CoffeeStockWarningConfigurationSection : ConfigurationSection
     {
-        private const string COFFEE_STOCK_WARNING_AMOUNT = "coffeestock";
+        private const string COFFEE_STOCK_WARNING_AMOUNT_Name = "coffeestock";
 
-        [ConfigurationProperty(COFFEE_STOCK_WARNING_AMOUNT, IsRequired = true)]
-        public string Username
+        [ConfigurationProperty(COFFEE_STOCK_WARNING_AMOUNT_Name, IsRequired = true)]
+        public string CoffeeStock
         {
-            get { return (string)this[COFFEE_STOCK_WARNING_AMOUNT]; }
-            set { this[COFFEE_STOCK_WARNING_AMOUNT] = value; }
+            get { return (string)this[COFFEE_STOCK_WARNING_AMOUNT_Name]; }
+            set { this[COFFEE_STOCK_WARNING_AMOUNT_Name] = value; }
         }
     }
 }
