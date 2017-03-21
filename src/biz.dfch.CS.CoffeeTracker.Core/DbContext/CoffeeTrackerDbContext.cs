@@ -22,7 +22,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.DbContext
 {
     public class CoffeeTrackerDbContext : IdentityDbContext<IdentityUser>
     {
-        public CoffeeTrackerDbContext() : base(DBStrings.CONNECTION_STRING_NAME)
+        private const string CONNECTION_STRING_NAME_TEMPLATE = "name={0}";
+
+        public CoffeeTrackerDbContext() 
+            : base(string.Format(CONNECTION_STRING_NAME_TEMPLATE, nameof(CoffeeTrackerDbContext)))
         {
             
         }
