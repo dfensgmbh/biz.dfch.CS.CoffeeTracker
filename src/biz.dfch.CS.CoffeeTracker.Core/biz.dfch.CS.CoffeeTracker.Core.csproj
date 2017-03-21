@@ -307,7 +307,7 @@
     </Compile>
     <Compile Include="App_Start\OwinStartup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="ExchangeCredentials.cs" />
+    <Compile Include="MailDeliveryConfigurationSection.cs" />
     <Compile Include="Managers\CoffeeOrdersManager.cs" />
     <Compile Include="Managers\CoffeesManager.cs" />
     <Compile Include="Managers\EmailManager.cs" />
@@ -327,11 +327,6 @@
     </Compile>
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Provider\SimpleAuthorizationServerProvider.cs" />
-    <Compile Include="DBStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Logging\ControllerLogging.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Controllers\CoffeeOrdersController.cs" />
@@ -365,10 +360,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DBStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>DBStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Message.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

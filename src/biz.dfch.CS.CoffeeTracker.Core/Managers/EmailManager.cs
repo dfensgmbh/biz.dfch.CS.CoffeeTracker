@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.Contracts;
-using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Web;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using Microsoft.Exchange.WebServices.Data;
 
@@ -30,12 +30,15 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
     {
         private readonly ExchangeService service;
 
+        private static readonly MailDeliveryConfigurationSection _mailDeliveryConfiguration 
+            = (MailDeliveryConfigurationSection) ConfigurationManager.GetSection("mailDeliveryConfigurationSection");
+
         public EmailManager()
         {
             ServicePointManager.ServerCertificateValidationCallback = CertificateValidationCallBack;
 
-            var userMail = ExchangeCredentials.EXCHANGE_USERNAME;
-            var password = ExchangeCredentials.EXCHANGE_PASSWORD;
+            var userMail = _mailDeliveryConfiguration.Username;
+            var password = _mailDeliveryConfiguration.Password;
             service = new ExchangeService(ExchangeVersion.Exchange2013_SP1);
 
             service.Credentials = new WebCredentials(userMail, password);
@@ -98,7 +101,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
                         if (certificate.Subject == certificate.Issuer && status.Status == X509ChainStatusFlags.UntrustedRoot)
                         {
                             // Self-signed certificates with an untrusted root are valid. 
-                            continue;
                         }
                         else
                         {
