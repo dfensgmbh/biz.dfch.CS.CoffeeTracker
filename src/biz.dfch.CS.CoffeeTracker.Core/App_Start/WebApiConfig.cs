@@ -16,11 +16,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.Web.Http;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
 using biz.dfch.CS.CoffeeTracker.Core.Controllers;
+using biz.dfch.CS.CoffeeTracker.Core.Managers;
 using biz.dfch.CS.CoffeeTracker.Core.Model;
 using biz.dfch.CS.Commons.Diagnostics;
 using biz.dfch.CS.Web.Utilities.Http;
@@ -34,12 +37,23 @@ namespace biz.dfch.CS.CoffeeTracker.Core
     {
         private const string CONVENTION = "OData";
 
+        public static readonly CoffeeStockWarningConfigurationSection CoffeeStockWarningConfigurationSection
+            = (CoffeeStockWarningConfigurationSection)ConfigurationManager.GetSection("coffeeStockWarningConfigurationSection");
+
         public static void Register(HttpConfiguration config)
         {
             // Log Event
             Logger.Get(TraceSourceName.API_ACTIVITIES)
                 .TraceEvent(TraceEventType.Start, (int)EventId.Start, Message.WebApiConfig_Register__Start, CONVENTION);
             // Web API configuration and services
+
+            // Web.config has valid values
+            int coffeeStockAmount;
+            var isValidCoffeeStockAmount = int.TryParse(CoffeeStockWarningConfigurationSection.CoffeeStock, out coffeeStockAmount);
+            if (!isValidCoffeeStockAmount || 0 > coffeeStockAmount)
+            {
+                throw new Exception("The amount specified for the coffee stock in the web.config file is invalid");
+            }
 
             // Web API routes
             var builder = new ODataConventionModelBuilder();
