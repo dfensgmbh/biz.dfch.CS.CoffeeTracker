@@ -82,7 +82,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core {
         /// <summary>
         ///   Looks up a localized string similar to Good day,&lt;br&gt;
         ///&lt;br&gt;
-        /// A coffee just now ran out of stock. Consider to buy new coffee of this sort:&lt;br&gt; 
+        /// A coffee is about/ran out of stock. Consider to refill stock.&lt;br&gt; 
         /// Coffee Name: &lt;blockquote&gt;{0}&lt;/blockquote&gt; 
         /// Coffee Brand: &lt;blockquote&gt;{1}&lt;/blockquote&gt; 
         ///&lt;br&gt;

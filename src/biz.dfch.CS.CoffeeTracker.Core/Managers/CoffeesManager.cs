@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Configuration;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Web.Http.OData;
@@ -32,6 +33,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
         private readonly Lazy<EmailManager> emailManagerLazy = new Lazy<EmailManager>(() => new EmailManager());
         private EmailManager EmailManager => emailManagerLazy.Value;
         private readonly PermissionChecker permissionChecker;
+
+        private static readonly CoffeeStockWarningConfigurationSection _coffeeStockWarningConfigurationSection
+            = (CoffeeStockWarningConfigurationSection)ConfigurationManager.GetSection("coffeeStockWarningConfigurationSection");
+
 
         public CoffeesManager()
         {
@@ -74,7 +79,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var adminMails = new ApplicationUserManager(new AppUserStore()).GetAdminEmailAddresses();
 
-            if (0 == coffee.Stock)
+            if (int.Parse(_coffeeStockWarningConfigurationSection.CoffeeStock) <= coffee.Stock)
             {
                 EmailManager.CreateAndSendOutOfStockEmail(adminMails, coffee);
             }
