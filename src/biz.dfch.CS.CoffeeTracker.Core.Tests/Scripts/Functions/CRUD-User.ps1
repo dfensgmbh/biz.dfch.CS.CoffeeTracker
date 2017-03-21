@@ -43,7 +43,6 @@ function CRUD-User{
 			$userBody = @{
 				Name = $UserName
 				Password = $Password
-				IsAdmin = $false
 			}
 
 			$result = Invoke-RestMethod -Method Post -Uri $uri -Body $userBody
@@ -62,7 +61,6 @@ function CRUD-User{
 				$userBody = @{
 					Name = $NewUserName
 					Password = $user.Password
-					IsAdmin = $user.IsAdmin
 				}
 				
 			}
@@ -71,7 +69,6 @@ function CRUD-User{
 				$userBody = @{
 					Name = $UserName
 					Password = $user.Password
-					IsAdmin = $user.IsAdmin
 				}
 			}
 			

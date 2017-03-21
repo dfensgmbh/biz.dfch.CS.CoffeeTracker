@@ -47,7 +47,6 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Model
         [ForeignKey("AspNetUserId")]
         public virtual IdentityUser CorrespondingAspNetUser { get; set; }
 
-        [Required]
         public bool IsAdmin { get; set; }
 
         public static bool IsValidEmail(string email)
