@@ -70,7 +70,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Post(null);
+            sut.Post(null);
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Delete(INVALID_ID);
+            sut.Delete(INVALID_ID);
         }
 
         [TestMethod]
@@ -92,7 +92,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Patch(INVALID_ID, new Delta<CoffeeOrder>());
+            sut.Patch(INVALID_ID, new Delta<CoffeeOrder>());
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Tests.Controllers
             // N/A
 
             // Act/Assert
-            await sut.Patch(42, null);
+            sut.Patch(42, null);
         }
 
         [TestMethod]
