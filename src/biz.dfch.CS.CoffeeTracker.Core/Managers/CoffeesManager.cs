@@ -79,7 +79,7 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Managers
 
             var adminMails = new ApplicationUserManager(new AppUserStore()).GetAdminEmailAddresses();
 
-            if (int.Parse(_coffeeStockWarningConfigurationSection.CoffeeStock) <= coffee.Stock)
+            if (int.Parse(_coffeeStockWarningConfigurationSection.CoffeeStock) >= coffee.Stock)
             {
                 EmailManager.CreateAndSendOutOfStockEmail(adminMails, coffee);
             }
