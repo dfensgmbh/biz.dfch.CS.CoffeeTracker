@@ -1,0 +1,168 @@
+﻿<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices m:DataServiceVersion="3.0" m:MaxDataServiceVersion="3.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="biz.dfch.CS.CoffeeTracker.Core.Model" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityType Name="ApplicationUser">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Password" Type="Edm.String" Nullable="false" />
+        <Property Name="AspNetUserId" Type="Edm.String" Nullable="false" />
+        <Property Name="IsAdmin" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <NavigationProperty Name="CorrespondingAspNetUser" Relationship="Microsoft.AspNet.Identity.EntityFramework.biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_CorrespondingAspNetUser_Microsoft_AspNet_Identity_EntityFramework_IdentityUser_CorrespondingAspNetUserPartner" ToRole="CorrespondingAspNetUser" FromRole="CorrespondingAspNetUserPartner" />
+      </EntityType>
+      <EntityType Name="Coffee">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Brand" Type="Edm.String" Nullable="false" />
+        <Property Name="Price" Type="Edm.Decimal" Nullable="false" />
+        <Property Name="Stock" Type="Edm.Int32" Nullable="false" />
+        <Property Name="LastDelivery" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+      </EntityType>
+      <EntityType Name="CoffeeOrder">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="UserId" Type="Edm.Int64" Nullable="false" />
+        <Property Name="CoffeeId" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Created" Type="Edm.DateTimeOffset" Nullable="false" />
+        <Property Name="Id" Type="Edm.Int64" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" />
+        <NavigationProperty Name="ApplicationUser" Relationship="biz.dfch.CS.CoffeeTracker.Core.Model.biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_ApplicationUser_biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_ApplicationUserPartner" ToRole="ApplicationUser" FromRole="ApplicationUserPartner" />
+        <NavigationProperty Name="Coffee" Relationship="biz.dfch.CS.CoffeeTracker.Core.Model.biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_Coffee_biz_dfch_CS_CoffeeTracker_Core_Model_Coffee_CoffeePartner" ToRole="Coffee" FromRole="CoffeePartner" />
+      </EntityType>
+      <Association Name="biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_ApplicationUser_biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_ApplicationUserPartner">
+        <End Type="biz.dfch.CS.CoffeeTracker.Core.Model.ApplicationUser" Role="ApplicationUser" Multiplicity="0..1" />
+        <End Type="biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder" Role="ApplicationUserPartner" Multiplicity="0..1" />
+        <ReferentialConstraint>
+          <Principal Role="ApplicationUser">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="ApplicationUserPartner">
+            <PropertyRef Name="UserId" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_Coffee_biz_dfch_CS_CoffeeTracker_Core_Model_Coffee_CoffeePartner">
+        <End Type="biz.dfch.CS.CoffeeTracker.Core.Model.Coffee" Role="Coffee" Multiplicity="0..1" />
+        <End Type="biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder" Role="CoffeePartner" Multiplicity="0..1" />
+        <ReferentialConstraint>
+          <Principal Role="Coffee">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="CoffeePartner">
+            <PropertyRef Name="CoffeeId" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+    </Schema>
+    <Schema Namespace="Microsoft.AspNet.Identity.EntityFramework" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityType Name="IdentityUser">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Email" Type="Edm.String" />
+        <Property Name="EmailConfirmed" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="PasswordHash" Type="Edm.String" />
+        <Property Name="SecurityStamp" Type="Edm.String" />
+        <Property Name="PhoneNumber" Type="Edm.String" />
+        <Property Name="PhoneNumberConfirmed" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="TwoFactorEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="LockoutEndDateUtc" Type="Edm.DateTime" />
+        <Property Name="LockoutEnabled" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="AccessFailedCount" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Roles" Type="Collection(Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole)" Nullable="false" />
+        <Property Name="Logins" Type="Collection(Microsoft.AspNet.Identity.EntityFramework.IdentityUserLogin)" Nullable="false" />
+        <Property Name="Id" Type="Edm.String" Nullable="false" />
+        <Property Name="UserName" Type="Edm.String" />
+        <NavigationProperty Name="Claims" Relationship="Microsoft.AspNet.Identity.EntityFramework.Microsoft_AspNet_Identity_EntityFramework_IdentityUser_Claims_Microsoft_AspNet_Identity_EntityFramework_IdentityUserClaim_ClaimsPartner" ToRole="Claims" FromRole="ClaimsPartner" />
+      </EntityType>
+      <ComplexType Name="IdentityUserRole">
+        <Property Name="UserId" Type="Edm.String" />
+        <Property Name="RoleId" Type="Edm.String" />
+      </ComplexType>
+      <EntityType Name="IdentityUserClaim">
+        <Key>
+          <PropertyRef Name="Id" />
+        </Key>
+        <Property Name="Id" Type="Edm.Int32" Nullable="false" />
+        <Property Name="UserId" Type="Edm.String" />
+        <Property Name="ClaimType" Type="Edm.String" />
+        <Property Name="ClaimValue" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="IdentityUserLogin">
+        <Property Name="LoginProvider" Type="Edm.String" />
+        <Property Name="ProviderKey" Type="Edm.String" />
+        <Property Name="UserId" Type="Edm.String" />
+      </ComplexType>
+      <Association Name="biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_CorrespondingAspNetUser_Microsoft_AspNet_Identity_EntityFramework_IdentityUser_CorrespondingAspNetUserPartner">
+        <End Type="Microsoft.AspNet.Identity.EntityFramework.IdentityUser" Role="CorrespondingAspNetUser" Multiplicity="0..1" />
+        <End Type="biz.dfch.CS.CoffeeTracker.Core.Model.ApplicationUser" Role="CorrespondingAspNetUserPartner" Multiplicity="0..1" />
+        <ReferentialConstraint>
+          <Principal Role="CorrespondingAspNetUser">
+            <PropertyRef Name="Id" />
+          </Principal>
+          <Dependent Role="CorrespondingAspNetUserPartner">
+            <PropertyRef Name="AspNetUserId" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+      <Association Name="Microsoft_AspNet_Identity_EntityFramework_IdentityUser_Claims_Microsoft_AspNet_Identity_EntityFramework_IdentityUserClaim_ClaimsPartner">
+        <End Type="Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim" Role="Claims" Multiplicity="*" />
+        <End Type="Microsoft.AspNet.Identity.EntityFramework.IdentityUser" Role="ClaimsPartner" Multiplicity="0..1" />
+      </Association>
+    </Schema>
+    <Schema Namespace="Default" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
+        <EntitySet Name="Users" EntityType="biz.dfch.CS.CoffeeTracker.Core.Model.ApplicationUser" />
+        <EntitySet Name="IdentityUsers" EntityType="Microsoft.AspNet.Identity.EntityFramework.IdentityUser" />
+        <EntitySet Name="Coffees" EntityType="biz.dfch.CS.CoffeeTracker.Core.Model.Coffee" />
+        <EntitySet Name="CoffeeOrders" EntityType="biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder" />
+        <FunctionImport Name="GetCoffeeConsumptionByCurrentUser" ReturnType="Edm.Int32" IsBindable="true" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder)" Nullable="false" />
+          <Parameter Name="From" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Until" Type="Edm.DateTimeOffset" Nullable="false" />
+        </FunctionImport>
+        <FunctionImport Name="GetCoffeeConsumption" ReturnType="Edm.Int32" IsBindable="true" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder)" Nullable="false" />
+          <Parameter Name="From" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Until" Type="Edm.DateTimeOffset" Nullable="false" />
+        </FunctionImport>
+        <FunctionImport Name="GetCoffeeConsumptionByCoffee" ReturnType="Edm.Int32" IsBindable="true" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder)" Nullable="false" />
+          <Parameter Name="Name" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="Brand" Type="Edm.String" FixedLength="false" Unicode="false" />
+          <Parameter Name="From" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Until" Type="Edm.DateTimeOffset" Nullable="false" />
+        </FunctionImport>
+        <FunctionImport Name="GetMostOrderedCoffee" ReturnType="biz.dfch.CS.CoffeeTracker.Core.Model.Coffee" IsBindable="true" EntitySet="Coffees" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder)" Nullable="false" />
+          <Parameter Name="From" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Until" Type="Edm.DateTimeOffset" Nullable="false" />
+        </FunctionImport>
+        <FunctionImport Name="GetMostOrderedCoffeeByUser" ReturnType="biz.dfch.CS.CoffeeTracker.Core.Model.Coffee" IsBindable="true" EntitySet="Coffees" m:IsAlwaysBindable="true">
+          <Parameter Name="bindingParameter" Type="Collection(biz.dfch.CS.CoffeeTracker.Core.Model.CoffeeOrder)" Nullable="false" />
+          <Parameter Name="From" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Until" Type="Edm.DateTimeOffset" Nullable="false" />
+          <Parameter Name="Email" Type="Edm.String" FixedLength="false" Unicode="false" />
+        </FunctionImport>
+        <AssociationSet Name="biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_CorrespondingAspNetUser_Microsoft_AspNet_Identity_EntityFramework_IdentityUser_CorrespondingAspNetUserPartnerSet" Association="Microsoft.AspNet.Identity.EntityFramework.biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_CorrespondingAspNetUser_Microsoft_AspNet_Identity_EntityFramework_IdentityUser_CorrespondingAspNetUserPartner">
+          <End Role="CorrespondingAspNetUserPartner" EntitySet="Users" />
+          <End Role="CorrespondingAspNetUser" EntitySet="IdentityUsers" />
+        </AssociationSet>
+        <AssociationSet Name="biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_ApplicationUser_biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_ApplicationUserPartnerSet" Association="biz.dfch.CS.CoffeeTracker.Core.Model.biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_ApplicationUser_biz_dfch_CS_CoffeeTracker_Core_Model_ApplicationUser_ApplicationUserPartner">
+          <End Role="ApplicationUserPartner" EntitySet="CoffeeOrders" />
+          <End Role="ApplicationUser" EntitySet="Users" />
+        </AssociationSet>
+        <AssociationSet Name="biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_Coffee_biz_dfch_CS_CoffeeTracker_Core_Model_Coffee_CoffeePartnerSet" Association="biz.dfch.CS.CoffeeTracker.Core.Model.biz_dfch_CS_CoffeeTracker_Core_Model_CoffeeOrder_Coffee_biz_dfch_CS_CoffeeTracker_Core_Model_Coffee_CoffeePartner">
+          <End Role="CoffeePartner" EntitySet="CoffeeOrders" />
+          <End Role="Coffee" EntitySet="Coffees" />
+        </AssociationSet>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
