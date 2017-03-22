@@ -15,31 +15,13 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 {
-    class AuthenticationHelper
+    class AuthenticationHelperTests
     {
-        public string bearerToken = "";
-        public Uri tokenUri;
-        private static readonly HttpClient client = new HttpClient();
-
-        public AuthenticationHelper(Uri hostUri)
-        {
-            Contract.Requires(null != hostUri);
-
-            var tokenUriStr = string.Format("{0}{1}", hostUri.AbsoluteUri, "token");
-            this.tokenUri = new Uri(tokenUriStr);
-        }
-
-        private async void ReceiveAndSetToken(string userName, string password)
-        {
-            
-        }
     }
 }
