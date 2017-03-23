@@ -17,19 +17,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 {
-    class AuthenticationHelper
+    public class AuthenticationHelper
     {
         public string bearerToken = "";
         public Uri tokenUri;
         private static readonly HttpClient client = new HttpClient();
 
-        public AuthenticationHelper(Uri hostUri)
+        public AuthenticationHelper(Uri hostUri, string username, string password)
         {
             Contract.Requires(null != hostUri);
 
@@ -37,7 +38,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             this.tokenUri = new Uri(tokenUriStr);
         }
 
-        private async void ReceiveAndSetToken(string userName, string password)
+        public async Task ReceiveAndSetToken(string userName, string password)
         {
             var bodyValuesDictionary = new Dictionary<string, string>
             {
@@ -49,6 +50,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             var body = new FormUrlEncodedContent(bodyValuesDictionary);
 
             var response = await client.PostAsync(tokenUri, body);
+            Contract.Assert(HttpStatusCode.BadGateway != response.StatusCode);
+            Contract.Assert(HttpStatusCode.BadRequest != response.StatusCode);
 
             var responseString = await response.Content.ReadAsStringAsync();
             int i = 0;

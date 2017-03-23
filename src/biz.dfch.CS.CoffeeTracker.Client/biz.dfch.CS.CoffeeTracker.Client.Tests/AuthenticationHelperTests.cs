@@ -14,14 +14,36 @@
  * limitations under the License.
  */
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 {
-    class AuthenticationHelperTests
+    /// <summary>
+    /// Summary description for AuthenticationHelperTests
+    /// </summary>
+    [TestClass]
+    public class AuthenticationHelperTests
     {
+        [TestMethod]
+        public async Task ReceiveAndSetTokenSucceeds()
+        {
+            // Arrange
+            // Test assumes username and password exists in database
+            var userName = "steven.pilatschek@d-fens.net";
+            var password = "123456";
+
+            var hostUri = new Uri("http://localhost:49270/");
+
+            // Act 
+            var sut = new AuthenticationHelper(hostUri, userName, password);
+            await sut.ReceiveAndSetToken(userName, password);
+
+            // Assert
+            Assert.AreNotEqual(String.Empty, sut.tokenUri);
+            Assert.AreNotEqual(String.Empty, sut.bearerToken);
+        }
     }
 }
