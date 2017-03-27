@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 {
@@ -31,12 +32,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
         public Uri tokenUri;
         private static readonly HttpClient client = new HttpClient();
 
-        public AuthenticationHelper(Uri hostUri, string username, string password)
+        public AuthenticationHelper(Uri hostUri)
         {
             Contract.Requires(null != hostUri);
 
             var tokenUriStr = string.Format("{0}{1}", hostUri.AbsoluteUri, "token");
             this.tokenUri = new Uri(tokenUriStr);
+        }
+
+        public AuthenticationHelper(Uri hostUri, string username, string password)
+            : this(hostUri)
+        {
+            ReceiveAndSetToken(username, password).Wait();
         }
 
         public async Task ReceiveAndSetToken(string userName, string password)
@@ -59,7 +66,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             Contract.Assert(HttpStatusCode.BadRequest != response.StatusCode);
 
             var responseString = await response.Content.ReadAsStringAsync();
-            int i = 0;
+            dynamic x = JsonConvert.DeserializeObject<dynamic>(responseString);
+            this.bearerToken = x.access_token;
+            Contract.Assert(!string.IsNullOrWhiteSpace(this.bearerToken));
         }
     }
 }
