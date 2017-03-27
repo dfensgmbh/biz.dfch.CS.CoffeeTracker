@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Tests
@@ -17,11 +18,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
             // Act
             var sut = new CoffeeTrackerServiceContext(uri);
-            var coffee = sut.GetCoffee(id);
+            var result = sut.container.Coffees.FirstOrDefault(c => c.Id == id);
 
             // Assert
-            Assert.IsNotNull(coffee);
-            Assert.AreEqual(id, coffee.Id);
+            Assert.IsNotNull(sut);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(id, result.Id);
         }
     }
 }
