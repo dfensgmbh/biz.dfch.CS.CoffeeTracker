@@ -12,6 +12,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client
 {
     public class CoffeeTrackerServiceContext
     {
+        private const string authorizationHeaderName = "Authorization";
+
         private Uri uri;
         private AuthenticationHelper authenticationHelper;
         public CoffeeTrackerService.Container container;
@@ -28,7 +30,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client
 
         private void OnBeforeSendingRequest(object sender, SendingRequest2EventArgs sendingRequest2EventArgs)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(authenticationHelper.bearerToken))
+            {
+                throw new Exception("No Bearer token provided. Did you forgot to call ReceiveAndSetToken-Method of the AuthenticationHelper-Object?");                
+            }
+            var bearerString = string.Format("bearer {0}", authenticationHelper.bearerToken);
+            sendingRequest2EventArgs.RequestMessage.SetHeader(authorizationHeaderName, bearerString);
         }
 
         public CoffeeTrackerServiceContext(string hostUri, string userName, string password)
