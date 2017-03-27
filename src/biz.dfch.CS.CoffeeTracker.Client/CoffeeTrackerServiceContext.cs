@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Services.Client;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
@@ -15,22 +16,25 @@ namespace biz.dfch.CS.CoffeeTracker.Client
         private AuthenticationHelper authenticationHelper;
         public CoffeeTrackerService.Container container;
 
-        public CoffeeTrackerServiceContext(string uri)
+        public CoffeeTrackerServiceContext(string hostUri)
         {
-            this.uri = new Uri(uri);
+            var apiUri = string.Format("{0}/api/", hostUri);
+            this.uri = new Uri(apiUri);
             this.container = new CoffeeTrackerService.Container(this.uri);
-            this.authenticationHelper = new AuthenticationHelper(new Uri(uri));
+            this.authenticationHelper = new AuthenticationHelper(new Uri(hostUri));
 
-            container.SendingRequest2 += (s, e) =>
-            {
-                Console.WriteLine("Http Request sent");
-            };
+            container.SendingRequest2 += OnBeforeSendingRequest;
         }
 
-        public CoffeeTrackerServiceContext(string uri, string userName, string password)
-            : this(uri)
+        private void OnBeforeSendingRequest(object sender, SendingRequest2EventArgs sendingRequest2EventArgs)
         {
-            this.authenticationHelper = new AuthenticationHelper(this.uri, userName, password);
+            throw new NotImplementedException();
+        }
+
+        public CoffeeTrackerServiceContext(string hostUri, string userName, string password)
+            : this(hostUri)
+        {
+            this.authenticationHelper = new AuthenticationHelper(new Uri(hostUri), userName, password);
         }
     }
 }
