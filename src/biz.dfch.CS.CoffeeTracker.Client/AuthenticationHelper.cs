@@ -19,6 +19,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,15 +41,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
         public async Task ReceiveAndSetToken(string userName, string password)
         {
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+
             var bodyValuesDictionary = new Dictionary<string, string>
             {
-                { "Name", userName},
+                { "Username", userName},
                 { "Password", password},
                 { "grant_type", "password"}
             };
 
             var body = new FormUrlEncodedContent(bodyValuesDictionary);
-
+            
             var response = await client.PostAsync(tokenUri, body);
             Contract.Assert(HttpStatusCode.BadGateway != response.StatusCode);
             Contract.Assert(HttpStatusCode.BadRequest != response.StatusCode);
