@@ -39,7 +39,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
             // Act 
             var sut = new AuthenticationHelper(hostUri, userName, password);
-            await sut.ReceiveAndSetToken(userName, password);
 
             // Assert
             Assert.AreNotEqual(String.Empty, sut.tokenUri);
