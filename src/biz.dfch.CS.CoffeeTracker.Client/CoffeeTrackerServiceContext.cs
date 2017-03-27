@@ -26,5 +26,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client
                 Console.WriteLine("Http Request sent");
             };
         }
+
+        public CoffeeTrackerServiceContext(string uri, string userName, string password)
+            : this(uri)
+        {
+            this.authenticationHelper = new AuthenticationHelper(this.uri, userName, password);
+        }
     }
 }
