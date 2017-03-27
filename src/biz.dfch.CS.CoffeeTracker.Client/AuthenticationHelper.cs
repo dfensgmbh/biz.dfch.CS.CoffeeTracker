@@ -19,6 +19,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +42,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
         public async Task ReceiveAndSetToken(string userName, string password)
         {
+            // Arrange client for token request
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
+
             var bodyValuesDictionary = new Dictionary<string, string>
             {
                 { "Name", userName},
