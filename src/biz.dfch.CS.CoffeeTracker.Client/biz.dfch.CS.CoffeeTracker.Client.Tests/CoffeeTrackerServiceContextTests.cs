@@ -28,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             // Act / Assert
             var sut = new CoffeeTrackerServiceContext(uri);
             // oData Client can't resolve FirstOrDefault() directly
-            sut.container.Coffees.Where(c => c.Id == id).FirstOrDefault();
+            sut.Coffees.Where(c => c.Id == id).FirstOrDefault();
         }
 
         [TestMethod]
@@ -62,36 +62,36 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             var sut = new CoffeeTrackerServiceContext(uri);
             Assert.IsNotNull(sut);
 
-            sut.container.AddToUsers(user);
-            sut.container.SaveChanges();
+            sut.AddToUsers(user);
+            sut.SaveChanges();
 
             // Login into the api
             sut.authenticationHelper.ReceiveAndSetToken(userName, password).Wait();
 
             // / Read
             // oData Client can't resolve FirstOrDefault() directly
-            var createdUserFromDb = sut.container.Users.Where(u => u.Name == userName).FirstOrDefault();
+            var createdUserFromDb = sut.Users.Where(u => u.Name == userName).FirstOrDefault();
             Assert.IsNotNull(createdUserFromDb);
 
             // / Update
             createdUserFromDb.Name = newUserName;
-            sut.container.SaveChanges();
+            sut.SaveChanges();
 
             // oData Client can't resolve FirstOrDefault() directly
-            createdUserFromDb = sut.container.Users.Where(u => u.Name == userName).FirstOrDefault();
+            createdUserFromDb = sut.Users.Where(u => u.Name == userName).FirstOrDefault();
             Assert.IsNotNull(createdUserFromDb);
             Assert.AreEqual(newUserName, createdUserFromDb.Name);
 
             // / Delete
-            sut.container.DeleteObject(createdUserFromDb);
-            sut.container.SaveChanges();
+            sut.DeleteObject(createdUserFromDb);
+            sut.SaveChanges();
 
             // Assert deletion
             // Since the old user should be deleted, the client needs a new token, and an admin token because
             // the client is requesting users
             sut.authenticationHelper.ReceiveAndSetToken(adminUserName, adminPassword).Wait();
 
-            var userShouldBeNull = sut.container.Users.Where(u => u.Name == newUserName).FirstOrDefault();
+            var userShouldBeNull = sut.Users.Where(u => u.Name == newUserName).FirstOrDefault();
             Assert.IsNull(userShouldBeNull);
         }
     }
