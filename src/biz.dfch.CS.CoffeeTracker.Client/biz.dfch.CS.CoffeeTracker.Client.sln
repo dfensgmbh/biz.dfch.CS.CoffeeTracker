@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biz.dfch.CS.CoffeeTracker.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biz.dfch.CS.CoffeeTracker.Client.Tests", "biz.dfch.CS.CoffeeTracker.Client.Tests\biz.dfch.CS.CoffeeTracker.Client.Tests.csproj", "{C70F694E-D183-4474-B5CB-F9ED62D68B3C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{3DC299BE-7EFB-469C-B75E-4528D353B524}"
+	ProjectSection(SolutionItems) = preProject
+		..\CommonAssemblySettings.cs = ..\CommonAssemblySettings.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
