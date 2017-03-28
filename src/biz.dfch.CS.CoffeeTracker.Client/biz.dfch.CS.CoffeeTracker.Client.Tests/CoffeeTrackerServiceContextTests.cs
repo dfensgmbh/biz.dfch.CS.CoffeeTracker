@@ -58,8 +58,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
                 Password = password
             };
 
-            // Act
-
             // / Create
             var sut = new CoffeeTrackerServiceContext(uri);
             Assert.IsNotNull(sut);
@@ -88,7 +86,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             sut.container.DeleteObject(createdUserFromDb);
             sut.container.SaveChanges();
 
-            var userShouldBeNull = sut.container.Users.Where(u => u.Name == newUserName);
+            // Assert deletion
+            // Since the old user should be deleted, the client needs a new token, and an admin token because
+            // the client is requesting users
+            sut.authenticationHelper.ReceiveAndSetToken(adminUserName, adminPassword).Wait();
+
+            var userShouldBeNull = sut.container.Users.Where(u => u.Name == newUserName).FirstOrDefault();
             Assert.IsNull(userShouldBeNull);
         }
     }
