@@ -25,6 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client
             var apiUri = string.Format("{0}/api/", hostUri);
             this.uri = new Uri(apiUri);
             this.container = new CoffeeTrackerService.Container(this.uri);
+            container.Format.UseJson();
             this.authenticationHelper = new AuthenticationHelper(new Uri(hostUri));
 
             container.SendingRequest2 += OnBeforeSendingRequest;
