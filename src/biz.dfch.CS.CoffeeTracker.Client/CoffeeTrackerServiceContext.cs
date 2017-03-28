@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data.Services.Client;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.Tests;
@@ -32,10 +34,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client
         {
             if (string.IsNullOrEmpty(authenticationHelper.bearerToken))
             {
-                throw new Exception("No Bearer token provided. Did you forgot to call ReceiveAndSetToken-Method of the AuthenticationHelper-Object?");                
+                var url = sendingRequest2EventArgs.RequestMessage.Url;
+                var absolutePath = url.AbsolutePath;
+                if (!sendingRequest2EventArgs.RequestMessage.Method.Equals(HttpMethod.Post) &&
+                    !absolutePath.Contains("Users"))
+                {
+                    throw new Exception(
+                        "No Bearer token provided. Did you forgot to call ReceiveAndSetToken-Method of the AuthenticationHelper-Object?");
+                }
             }
-            var bearerString = string.Format("bearer {0}", authenticationHelper.bearerToken);
-            sendingRequest2EventArgs.RequestMessage.SetHeader(authorizationHeaderName, bearerString);
+            else
+            {
+                var bearerString = string.Format("bearer {0}", authenticationHelper.bearerToken);
+                sendingRequest2EventArgs.RequestMessage.SetHeader(authorizationHeaderName, bearerString);
+            }
         }
 
         public CoffeeTrackerServiceContext(string hostUri, string userName, string password)
