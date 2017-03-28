@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using biz.dfch.CS.Testing.Attributes;
 
@@ -46,14 +48,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
         }
 
         [TestMethod]
-        [ExpectContractFailure(MessagePattern = "Bad request")]
-        public void TryInstantiateWithInvalidUsernameAndPasswordThrows()
+        [ExpectContractFailure]
+        public async Task TryInstantiateWithInvalidUsernameAndPasswordThrows()
         {
             // Arrange
             var sut = new CoffeeTrackerServiceContext(uri);
 
             // Act / Assert
-            sut.authenticationHelper.ReceiveAndSetToken(INVALID_USERNAME, INVALID_PASSWORD).Wait();
+            await sut.authenticationHelper.ReceiveAndSetToken(INVALID_USERNAME, INVALID_PASSWORD);
         }
     }
 }

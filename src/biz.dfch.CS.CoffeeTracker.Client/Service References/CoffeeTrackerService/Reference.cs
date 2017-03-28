@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // Original file name:
-// Generation date: 22-Mar-17 08:15:29
+// Generation date: 28-Mar-17 08:35:58
 namespace biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService
 {
     
@@ -878,7 +878,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService
     }
 }
 // Original file name:
-// Generation date: 22-Mar-17 08:15:29
+// Generation date: 28-Mar-17 08:35:59
 namespace biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService.Microsoft.AspNet.Identity.EntityFramework
 {
     

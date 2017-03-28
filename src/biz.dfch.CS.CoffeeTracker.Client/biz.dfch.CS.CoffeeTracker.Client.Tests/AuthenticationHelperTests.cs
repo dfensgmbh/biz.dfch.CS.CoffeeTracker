@@ -39,6 +39,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
             // Act 
             var sut = new AuthenticationHelper(hostUri, userName, password);
+            // Workaround, if the next line is removed, a build error occurs
+            await Task.Delay(1);
 
             // Assert
             Assert.AreNotEqual(String.Empty, sut.tokenUri);
