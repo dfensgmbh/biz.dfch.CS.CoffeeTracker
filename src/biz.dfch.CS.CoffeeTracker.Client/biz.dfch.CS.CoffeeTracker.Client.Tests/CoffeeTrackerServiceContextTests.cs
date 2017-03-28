@@ -11,7 +11,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
     [TestClass]
     public class CoffeeTrackerServiceContextTests
     {
-        private string uri = "http://localhost:49270/";
+        private string uri = "http://CoffeeTracker/";
         private string adminUserName = "steven.pilatschek@d-fens.net";
         private string adminPassword = "123456";
         private const string INVALID_USERNAME = "notAnEmail";
