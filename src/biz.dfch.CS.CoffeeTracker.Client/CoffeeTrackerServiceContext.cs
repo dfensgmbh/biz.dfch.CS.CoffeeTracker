@@ -15,7 +15,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client
         private const string authorizationHeaderName = "Authorization";
 
         private Uri uri;
-        private AuthenticationHelper authenticationHelper;
+        public AuthenticationHelper authenticationHelper;
         public CoffeeTrackerService.Container container;
 
         public CoffeeTrackerServiceContext(string hostUri)
