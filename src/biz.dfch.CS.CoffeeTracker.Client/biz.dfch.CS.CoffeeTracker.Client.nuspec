@@ -29,6 +29,6 @@ Initial Release
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="bin\Release\biz.dfch.CS.CoffeeTracker.Client.dll" target="lib\" />
+		<file src="bin\Release\biz.dfch.CS.CoffeeTracker.Client.dll" target="lib\net46" />
 	</files>
 </package>
