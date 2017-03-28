@@ -53,6 +53,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
             var user = new CoffeeTrackerService.ApplicationUser
             {
+                AspNetUserId = string.Empty,
                 Name = userName,
                 Password = password
             };
