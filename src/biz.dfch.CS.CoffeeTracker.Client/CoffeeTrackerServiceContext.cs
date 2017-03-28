@@ -12,23 +12,21 @@ using biz.dfch.CS.CoffeeTracker.Client.Tests;
 
 namespace biz.dfch.CS.CoffeeTracker.Client
 {
-    public class CoffeeTrackerServiceContext
+    public class CoffeeTrackerServiceContext : CoffeeTrackerService.Container
     {
         private const string authorizationHeaderName = "Authorization";
 
-        private Uri uri;
         public AuthenticationHelper authenticationHelper;
-        public CoffeeTrackerService.Container container;
 
         public CoffeeTrackerServiceContext(string hostUri)
+            : base(new Uri(hostUri))
         {
-            var apiUri = string.Format("{0}/api/", hostUri);
-            this.uri = new Uri(apiUri);
-            this.container = new CoffeeTrackerService.Container(this.uri);
-            container.Format.UseJson();
+            var apiUri = new Uri(hostUri + "/api");
+            this.BaseUri = apiUri;
             this.authenticationHelper = new AuthenticationHelper(new Uri(hostUri));
 
-            container.SendingRequest2 += OnBeforeSendingRequest;
+            Format.UseJson();
+            SendingRequest2 += OnBeforeSendingRequest;
         }
 
         private void OnBeforeSendingRequest(object sender, SendingRequest2EventArgs sendingRequest2EventArgs)
