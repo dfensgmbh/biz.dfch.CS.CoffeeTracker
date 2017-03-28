@@ -30,12 +30,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
     {
         public string bearerToken = "";
         public Uri tokenUri;
-        private static readonly HttpClient client = new HttpClient();
+        private static HttpClient client;
 
         public AuthenticationHelper(Uri hostUri)
         {
             Contract.Requires(null != hostUri);
 
+            client = new HttpClient();
             var tokenUriStr = string.Format("{0}{1}", hostUri.AbsoluteUri, "token");
             this.tokenUri = new Uri(tokenUriStr);
         }
@@ -48,6 +49,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
 
         public async Task ReceiveAndSetToken(string userName, string password)
         {
+            Contract.Requires(!string.IsNullOrWhiteSpace(userName));
+            Contract.Requires(!string.IsNullOrWhiteSpace(password));
+
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
