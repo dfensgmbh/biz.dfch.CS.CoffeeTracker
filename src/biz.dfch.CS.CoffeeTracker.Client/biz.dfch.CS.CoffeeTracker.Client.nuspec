@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+	<metadata>
+		<id>biz.dfch.CS.CoffeeTracker.Client</id>
+		<version>1.0.0</version>
+		<title>biz.dfch.CS.CoffeeTracker.Client</title>
+		<authors>d-fens GmbH</authors>
+		<owners>d-fens GmbH</owners>
+		<licenseUrl>https://github.com/dfensgmbh/biz.dfch.CS.CoffeeTracker/blob/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/dfensgmbh/biz.dfch.CS.CoffeeTracker.git</projectUrl>
+		<iconUrl>https://avatars1.githubusercontent.com/u/8310404?v=3&amp;s=200</iconUrl>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<description>biz.dfch.CS.CoffeeTracker.Client
+========================
+
+Service Reference to the CoffeeTracker Api		
+		</description>
+		<releaseNotes>20170328
+Initial Release
+		</releaseNotes>
+		<copyright>Copyright © 2017 d-fens GmbH</copyright>
+		<tags>dfch OData service reference CoffeeTracker</tags>
+		<dependencies>
+			<dependency id="Microsoft.Data.Edm" version="5.6.4" />
+			<dependency id="Microsoft.Data.OData" version="5.6.4" />
+			<dependency id="Microsoft.Data.Services.Client" version="5.6.4" />
+			<dependency id="Newtonsoft.Json" version="10.0.1" />
+			<dependency id="System.Spatial" version="5.6.4" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="bin\Release\biz.dfch.CS.CoffeeTracker.Client.dll" target="lib\" />
+	</files>
+</package>
