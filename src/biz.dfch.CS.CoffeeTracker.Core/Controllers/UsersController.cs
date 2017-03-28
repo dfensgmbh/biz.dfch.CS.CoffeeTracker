@@ -99,12 +99,11 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Controllers
         // POST: odata/ApplicationUsers
         public async Task<IHttpActionResult> Post(ApplicationUser applicationUser)
         {
-            Contract.Requires(null != applicationUser, "|400|");
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            Contract.Assert(null != applicationUser, "|400|");
 
             var unsecuredAuthManager = new AuthorizationManager(
                 new ApplicationUserManager(new AppUserStore(), skipPermissionChecks: true));
