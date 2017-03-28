@@ -62,8 +62,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Tests
             var body = new FormUrlEncodedContent(bodyValuesDictionary);
             
             var response = await client.PostAsync(tokenUri, body);
-            Contract.Assert(HttpStatusCode.BadGateway != response.StatusCode);
-            Contract.Assert(HttpStatusCode.BadRequest != response.StatusCode);
+            Contract.Assert(HttpStatusCode.BadGateway != response.StatusCode, "Host couldn't be found. Verify you're accessing the correct server");
+            Contract.Assert(HttpStatusCode.BadRequest != response.StatusCode, "Bad request, check username and password");
 
             var responseString = await response.Content.ReadAsStringAsync();
             dynamic x = JsonConvert.DeserializeObject<dynamic>(responseString);
