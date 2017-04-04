@@ -7,6 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-           <Button Click="SwitchToLogin_Click">Switch to login page</Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+       
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+           <Label>Email Address</Label>
+           <TextBox></TextBox>
+        </StackPanel>
+        
+        <Button Grid.Column="1" Grid.Row="5" Height="16pt" Margin="0 0 70 0" Click="SwitchToLogin_Click">Switch to login page</Button>
     </Grid>
 </UserControl>
