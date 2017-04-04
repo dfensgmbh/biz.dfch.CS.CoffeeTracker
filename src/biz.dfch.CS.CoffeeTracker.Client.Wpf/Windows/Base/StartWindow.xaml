@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
         mc:Ignorable="d"
-        Title="StartWindow" Height="300" Width="300">
+        Title="StartWindow" Height="400" Width="320">
     <Grid>
-        <Label>This is not the MainWindow. This is the Start Window</Label>
+        <Label>Base</Label>
     </Grid>
 </Window>
