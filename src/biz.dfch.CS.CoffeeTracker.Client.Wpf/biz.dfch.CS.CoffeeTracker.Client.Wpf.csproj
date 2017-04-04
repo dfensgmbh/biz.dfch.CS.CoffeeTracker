@@ -141,9 +141,13 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Constants.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
     <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Start\Register.xaml.cs">
+      <DependentUpon>Register.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
@@ -153,6 +157,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControls\CompleteViews\Start\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Start\Register.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

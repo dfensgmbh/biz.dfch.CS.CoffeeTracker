@@ -17,19 +17,18 @@ using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class Login : UserControl
+    public partial class Register : UserControl
     {
-        public Login()
+        public Register()
         {
             InitializeComponent();
         }
 
-
-        private void SwitchRegisterButton_OnClick(object sender, RoutedEventArgs e)
+        private void SwitchToLogin_Click(object sender, RoutedEventArgs e)
         {
-            StartWindowSwitcher.Switch(new Register());
+            StartWindowSwitcher.Switch(new Login());
         }
     }
 }

@@ -7,6 +7,30 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Label>WAS EINS PAGE</Label>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+            <Label>Email Address</Label>
+            <TextBox Height="16pt" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
+            <Label>Password</Label>
+            <PasswordBox Height="16pt"/>
+        </StackPanel>
+        
+        <Button Grid.Column="1" Grid.Row="3" Height="18pt" Margin="100 0 0 0" Background="LightGreen" IsDefault="True">Login</Button>
+        <Button Grid.Column="1" Grid.Row="5" Height="18pt" Click="SwitchRegisterButton_OnClick" Background="LightBlue">Switch to registerpage</Button>
     </Grid>
 </UserControl>
