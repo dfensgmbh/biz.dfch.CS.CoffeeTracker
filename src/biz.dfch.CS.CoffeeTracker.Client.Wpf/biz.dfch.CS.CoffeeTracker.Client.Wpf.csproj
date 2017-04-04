@@ -141,21 +141,21 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Switcher\StartWindowSwitcher.cs" />
+    <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="UserControls\CompleteViews\Start\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Base\StartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -191,7 +191,6 @@
   <ItemGroup>
     <Folder Include="UserControls\CompleteViews\AdminUIs\" />
     <Folder Include="UserControls\CompleteViews\SharedUIs\" />
-    <Folder Include="UserControls\CompleteViews\Start\" />
     <Folder Include="UserControls\Components\" />
     <Folder Include="Windows\ConfirmationWindows\" />
   </ItemGroup>
