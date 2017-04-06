@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
-             xmlns:IconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -23,16 +24,21 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_EmailAddress}"/>
-                <TextBox Height="16pt" />
+            <TextBox 
+                Height="16pt" 
+                controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Email_Example}" 
+                controls:TextBoxHelper.ClearTextButton="True"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
-            <PasswordBox Height="16pt"/>
+            <PasswordBox 
+                Height="16pt" 
+                controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}"
+                controls:TextBoxHelper.ClearTextButton="True"
+                controls:TextBoxHelper.ButtonContent="{iconPacks:PackIconFontAwesome Kind=ArrowCircleRight}"/>
         </StackPanel>
-
-        <Button Grid.Column="1" Grid.Row="3" Height="18pt" Margin="100 0 0 0" Background="LightGreen" IsDefault="True" Content="{x:Static languageResources:Resources.Login_Button_Login}"/>
-        <StackPanel Grid.Column="1" Grid.Row="5"  Orientation="Vertical">
+        <StackPanel Grid.Column="1" Grid.Row="3"  Orientation="Vertical">
             <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
             <Label Style="{StaticResource HyperLinkStyle}" Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
         </StackPanel>
