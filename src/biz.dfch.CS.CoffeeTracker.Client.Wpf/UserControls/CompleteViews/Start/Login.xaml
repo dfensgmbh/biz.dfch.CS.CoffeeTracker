@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Src.Language_Resources"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+            <Label>Email Address</Label>
+            <TextBox Height="16pt" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
+            <Label>Password</Label>
+            <PasswordBox Height="16pt"/>
+        </StackPanel>
+
+        <Button Grid.Column="1" Grid.Row="3" Height="18pt" Margin="100 0 0 0" Background="LightGreen" IsDefault="True" Content="{x:Static languageResources:Resources.Login_Button_Login}"/>
+        <Button Grid.Column="1" Grid.Row="5" Height="18pt" Click="SwitchRegisterButton_OnClick" Background="LightBlue">Switch to registerpage</Button>
+    </Grid>
+</UserControl>

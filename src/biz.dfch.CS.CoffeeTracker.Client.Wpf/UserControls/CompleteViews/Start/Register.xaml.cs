@@ -12,17 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Register : UserControl
     {
-        public MainWindow()
+        public Register()
         {
             InitializeComponent();
+        }
+
+        private void SwitchToLogin_Click(object sender, RoutedEventArgs e)
+        {
+            StartWindowSwitcher.Switch(new Login());
         }
     }
 }

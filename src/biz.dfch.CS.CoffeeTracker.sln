@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Release", "Release", "{4DF2
 		CommonAssemblySettings.cs = CommonAssemblySettings.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biz.dfch.CS.CoffeeTracker.Client.Wpf", "biz.dfch.CS.CoffeeTracker.Client.Wpf\biz.dfch.CS.CoffeeTracker.Client.Wpf.csproj", "{C584FA16-D855-41A6-A89B-53BE24BFA11D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{E668DDE4-C7EF-4629-BD7E-80480834EA43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E668DDE4-C7EF-4629-BD7E-80480834EA43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E668DDE4-C7EF-4629-BD7E-80480834EA43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C584FA16-D855-41A6-A89B-53BE24BFA11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C584FA16-D855-41A6-A89B-53BE24BFA11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C584FA16-D855-41A6-A89B-53BE24BFA11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C584FA16-D855-41A6-A89B-53BE24BFA11D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

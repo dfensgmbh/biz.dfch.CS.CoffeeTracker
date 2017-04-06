@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,27 +12,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
     /// <summary>
-    /// Interaction logic for StartWindow.xaml
+    /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class StartWindow : Window
+    public partial class Login : UserControl
     {
-        public StartWindow()
+        public Login()
         {
             InitializeComponent();
-            StartWindowSwitcher.PageSwitcher = this;
-            StartWindowSwitcher.Switch(new Login());
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
         }
 
-        public void Navigate(UserControl nextPage)
+
+        private void SwitchRegisterButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Content = nextPage;
+            StartWindowSwitcher.Switch(new Register());
         }
     }
 }
