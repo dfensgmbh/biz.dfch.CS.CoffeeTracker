@@ -33,8 +33,9 @@
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
             <DockPanel LastChildFill="True">
-                <Button DockPanel.Dock="Right" Height="16pt"
+                <Button DockPanel.Dock="Right" Height="16pt" Width="16pt"
                     Click="LoginButton_OnClick"
+                    IsDefault="True"
                     Style="{DynamicResource AccentedSquareButtonStyle}">
                     <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
                 </Button>

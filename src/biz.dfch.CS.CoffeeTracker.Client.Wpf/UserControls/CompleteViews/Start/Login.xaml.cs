@@ -28,10 +28,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             InitializeComponent();
         }
 
-
         private void CreateAccountLabel_OnMouseUp(object sender, RoutedEventArgs e)
         {
             StartWindowSwitcher.Switch(new Register());
+        }
+
+        private void LoginButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException("Implement Login");
         }
     }
 }
