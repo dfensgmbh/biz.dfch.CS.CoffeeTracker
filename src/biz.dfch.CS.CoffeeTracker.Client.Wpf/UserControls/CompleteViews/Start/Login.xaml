@@ -22,16 +22,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <Label>Email Address</Label>
-            <TextBox Height="16pt" />
+            <Label Content="{x:Static languageResources:Resources.Login_Label_EmailAddress}"/>
+                <TextBox Height="16pt" />
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <Label>Password</Label>
+            <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
             <PasswordBox Height="16pt"/>
         </StackPanel>
 
         <Button Grid.Column="1" Grid.Row="3" Height="18pt" Margin="100 0 0 0" Background="LightGreen" IsDefault="True" Content="{x:Static languageResources:Resources.Login_Button_Login}"/>
-        <Button Grid.Column="1" Grid.Row="5" Height="18pt" Click="SwitchRegisterButton_OnClick" Background="LightBlue">Switch to registerpage</Button>
+        <StackPanel Grid.Column="1" Grid.Row="5"  Orientation="Vertical">
+            <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
+            <Label Style="{StaticResource HyperLinkStyle}" Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
+        </StackPanel>
     </Grid>
 </UserControl>

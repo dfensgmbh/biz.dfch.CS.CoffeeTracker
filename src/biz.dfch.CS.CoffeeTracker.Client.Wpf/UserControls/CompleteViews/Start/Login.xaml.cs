@@ -29,7 +29,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         }
 
 
-        private void SwitchRegisterButton_OnClick(object sender, RoutedEventArgs e)
+        private void CreateAccountLabel_OnMouseUp(object sender, RoutedEventArgs e)
         {
             StartWindowSwitcher.Switch(new Register());
         }
