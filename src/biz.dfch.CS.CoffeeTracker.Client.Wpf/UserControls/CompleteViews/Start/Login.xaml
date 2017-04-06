@@ -32,11 +32,18 @@
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
-            <PasswordBox 
-                Height="16pt" 
-                controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}"
-                controls:TextBoxHelper.ClearTextButton="True"
-                controls:TextBoxHelper.ButtonContent="{iconPacks:PackIconFontAwesome Kind=ArrowCircleRight}"/>
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Right" Height="16pt"
+                    Click="LoginButton_OnClick"
+                    Style="{DynamicResource AccentedSquareButtonStyle}">
+                    <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
+                </Button>
+                <PasswordBox 
+                    Height="16pt" 
+                    controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}">
+                </PasswordBox>
+            </DockPanel>
+                
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="3"  Orientation="Vertical">
             <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
