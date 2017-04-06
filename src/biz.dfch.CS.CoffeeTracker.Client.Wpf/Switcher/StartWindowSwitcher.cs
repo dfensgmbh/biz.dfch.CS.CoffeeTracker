@@ -15,17 +15,29 @@
  */
 
 using System.Windows.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 {
     public static class StartWindowSwitcher
     {
-        public static StartWindow PageSwitcher;
+        public static StartWindow StartWindow;
 
         public static void Switch(UserControl newPage)
         {
-            PageSwitcher.Navigate(newPage);
+            StartWindow.Navigate(newPage);
+            var newPageClassName = newPage.GetType().Name;
+
+            // validate which page is loaded, and set the corresponding title
+            if (newPageClassName.Equals(nameof(Login)))
+            {
+                StartWindow.Title = Resources.LanguageResources.Resources.Login_Title;
+            }
+            else if (nameof(newPage).Equals(nameof(Register)))
+            {
+                StartWindow.Title = "";
+            }
         }
     }
 }
