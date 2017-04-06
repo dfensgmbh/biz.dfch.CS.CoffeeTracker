@@ -40,20 +40,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
-            var client = ClientContext.GetServiceContext();
-            DisplayLoading();
-            try
+            var isValid = ValidateInputs();
+            if (isValid)
             {
-                await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.Text, LoginPassword.Password);
-            }
-            catch (Exception)
-            {
-                if (client.authenticationHelper.bearerToken == string.Empty)
+                var client = ClientContext.GetServiceContext();
+                DisplayLoading();
+                try
                 {
-                    Debug.WriteLine("Goddamn");
+                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.Text, LoginPassword.Password);
                 }
+                catch (Exception)
+                {
+                    if (client.authenticationHelper.bearerToken == string.Empty)
+                    {
+                        Debug.WriteLine("Goddamn");
+                    }
+                }
+                HideLoading();
             }
-            HideLoading();
         }
 
         private void DisplayLoading()
@@ -78,6 +82,32 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
             // hide loading sequence
             ProgressRing.IsActive = false;
+        }
+
+        public bool ValidateInputs()
+        {
+            var emailHasValue = string.Empty != LoginEmail.Text;
+            var passwordHasValue = string.Empty != LoginPassword.Password;
+
+            if (!emailHasValue)
+            {
+                LoginEmail.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                LoginEmail.BorderBrush = Brushes.Black;
+            }
+
+            if (!passwordHasValue)
+            {
+                LoginPassword.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                LoginPassword.BorderBrush = Brushes.Black;
+            }
+
+            return emailHasValue && passwordHasValue;
         }
     }
 }

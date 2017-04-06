@@ -25,6 +25,7 @@
         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_EmailAddress}"/>
             <TextBox
+                TabIndex="10"
                 Name="LoginEmail"
                 Height="16pt" 
                 controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Email_Example}" 
@@ -44,6 +45,7 @@
                     <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
                 </Button>
                 <PasswordBox
+                    TabIndex="20"
                     Name="LoginPassword"
                     Height="16pt" 
                     controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}">
