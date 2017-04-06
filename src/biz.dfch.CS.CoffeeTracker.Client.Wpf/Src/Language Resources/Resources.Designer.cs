@@ -61,11 +61,29 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Src.Language_Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login_Button_Login {
             get {
                 return ResourceManager.GetString("Login_Button_Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Address.
+        /// </summary>
+        public static string Login_Label_EmailAddress {
+            get {
+                return ResourceManager.GetString("Login_Label_EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoffeeTracker - Login.
+        /// </summary>
+        public static string Login_Title {
+            get {
+                return ResourceManager.GetString("Login_Title", resourceCulture);
             }
         }
     }
