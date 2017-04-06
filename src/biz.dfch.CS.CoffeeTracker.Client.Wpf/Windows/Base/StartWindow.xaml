@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="CoffeeTracker - Login" Height="400" Width="320">
+        Title="" Height="400" Width="320">
     <Grid>
     </Grid>
 </controls:MetroWindow>
