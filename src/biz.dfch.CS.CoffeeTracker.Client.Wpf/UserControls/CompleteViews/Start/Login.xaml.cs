@@ -26,7 +26,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         public Login()
         {
             InitializeComponent();
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
         }
 
 
