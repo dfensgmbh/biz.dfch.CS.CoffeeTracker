@@ -34,7 +34,10 @@
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
             <DockPanel LastChildFill="True">
-                <Button DockPanel.Dock="Right" Height="16pt" Width="16pt"
+                <Button 
+                    Name="LoginButton"
+                    DockPanel.Dock="Right" 
+                    Height="16pt" Width="16pt"
                     Click="LoginButton_OnClick"
                     IsDefault="True"
                     Style="{DynamicResource AccentedSquareButtonStyle}">
@@ -48,9 +51,20 @@
             </DockPanel>
                 
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="3"  Orientation="Vertical">
+        <StackPanel 
+            Name="LoginRegistrationStackPanel"
+            Grid.Column="1" Grid.Row="3"  
+            Orientation="Vertical">
             <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
-            <Label Style="{StaticResource HyperLinkStyle}" Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
+            <Label 
+                Height="18pt" 
+                Style="{StaticResource HyperLinkStyle}" 
+                Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" 
+                MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
         </StackPanel>
+        <controls:ProgressRing 
+            Name="ProgressRing"
+            Grid.Column="1" Grid.Row="4" 
+            IsActive="False"/>
     </Grid>
 </UserControl>

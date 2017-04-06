@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -27,7 +28,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
     /// </summary>
     public partial class Login : UserControl
     {
-        
         public Login()
         {
             InitializeComponent();
@@ -41,6 +41,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
             var client = ClientContext.GetServiceContext();
+            DisplayLoading();
             try
             {
                 await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.Text, LoginPassword.Password);
@@ -52,6 +53,31 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     Debug.WriteLine("Goddamn");
                 }
             }
+            HideLoading();
+        }
+
+        private void DisplayLoading()
+        {
+            // disable all controls
+            LoginEmail.IsEnabled = false;
+            LoginButton.IsEnabled = false;
+            LoginPassword.IsEnabled = false;
+            LoginRegistrationStackPanel.Visibility = Visibility.Collapsed;
+
+            // display loading sequence
+            ProgressRing.IsActive = true;
+        }
+
+        private void HideLoading()
+        {
+            // enable all controls
+            LoginEmail.IsEnabled = true;
+            LoginButton.IsEnabled = true;
+            LoginPassword.IsEnabled = true;
+            LoginRegistrationStackPanel.Visibility = Visibility.Visible;
+
+            // hide loading sequence
+            ProgressRing.IsActive = false;
         }
     }
 }
