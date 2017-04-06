@@ -152,6 +152,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
@@ -179,7 +180,8 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Compile Include="Constants.cs" />
-    <Compile Include="Control\ApiClient.cs" />
+    <Compile Include="Controls\ApiClientConfigurationSection.cs" />
+    <Compile Include="Controls\ClientContext.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
