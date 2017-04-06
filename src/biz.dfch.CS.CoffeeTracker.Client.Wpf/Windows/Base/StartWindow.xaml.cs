@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
 {
     /// <summary>
     /// Interaction logic for StartWindow.xaml
     /// </summary>
-    public partial class StartWindow : Window
+    public partial class StartWindow : MetroWindow
     {
         public StartWindow()
         {
