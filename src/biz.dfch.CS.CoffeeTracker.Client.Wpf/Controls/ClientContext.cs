@@ -15,13 +15,29 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Control
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
-    class ApiClient
+    public static class ClientContext
     {
+        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection
+            = (ApiClientConfigurationSection)ConfigurationManager.GetSection("apiClientConfiguration");
+
+
+        private static CoffeeTrackerServiceContext _coffeeTrackerClient;
+
+        public static CoffeeTrackerServiceContext GetServiceContext()
+        {
+            if (null == _coffeeTrackerClient)
+            {
+                _coffeeTrackerClient = new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+            }
+
+            return _coffeeTrackerClient;
+        }
     }
 }
