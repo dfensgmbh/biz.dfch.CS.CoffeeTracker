@@ -70,11 +70,38 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create one!.
+        /// </summary>
+        public static string Login_Label_CreateOne {
+            get {
+                return ResourceManager.GetString("Login_Label_CreateOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email Address.
         /// </summary>
         public static string Login_Label_EmailAddress {
             get {
                 return ResourceManager.GetString("Login_Label_EmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You do not have an account?.
+        /// </summary>
+        public static string Login_Label_NoAccount {
+            get {
+                return ResourceManager.GetString("Login_Label_NoAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Login_Label_Password {
+            get {
+                return ResourceManager.GetString("Login_Label_Password", resourceCulture);
             }
         }
         
