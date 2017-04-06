@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
@@ -23,6 +27,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
     /// </summary>
     public partial class Login : UserControl
     {
+        
         public Login()
         {
             InitializeComponent();
@@ -33,9 +38,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             StartWindowSwitcher.Switch(new Register());
         }
 
-        private void LoginButton_OnClick(object sender, RoutedEventArgs e)
+        private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException("Implement Login");
+            var client = ClientContext.GetServiceContext();
+            try
+            {
+                await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.Text, LoginPassword.Password);
+            }
+            catch (Exception)
+            {
+                if (client.authenticationHelper.bearerToken == string.Empty)
+                {
+                    Debug.WriteLine("Goddamn");
+                }
+            }
         }
     }
 }
