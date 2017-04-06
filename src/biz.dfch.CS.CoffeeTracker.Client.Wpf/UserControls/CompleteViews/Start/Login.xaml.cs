@@ -35,7 +35,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         private void CreateAccountLabel_OnMouseUp(object sender, RoutedEventArgs e)
         {
-            StartWindowSwitcher.Switch(new Register());
+            StartWindowSwitcher.Switch(new Registration());
         }
 
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
@@ -47,7 +47,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 DisplayLoading();
                 try
                 {
-                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.Text, LoginPassword.Password);
+                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.Password);
                 }
                 catch (Exception)
                 {
@@ -86,17 +86,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         public bool ValidateInputs()
         {
-            var emailHasValue = string.Empty != LoginEmail.Text;
             var passwordHasValue = string.Empty != LoginPassword.Password;
-
-            if (!emailHasValue)
-            {
-                LoginEmail.BorderBrush = Brushes.Red;
-            }
-            else
-            {
-                LoginEmail.BorderBrush = Brushes.Black;
-            }
 
             if (!passwordHasValue)
             {
@@ -107,7 +97,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 LoginPassword.BorderBrush = Brushes.Black;
             }
 
-            return emailHasValue && passwordHasValue;
+            return LoginEmail.Validate() && passwordHasValue;
         }
     }
 }

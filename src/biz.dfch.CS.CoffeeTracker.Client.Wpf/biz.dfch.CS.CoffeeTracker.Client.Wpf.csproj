@@ -182,6 +182,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Controls\ClientContext.cs" />
+    <Compile Include="IValidationable.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -191,8 +192,11 @@
     <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Start\Register.xaml.cs">
-      <DependentUpon>Register.xaml</DependentUpon>
+    <Compile Include="UserControls\CompleteViews\Start\Registration.xaml.cs">
+      <DependentUpon>Registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Components\EmailLabeledTextBox.xaml.cs">
+      <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
@@ -217,7 +221,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Start\Register.xaml">
+    <Page Include="UserControls\CompleteViews\Start\Registration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Components\EmailLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,7 +270,6 @@
   <ItemGroup>
     <Folder Include="UserControls\CompleteViews\AdminUIs\" />
     <Folder Include="UserControls\CompleteViews\SharedUIs\" />
-    <Folder Include="UserControls\Components\" />
     <Folder Include="Windows\ConfirmationWindows\" />
   </ItemGroup>
   <ItemGroup>

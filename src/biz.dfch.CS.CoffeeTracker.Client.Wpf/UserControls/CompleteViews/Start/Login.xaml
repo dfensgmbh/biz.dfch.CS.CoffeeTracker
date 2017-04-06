@@ -6,6 +6,7 @@
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -22,15 +23,10 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <Label Content="{x:Static languageResources:Resources.Login_Label_EmailAddress}"/>
-            <TextBox
-                TabIndex="10"
-                Name="LoginEmail"
-                Height="16pt" 
-                controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Email_Example}" 
-                controls:TextBoxHelper.ClearTextButton="True"/>
-        </StackPanel>
+        
+        <components:EmailLabeledTextBox 
+            x:Name="LoginEmail"
+            Grid.Row="1" Grid.Column="1"/>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
