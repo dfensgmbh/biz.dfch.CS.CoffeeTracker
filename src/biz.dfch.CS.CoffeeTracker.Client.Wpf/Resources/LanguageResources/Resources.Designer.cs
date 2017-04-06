@@ -113,5 +113,23 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
                 return ResourceManager.GetString("Login_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to email@example.com.
+        /// </summary>
+        public static string Shared_Email_Example {
+            get {
+                return ResourceManager.GetString("Shared_Email_Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ******.
+        /// </summary>
+        public static string Shared_Password_Example {
+            get {
+                return ResourceManager.GetString("Shared_Password_Example", resourceCulture);
+            }
+        }
     }
 }
