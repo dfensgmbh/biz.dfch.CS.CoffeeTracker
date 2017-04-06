@@ -34,7 +34,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             {
                 StartWindow.Title = Resources.LanguageResources.Resources.Login_Title;
             }
-            else if (nameof(newPage).Equals(nameof(Register)))
+            else if (newPageClassName.Equals(nameof(Register)))
             {
                 StartWindow.Title = "";
             }
