@@ -135,6 +135,9 @@
   <data name="Login_Title" xml:space="preserve">
     <value>CoffeeTracker - Login</value>
   </data>
+  <data name="Registration_Title" xml:space="preserve">
+    <value>Registration</value>
+  </data>
   <data name="Shared_Email_Example" xml:space="preserve">
     <value>email@example.com</value>
   </data>
