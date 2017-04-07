@@ -49,7 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void LaunchAndCloseApplicationSucceeds()
+        public void LoginLaunchAndCloseApplicationSucceeds()
         {
             var sut = Application.Launch(_applicationPath);
             sut.Close();
@@ -59,7 +59,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
-        public void SwitchToRegisterByHyperLinkOnClickSucceeds()
+        public void LoginSwitchToRegisterByHyperLinkOnClickSucceeds()
         {
             //Arrange
             var application = Application.Launch(_applicationPath);
@@ -77,7 +77,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
-        public void TryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
+        public void LoginTryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
         {
             //Arrange
             var application = Application.Launch(_applicationPath);
@@ -111,7 +111,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
-        public void TryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
+        public void LoginTryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
         {
             //Arrange
             var application = Application.Launch(_applicationPath);
