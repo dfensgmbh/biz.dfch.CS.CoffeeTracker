@@ -40,17 +40,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
         private readonly string _userPassword = "123456";
 
-        private static readonly string projectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
         private static string _applicationPath = "";
 
         [AssemblyInitialize]
         public static void AssembylyInit(TestContext context)
         {
-            // create path to executable file in biz.dfch.CS.CoffeeTracker.Client.Wpf/bin/Debug
-            var baseDirectory = AppContext.BaseDirectory;
-            var toReplace = string.Format("{0}{1}", projectName, ".Tests");
-            var newBaseDirectory = baseDirectory.Replace(toReplace, projectName);
-            _applicationPath = Path.Combine(newBaseDirectory, projectName + ".exe");
+            _applicationPath = SharedTestData.GetExecutablePath();
         }
 
         [TestMethod]

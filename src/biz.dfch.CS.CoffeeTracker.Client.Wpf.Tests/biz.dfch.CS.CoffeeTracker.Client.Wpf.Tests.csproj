@@ -156,8 +156,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="SharedTestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\CompleteViews\Start\LoginTests.cs" />
+    <Compile Include="UserControls\CompleteViews\Start\RegisterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

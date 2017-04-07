@@ -182,7 +182,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Controls\ClientContext.cs" />
-    <Compile Include="IValidationable.cs" />
+    <Compile Include="IValidatable.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
