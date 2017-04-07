@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
 {
-    public interface IValidatatable
+    public interface IValidatable
     {
         bool Validate();
     }
