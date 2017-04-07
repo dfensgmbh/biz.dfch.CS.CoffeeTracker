@@ -31,15 +31,30 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class LoginTests
     {
-        private readonly string applicationPath = Path.Combine(AppContext.BaseDirectory, "biz.dfch.CS.CoffeeTracker.Client.Wpf.exe");
-        private readonly string UserNameWhichShouldNotExist = "NotExistentName";
-        private readonly string InvalidPassword = "InvPa"; //InvPa = InvalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
+        private readonly string _userNameWhichShouldNotExist = "NotExistentName";
+        private readonly string _invalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
+
+        private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
+        private readonly string _userPassword = "123456";
+
+        private static readonly string projectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
+        private static string _applicationPath = "";
+
+        [AssemblyInitialize]
+        public static void AssembylyInit(TestContext context)
+        {
+            // create path to executable file in biz.dfch.CS.CoffeeTracker.Client.Wpf/bin/Debug
+            var baseDirectory = AppContext.BaseDirectory;
+            var toReplace = string.Format("{0}{1}", projectName, ".Tests");
+            var newBaseDirectory = baseDirectory.Replace(toReplace, projectName);
+            _applicationPath = Path.Combine(newBaseDirectory, projectName + ".exe");
+        }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void LaunchAndCloseApplicationSucceeds()
         {
-            var sut = Application.Launch(applicationPath);
+            var sut = Application.Launch(_applicationPath);
             sut.Close();
 
             // Should Throw an InvalidOperationException, because the process doesn't exist anymore
@@ -50,7 +65,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         public void SwitchToRegisterByHyperLinkOnClickSucceeds()
         {
             //Arrange
-            var application = Application.Launch(applicationPath);
+            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
 
@@ -61,14 +76,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var result = baseWindow.Title;
             application.Close();
 
-            Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, result);
+            Assert.AreNotEqual(Resources.LanguageResources.Resources.Login_Title, result);
         }
 
         [TestMethod]
         public void TryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
         {
             //Arrange
-            var application = Application.Launch(applicationPath);
+            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
@@ -83,29 +98,48 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             //// Get Additional Controls
             var loginButton = baseWindow.Get<Button>("LoginButton");
 
-
-            var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
-
-            //Act / Assert
-            emailTextBox.Enter(UserNameWhichShouldNotExist);
-            passwordBox.Enter(InvalidPassword);
+            //Act 
+            emailTextBox.Enter(_userNameWhichShouldNotExist);
+            passwordBox.Enter(_invalidPassword);
             loginButton.Click();
-
-            //// Get Loading 
-            var progressRingCriteria = SearchCriteria.ByAutomationId("ProgressRing");
-            var progressRing = baseWindow.Get(progressRingCriteria);
-
-
-            Assert.IsTrue(progressRing.Visible);
-
-            Assert.IsFalse(hyperLink.Visible);
-            //Assert.IsFalse(invalidCredentialsTextBlock.Visible);
-            Assert.IsFalse(emailTextBox.Enabled);
-            Assert.IsFalse(passwordBox.Enabled);
-            Assert.IsFalse(loginButton.Enabled);
             baseWindow.WaitWhileBusy();
 
+            //Assert
+            var invalidMessageTextBlockCriteria = SearchCriteria.ByAutomationId("LoginInvalidCredsTextBlock");
+            var invalidMessageTextBlock = baseWindow.Get(invalidMessageTextBlockCriteria);
 
+            Assert.IsTrue(invalidMessageTextBlock.Visible);
+
+            application.Close();
+        }
+
+        [TestMethod]
+        public void TryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
+        {
+            //Arrange
+            var application = Application.Launch(_applicationPath);
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+
+            //// Get Email Textbox
+            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
+            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
+            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+
+            //// Get Password TextBox
+            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
+            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+
+            //// Get Additional Controls
+            var loginButton = baseWindow.Get<Button>("LoginButton");
+
+            //Act 
+            emailTextBox.Enter(_userWhichExists);
+            passwordBox.Enter(_userPassword);
+            loginButton.Click();
+            baseWindow.WaitWhileBusy();
+
+            // Assert
+            Assert.IsTrue(baseWindow.IsClosed);
             application.Close();
         }
     }
