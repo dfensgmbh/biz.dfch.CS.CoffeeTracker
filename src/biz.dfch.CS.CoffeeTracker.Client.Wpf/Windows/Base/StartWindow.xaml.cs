@@ -25,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
         public StartWindow()
         {
             InitializeComponent();
-            StartWindowSwitcher.PageSwitcher = this;
+            StartWindowSwitcher.StartWindow = this;
             StartWindowSwitcher.Switch(new Login());
         }
 

@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Src.Language_Resources"
+             xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -20,17 +23,53 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-            <Label>Email Address</Label>
-            <TextBox Height="16pt" />
-        </StackPanel>
+        
+        <components:EmailLabeledTextBox 
+            x:Name="LoginEmail"
+            Grid.Row="1" Grid.Column="1"/>
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
-            <Label>Password</Label>
-            <PasswordBox Height="16pt"/>
+            <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
+            <DockPanel LastChildFill="True">
+                <Button 
+                    Name="LoginButton"
+                    DockPanel.Dock="Right" 
+                    Height="16pt" Width="16pt"
+                    Click="LoginButton_OnClick"
+                    IsDefault="True"
+                    Style="{DynamicResource AccentedSquareButtonStyle}"
+                    BorderBrush="Transparent">
+                    <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
+                </Button>
+                <PasswordBox
+                    TabIndex="20"
+                    Name="LoginPassword"
+                    Height="16pt" 
+                    controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}">
+                </PasswordBox>
+            </DockPanel>
+                
         </StackPanel>
-
-        <Button Grid.Column="1" Grid.Row="3" Height="18pt" Margin="100 0 0 0" Background="LightGreen" IsDefault="True" Content="{x:Static languageResources:Resources.Login_Button_Login}"/>
-        <Button Grid.Column="1" Grid.Row="5" Height="18pt" Click="SwitchRegisterButton_OnClick" Background="LightBlue">Switch to registerpage</Button>
+        <StackPanel 
+            Name="LoginRegistrationStackPanel"
+            Grid.Column="1" Grid.Row="3"  
+            Orientation="Vertical">
+            <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
+            <Label 
+                Name="LoginHyperLink"
+                Height="18pt" 
+                Style="{StaticResource HyperLinkStyle}" 
+                Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" 
+                MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
+        </StackPanel>
+        <controls:ProgressRing 
+            Name="ProgressRing"
+            Grid.Column="1" Grid.Row="4" 
+            IsActive="False"/>
+        <TextBlock
+            Name="LoginInvalidCredsTextBlock"
+            Foreground="Red"
+            Visibility="Collapsed"
+            Grid.Column="1" Grid.Row="4">Invalid Email/Password Combination</TextBlock>
     </Grid>
 </UserControl>

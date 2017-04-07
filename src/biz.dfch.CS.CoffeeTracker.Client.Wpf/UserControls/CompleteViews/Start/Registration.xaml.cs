@@ -17,11 +17,11 @@ using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
     /// <summary>
-    /// Interaction logic for Register.xaml
+    /// Interaction logic for Registration.xaml
     /// </summary>
-    public partial class Register : UserControl
+    public partial class Registration : UserControl
     {
-        public Register()
+        public Registration()
         {
             InitializeComponent();
         }
