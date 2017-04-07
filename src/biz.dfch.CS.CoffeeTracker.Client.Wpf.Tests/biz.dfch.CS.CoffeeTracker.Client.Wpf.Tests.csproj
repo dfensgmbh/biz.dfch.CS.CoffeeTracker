@@ -132,6 +132,7 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="TestStack.White, Version=0.13.0.0, Culture=neutral, PublicKeyToken=2672efbf3e161801, processorArchitecture=MSIL">
       <HintPath>..\biz.dfch.CS.CoffeeTracker.Client.Wpf\packages\TestStack.White.0.13.3\lib\net40\TestStack.White.dll</HintPath>
       <Private>True</Private>
@@ -159,7 +160,7 @@
     <Compile Include="SharedTestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\CompleteViews\Start\LoginTests.cs" />
-    <Compile Include="UserControls\CompleteViews\Start\RegisterTests.cs" />
+    <Compile Include="UserControls\CompleteViews\Start\RegistrationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

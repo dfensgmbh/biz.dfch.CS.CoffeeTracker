@@ -102,6 +102,29 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
+        public void RegistrationTryWithInvalidMailShowsInvalidMailMessage()
+        {
+            // Arrange
+            var application = Application.Launch(_applicationPath);
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+            baseWindow.Get<Label>("LoginHyperLink").Click();
+
+            // Act
+            var emailTextBox = baseWindow.Get<TextBox>("RegistrationEmailTextBox");
+            emailTextBox.Enter(INVALID_EMAIL);
+
+            baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(VALID_PASSWORD);
+            baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(VALID_PASSWORD);
+            baseWindow.Get<Button>("RegistrationRegistrateButton").Click();
+            baseWindow.WaitWhileBusy();
+
+            // Assert
+            Assert.AreEqual(Color.Red, emailTextBox.BorderColor);
+
+            application.Close();
+        }
+
+        [TestMethod]
         public void RegistrationWithValidFormularRedirectsToLoginPageAndShowsRegisteredMessage()
         {
             // Arrange
