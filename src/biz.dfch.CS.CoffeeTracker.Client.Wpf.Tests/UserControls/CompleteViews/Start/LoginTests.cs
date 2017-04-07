@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 using System;
+using System.Drawing;
 using System.IO;
 using System.Net.Mime;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -138,8 +141,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
+            // The window closes after WaitWhileBusy() hence IsClosed is still set to false.
+            // Next command helps prevent this issue, so the assertion won't be executed to early
+            Thread.Sleep(3000);
+
             // Assert
             Assert.IsTrue(baseWindow.IsClosed);
+            
             application.Close();
         }
     }
