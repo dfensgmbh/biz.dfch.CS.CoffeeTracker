@@ -198,6 +198,9 @@
     <Compile Include="UserControls\Components\EmailLabeledTextBox.xaml.cs">
       <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
+      <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
@@ -226,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Components\EmailLabeledTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
