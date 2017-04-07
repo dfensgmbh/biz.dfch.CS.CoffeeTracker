@@ -49,7 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 try
                 {
                     await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.Password);
-                    MessageBox.Show("Logged in");
+                    StartWindowSwitcher.StartWindow.Close();
                 }
                 catch (Exception)
                 {
@@ -81,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             LoginButton.IsEnabled = true;
             LoginPassword.IsEnabled = true;
             LoginRegistrationStackPanel.Visibility = Visibility.Visible;
-
+            
             // hide loading sequence
             ProgressRing.IsActive = false;
         }
