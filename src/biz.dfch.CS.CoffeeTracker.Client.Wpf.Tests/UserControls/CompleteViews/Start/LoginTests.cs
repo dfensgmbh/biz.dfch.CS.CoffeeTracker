@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Net.Mime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestStack.White;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.Start
 {
@@ -28,6 +29,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         {
             var applicationDirectory = AppContext.BaseDirectory;
             var applicationPath = Path.Combine(applicationDirectory, "biz.dfch.CS.CoffeeTracker.Client.Wpf.exe");
+            var sut = Application.Launch(applicationPath);
+            var sutLoginWindow = sut.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+            
+
+            var justacommand = "";
         }
     }
 }
