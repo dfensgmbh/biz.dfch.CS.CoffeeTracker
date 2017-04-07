@@ -16,24 +16,36 @@
 using System;
 using System.IO;
 using System.Net.Mime;
+using System.Windows;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TestStack.White;
+using TestStack.White.UIItems.Finders;
+using TestStack.White.UIItems.WPFUIItems;
+using Application = TestStack.White.Application;
+using Button = TestStack.White.UIItems.Button;
+using Label = TestStack.White.UIItems.Label;
+using TextBox = TestStack.White.UIItems.TextBox;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.Start
 {
     [TestClass]
     public class LoginTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-            var applicationDirectory = AppContext.BaseDirectory;
-            var applicationPath = Path.Combine(applicationDirectory, "biz.dfch.CS.CoffeeTracker.Client.Wpf.exe");
-            var sut = Application.Launch(applicationPath);
-            var sutLoginWindow = sut.GetWindow(Resources.LanguageResources.Resources.Login_Title);
-            
+        private readonly string applicationPath = Path.Combine(AppContext.BaseDirectory, "biz.dfch.CS.CoffeeTracker.Client.Wpf.exe");
+        private readonly string UserNameWhichShouldNotExist = "NotExistentName";
+        private readonly string InvalidPassword = "InvPa"; //InvPa = InvalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
 
-            var justacommand = "";
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void LaunchAndCloseApplicationSucceeds()
+        {
+            var sut = Application.Launch(applicationPath);
+            sut.Close();
+
+            // Should Throw an InvalidOperationException, because the process doesn't exist anymore
+            var arbitraryVar = sut.Name;
+        }
+
         }
     }
 }
