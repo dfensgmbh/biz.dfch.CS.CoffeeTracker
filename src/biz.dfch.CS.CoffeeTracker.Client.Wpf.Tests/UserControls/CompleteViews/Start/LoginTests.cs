@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 using System;
+using System.IO;
+using System.Net.Mime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.Start
@@ -24,6 +26,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         [TestMethod]
         public void TestMethod1()
         {
+            var applicationDirectory = AppContext.BaseDirectory;
+            var applicationPath = Path.Combine(applicationDirectory, "biz.dfch.CS.CoffeeTracker.Client.Wpf.exe");
         }
     }
 }
