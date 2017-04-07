@@ -115,6 +115,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registration.
+        /// </summary>
+        public static string Registration_Title {
+            get {
+                return ResourceManager.GetString("Registration_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to email@example.com.
         /// </summary>
         public static string Shared_Email_Example {
