@@ -56,6 +56,7 @@
             Orientation="Vertical">
             <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
             <Label 
+                Name="LoginHyperLink"
                 Height="18pt" 
                 Style="{StaticResource HyperLinkStyle}" 
                 Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" 
