@@ -42,8 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
         private static string _applicationPath = "";
 
-        [AssemblyInitialize]
-        public static void AssembylyInit(TestContext context)
+        public  LoginTests()
         {
             _applicationPath = SharedTestData.GetExecutablePath();
         }
