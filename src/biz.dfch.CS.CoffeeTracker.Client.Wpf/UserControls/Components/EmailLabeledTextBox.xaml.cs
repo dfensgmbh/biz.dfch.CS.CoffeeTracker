@@ -18,7 +18,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// <summary>
     /// Interaction logic for EmailLabeledTextBox.xaml
     /// </summary>
-    public partial class EmailLabeledTextBox : IValidatatable
+    public partial class EmailLabeledTextBox : IValidatable
     {
         private Brush oldBorderBrush;
 
