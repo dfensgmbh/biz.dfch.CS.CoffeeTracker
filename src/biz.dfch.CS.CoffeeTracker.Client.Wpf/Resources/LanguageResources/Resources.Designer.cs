@@ -115,6 +115,33 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Account.
+        /// </summary>
+        public static string Registration_Button_Create {
+            get {
+                return ResourceManager.GetString("Registration_Button_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already Have an account?.
+        /// </summary>
+        public static string Registration_Label_AlreadyHaveAccount {
+            get {
+                return ResourceManager.GetString("Registration_Label_AlreadyHaveAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go to the Login page.
+        /// </summary>
+        public static string Registration_Label_GoToLogin {
+            get {
+                return ResourceManager.GetString("Registration_Label_GoToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration.
         /// </summary>
         public static string Registration_Title {

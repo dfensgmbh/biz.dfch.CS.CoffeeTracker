@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start"
+             xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -23,10 +23,26 @@
         </Grid.ColumnDefinitions>
        
         <components:EmailLabeledTextBox
-            Grid.Row="1" Grid.Column="1">
-            
-        </components:EmailLabeledTextBox>
+            Grid.Row="0" Grid.Column="1"/>
+        <components:PasswordLabeledTextBox
+            Grid.Row="1" Grid.Column="1"/>
+        <components:PasswordLabeledTextBox
+            Grid.Row="2" Grid.Column="1"/>
+        <Button 
+            Grid.Row="3" Grid.Column="1"
+            Margin="90 15 0 10"
+            Style="{DynamicResource AccentedSquareButtonStyle}"
+            Content="{x:Static languageResources:Resources.Registration_Button_Create}"/>
         
-        <Button Grid.Column="1" Grid.Row="5" Height="16pt" Margin="0 0 70 0" Click="SwitchToLogin_Click">Switch to login page</Button>
+        <StackPanel
+            Orientation="Vertical"
+            Grid.Row="4" Grid.Column="1">
+            <Label 
+                Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}"/>
+            <Label 
+                Style="{DynamicResource HyperLinkStyle}"
+                Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
+                MouseLeftButtonUp="SwitchToLogin_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>

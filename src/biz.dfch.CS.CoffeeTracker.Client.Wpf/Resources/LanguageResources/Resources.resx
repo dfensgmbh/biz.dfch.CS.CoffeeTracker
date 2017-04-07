@@ -135,6 +135,15 @@
   <data name="Login_Title" xml:space="preserve">
     <value>CoffeeTracker - Login</value>
   </data>
+  <data name="Registration_Button_Create" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+  <data name="Registration_Label_AlreadyHaveAccount" xml:space="preserve">
+    <value>Already Have an account?</value>
+  </data>
+  <data name="Registration_Label_GoToLogin" xml:space="preserve">
+    <value>Go to the Login page</value>
+  </data>
   <data name="Registration_Title" xml:space="preserve">
     <value>Registration</value>
   </data>
