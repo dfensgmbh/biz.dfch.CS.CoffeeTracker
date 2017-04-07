@@ -54,6 +54,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             loginHyperLink.Click();
             Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, baseWindow.Title);
+
+            application.Close();
         }
 
         [TestMethod]
@@ -75,6 +77,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(INVALID_PASSWORD);
 
             
+            application.Close();
         }
 
         [TestMethod]
@@ -86,8 +89,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.Get<Label>("LoginHyperLink").Click();
 
             // Act
-            var passwordRequirementsTextBlock =
-                baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordRequirementsTextBlock"));
+            var reEnteredPasswordTextBlock =
+                baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnteredPasswordTextBlock"));
 
             // DF-ToDo - Find a way to access properties of a textbox
 
@@ -95,7 +98,29 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(VALID_PASSWORD);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(INVALID_PASSWORD);
 
+            application.Close();
+        }
 
+        [TestMethod]
+        public void RegistrationWithValidFormularRedirectsToLoginPageAndShowsRegisteredMessage()
+        {
+            // Arrange
+            var application = Application.Launch(_applicationPath);
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+            baseWindow.Get<Label>("LoginHyperLink").Click();
+
+            // Act
+            baseWindow.Get<TextBox>("RegistrationEmailTextBox").Enter(VALID_EMAIL);
+            baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(VALID_PASSWORD);
+            baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(VALID_PASSWORD);
+            baseWindow.Get<Button>("RegistrationRegistrateButton").Click();
+            baseWindow.WaitWhileBusy();
+
+            // Assert
+            // When this call doesn't end in an exception, the winow is back in login and shows the message
+            baseWindow.Get(SearchCriteria.ByAutomationId("LoginRegistrationSucceededTextBlock"));
+
+            application.Close();
         }
     }
 }
