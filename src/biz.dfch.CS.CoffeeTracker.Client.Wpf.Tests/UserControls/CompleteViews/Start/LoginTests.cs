@@ -46,6 +46,23 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var arbitraryVar = sut.Name;
         }
 
+        [TestMethod]
+        public void SwitchToRegisterByHyperLinkOnClickSucceeds()
+        {
+            //Arrange
+            var application = Application.Launch(applicationPath);
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+            var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
+
+            //Act
+            hyperLink.Click();
+
+            //Assert
+            var result = baseWindow.Title;
+            application.Close();
+
+            Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, result);
+        }
         }
     }
 }
