@@ -131,10 +131,6 @@
       <HintPath>..\biz.dfch.CS.CoffeeTracker.Client.Wpf\packages\UIAComWrapper.1.1.0.14\lib\net40\Interop.UIAutomationClient.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\biz.dfch.CS.CoffeeTracker.Client.Wpf\packages\MahApps.Metro.IconPacks.FontAwesome.1.8.0\lib\net46\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="TestStack.White, Version=0.13.0.0, Culture=neutral, PublicKeyToken=2672efbf3e161801, processorArchitecture=MSIL">
       <HintPath>..\biz.dfch.CS.CoffeeTracker.Client.Wpf\packages\TestStack.White.0.13.3\lib\net40\TestStack.White.dll</HintPath>
@@ -168,7 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\biz.dfch.CS.CoffeeTracker.Client.Wpf\biz.dfch.CS.CoffeeTracker.Client.Wpf.csproj">
-      <Project>{c584fa16-d855-41a6-a89b-53be24bfa11d}</Project>
+      <Project>{C584FA16-D855-41A6-A89B-53BE24BFA11D}</Project>
       <Name>biz.dfch.CS.CoffeeTracker.Client.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
