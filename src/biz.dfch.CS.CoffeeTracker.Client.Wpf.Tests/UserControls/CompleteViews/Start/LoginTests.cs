@@ -63,6 +63,50 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, result);
         }
+
+        [TestMethod]
+        public void TryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
+        {
+            //Arrange
+            var application = Application.Launch(applicationPath);
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+
+            //// Get Email Textbox
+            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
+            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
+            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+
+            //// Get Password TextBox
+            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
+            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+
+            //// Get Additional Controls
+            var loginButton = baseWindow.Get<Button>("LoginButton");
+
+
+            var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
+
+            //Act / Assert
+            emailTextBox.Enter(UserNameWhichShouldNotExist);
+            passwordBox.Enter(InvalidPassword);
+            loginButton.Click();
+
+            //// Get Loading 
+            var progressRingCriteria = SearchCriteria.ByAutomationId("ProgressRing");
+            var progressRing = baseWindow.Get(progressRingCriteria);
+
+
+            Assert.IsTrue(progressRing.Visible);
+
+            Assert.IsFalse(hyperLink.Visible);
+            //Assert.IsFalse(invalidCredentialsTextBlock.Visible);
+            Assert.IsFalse(emailTextBox.Enabled);
+            Assert.IsFalse(passwordBox.Enabled);
+            Assert.IsFalse(loginButton.Enabled);
+            baseWindow.WaitWhileBusy();
+
+
+            application.Close();
         }
     }
 }
