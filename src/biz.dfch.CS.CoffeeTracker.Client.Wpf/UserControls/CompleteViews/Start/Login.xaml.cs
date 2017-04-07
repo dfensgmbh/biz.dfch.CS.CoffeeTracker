@@ -44,16 +44,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             if (isValid)
             {
                 var client = ClientContext.GetServiceContext();
+                LoginInvalidCredsTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
                 try
                 {
                     await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.Password);
+                    MessageBox.Show("Logged in");
                 }
                 catch (Exception)
                 {
                     if (client.authenticationHelper.bearerToken == string.Empty)
                     {
-                        Debug.WriteLine("Goddamn");
+                        LoginInvalidCredsTextBlock.Visibility = Visibility.Visible;
                     }
                 }
                 HideLoading();

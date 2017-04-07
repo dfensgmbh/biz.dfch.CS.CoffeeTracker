@@ -37,7 +37,8 @@
                     Height="16pt" Width="16pt"
                     Click="LoginButton_OnClick"
                     IsDefault="True"
-                    Style="{DynamicResource AccentedSquareButtonStyle}">
+                    Style="{DynamicResource AccentedSquareButtonStyle}"
+                    BorderBrush="Transparent">
                     <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
                 </Button>
                 <PasswordBox
@@ -64,5 +65,10 @@
             Name="ProgressRing"
             Grid.Column="1" Grid.Row="4" 
             IsActive="False"/>
+        <TextBlock
+            Name="LoginInvalidCredsTextBlock"
+            Foreground="Red"
+            Visibility="Collapsed"
+            Grid.Column="1" Grid.Row="4">Invalid Email/Password Combination</TextBlock>
     </Grid>
 </UserControl>
