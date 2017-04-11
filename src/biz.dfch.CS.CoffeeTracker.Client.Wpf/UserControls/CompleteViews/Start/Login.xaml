@@ -58,9 +58,8 @@
             Grid.Column="1" Grid.Row="4" 
             IsActive="False"/>
         <TextBlock
-            Name="LoginInvalidCredsTextBlock"
-            Foreground="Red"
-            Visibility="Collapsed"
-            Grid.Column="1" Grid.Row="4">Invalid Email/Password Combination</TextBlock>
+            Name="LoginMessageTextBlock"
+            Grid.Column="1" Grid.Row="5"
+            Visibility="Collapsed"/>
     </Grid>
 </UserControl>
