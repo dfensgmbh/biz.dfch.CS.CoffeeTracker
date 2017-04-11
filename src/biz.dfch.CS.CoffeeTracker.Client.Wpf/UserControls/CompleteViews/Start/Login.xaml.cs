@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
