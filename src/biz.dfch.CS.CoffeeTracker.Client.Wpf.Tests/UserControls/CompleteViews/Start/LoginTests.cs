@@ -44,14 +44,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
         private Application application;
 
-        public  LoginTests()
-        {
-            _applicationPath = SharedTestData.GetExecutablePath();
-        }
-
         [TestInitialize]
         public void StartApplication()
         {
+            _applicationPath = SharedTestData.GetExecutablePath();
             application = Application.Launch(_applicationPath);
         }
 
@@ -158,7 +154,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             }
             catch (Exception)
             {
-                // N/A
+                application.Kill();
             }
         }
     }

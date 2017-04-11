@@ -33,16 +33,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         private const string INVALID_EMAIL = "ThisIsNotAMail";
         private const string INVALID_PASSWORD = "InvPa"; // Invalid because it has less than 6 characters
 
-        public RegistrationTests()
+        private Application application;
+
+        [TestInitialize]
+        public void StartApplication()
         {
             _applicationPath = SharedTestData.GetExecutablePath();
+            application = Application.Launch(_applicationPath);
         }
+
 
         [TestMethod]
         public void RegistrationSwitchToRegisterPageAndBackSucceeds()
         {
             // Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //Act / Assert
@@ -54,15 +58,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             loginHyperLink.Click();
             Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, baseWindow.Title);
-
-            application.Close();
         }
 
         [TestMethod]
         public void RegistrationTryWithTooShortPasswordTurnsMessageRed()
         {
             // Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             baseWindow.Get<Label>("LoginHyperLink").Click();
 
@@ -75,16 +76,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.Get<TextBox>("RegistrationEmailTextBox").Enter(VALID_EMAIL);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(INVALID_PASSWORD);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(INVALID_PASSWORD);
-
-            
-            application.Close();
         }
 
         [TestMethod]
         public void RegistrationTryWithDifferentReEnteredPasswordTurnsMessageRed()
         {
             // Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             baseWindow.Get<Label>("LoginHyperLink").Click();
 
@@ -97,15 +94,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.Get<TextBox>("RegistrationEmailTextBox").Enter(VALID_EMAIL);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(VALID_PASSWORD);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Enter(INVALID_PASSWORD);
-
-            application.Close();
         }
 
         [TestMethod]
         public void RegistrationTryWithInvalidMailShowsInvalidMailMessage()
         {
             // Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             baseWindow.Get<Label>("LoginHyperLink").Click();
 
@@ -120,15 +114,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             // Assert
             Assert.AreEqual(Color.Red, emailTextBox.BorderColor);
-
-            application.Close();
         }
 
         [TestMethod]
         public void RegistrationWithValidFormularRedirectsToLoginPageAndShowsRegisteredMessage()
         {
             // Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             baseWindow.Get<Label>("LoginHyperLink").Click();
 
@@ -142,8 +133,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             // Assert
             // When this call doesn't end in an exception, the winow is back in login and shows the message
             baseWindow.Get(SearchCriteria.ByAutomationId("LoginRegistrationSucceededTextBlock"));
+        }
 
-            application.Close();
+        [TestCleanup]
+        public void CloseApplicationIfNotAlreadyClosed()
+        {
+            try
+            {
+                application.Close();
+            }
+            catch (Exception)
+            {
+                application.Kill();
+            }
         }
     }
 }
