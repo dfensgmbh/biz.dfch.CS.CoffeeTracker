@@ -18,11 +18,28 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// <summary>
     /// Interaction logic for PasswordLabeledTextBox.xaml
     /// </summary>
-    public partial class PasswordLabeledTextBox : UserControl
+    public partial class PasswordLabeledTextBox : UserControl, IValidatable
     {
+        private Brush oldBorderBrush;
+
         public PasswordLabeledTextBox()
         {
             InitializeComponent();
+            oldBorderBrush = UserControlPasswordBox.BorderBrush;
+        }
+
+        public bool Validate()
+        {
+            var isValid = UserControlPasswordBox.Password.Length >= 6;
+            if (!isValid)
+            {
+                UserControlPasswordBox.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                UserControlPasswordBox.BorderBrush = oldBorderBrush;
+            }
+            return isValid;
         }
     }
 }
