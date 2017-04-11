@@ -151,6 +151,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter the password again.
+        /// </summary>
+        public static string Registration_Tooltip_ReEnterPassword {
+            get {
+                return ResourceManager.GetString("Registration_Tooltip_ReEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to email@example.com.
         /// </summary>
         public static string Shared_Email_Example {
