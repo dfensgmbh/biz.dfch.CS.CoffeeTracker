@@ -90,8 +90,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
 
             //// Get Password TextBox
-            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
-            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordLabeledPasswordBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
+            var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
             var loginButton = baseWindow.Get<Button>("LoginButton");
@@ -124,7 +124,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             //// Get Password TextBox
             var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
-            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordLabeledPasswordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
             var loginButton = baseWindow.Get<Button>("LoginButton");
