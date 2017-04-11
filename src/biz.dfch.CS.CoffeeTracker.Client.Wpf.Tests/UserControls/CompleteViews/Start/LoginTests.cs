@@ -49,6 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             application.Close();
 
             // Should Throw an InvalidOperationException, because the process doesn't exist anymore
+            // ReSharper disable once UnusedVariable
             var arbitraryVar = application.Name;
         }
 
