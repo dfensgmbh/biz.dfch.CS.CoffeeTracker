@@ -36,7 +36,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             }
             else if (newPageClassName.Equals(nameof(Registration)))
             {
-                StartWindow.Title = "";
+                StartWindow.Title = Resources.LanguageResources.Resources.Registration_Title;
             }
         }
     }

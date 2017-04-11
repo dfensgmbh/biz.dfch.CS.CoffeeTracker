@@ -44,7 +44,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
 
         [TestMethod]
-        public void RegistrationSwitchToRegisterPageAndBackSucceeds()
+        public void RegistrationSwitchToRegisterPageAndBackChangesTitleSucceeds()
         {
             // Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
@@ -53,11 +53,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var registerHyperLink = baseWindow.Get<Label>("LoginHyperLink");
             registerHyperLink.Click();
 
-            Assert.AreEqual(Resources.LanguageResources.Resources.Login_Title, baseWindow.Title);
+            Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, baseWindow.Title);
             var loginHyperLink = baseWindow.Get<Label>("RegistrationLoginHyperLink");
 
             loginHyperLink.Click();
-            Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, baseWindow.Title);
+            Assert.AreEqual(Resources.LanguageResources.Resources.Login_Title, baseWindow.Title);
         }
 
         [TestMethod]

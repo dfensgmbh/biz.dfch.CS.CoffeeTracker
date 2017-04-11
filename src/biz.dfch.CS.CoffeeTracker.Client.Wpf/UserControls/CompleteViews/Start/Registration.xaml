@@ -37,6 +37,7 @@
             <Label 
                 Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}"/>
             <Label 
+                Name="RegistrationLoginHyperLink"
                 Style="{DynamicResource HyperLinkStyle}"
                 Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
                 MouseLeftButtonUp="SwitchToLogin_Click"/>
