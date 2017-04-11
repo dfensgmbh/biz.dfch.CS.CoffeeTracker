@@ -16,6 +16,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -44,9 +45,14 @@
             IsDefault="True">
             <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent"/>
         </Button>
+        <TextBlock
+            Name="RegistrationFailedTextBlock"
+            Grid.Row="4" Grid.Column="1"
+            Text="{x:Static languageResources:Resources.Registration_RegistrationFailed}"
+            Visibility="Collapsed"/>
         <StackPanel
             Orientation="Vertical"
-            Grid.Row="4" Grid.Column="1">
+            Grid.Row="5" Grid.Column="1">
             <Label 
                 Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}"/>
             <Label 

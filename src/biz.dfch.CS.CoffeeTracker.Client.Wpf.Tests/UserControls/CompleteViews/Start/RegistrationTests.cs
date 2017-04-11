@@ -67,16 +67,17 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             // Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             baseWindow.Get<Label>("LoginHyperLink").Click();
+            
 
             // Act
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationEmailTextBox")).Get(SearchCriteria.ByClassName("TextBox")).Enter(VALID_EMAIL);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Get(SearchCriteria.ByClassName("PasswordBox")).Enter(VALID_PASSWORD);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Get(SearchCriteria.ByClassName("PasswordBox")).Enter(VALID_PASSWORD);
-            baseWindow.Get<Button>("RegistrationRegistrateButton").Click();
+            baseWindow.Get<Button>("RegistrationButton").Click();
             baseWindow.WaitWhileBusy();
 
             // Assert
-            Assert.IsTrue(baseWindow.Get(SearchCriteria.ByAutomationId("LoginRegistrationSucceededTextBlock")).Visible);
+            Assert.IsTrue(baseWindow.Get(SearchCriteria.ByAutomationId("LoginMessageTextBlock")).Visible);
         }
 
         [TestCleanup]
