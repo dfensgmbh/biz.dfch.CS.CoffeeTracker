@@ -29,7 +29,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             StartWindowSwitcher.Switch(new Login());
         }
 
-        private async void RegistrationButton_OnClick(object sender, RoutedEventArgs e)
+        private void RegistrationButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (IsValidForm())
             {
