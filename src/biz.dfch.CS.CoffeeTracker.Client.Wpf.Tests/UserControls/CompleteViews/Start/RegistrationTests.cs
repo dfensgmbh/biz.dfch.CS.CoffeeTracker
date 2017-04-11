@@ -71,7 +71,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var passwordRequirementsTextBlock =
                 baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordRequirementsTextBlock"));
 
-            // DF-ToDo - Find a way to access properties of a textbox
+            // DF-ToDo - Find a way to access properties of a textblock
 
             baseWindow.Get<TextBox>("RegistrationEmailTextBox").Enter(VALID_EMAIL);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Enter(INVALID_PASSWORD);
