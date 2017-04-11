@@ -30,29 +30,22 @@
 
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical">
             <Label Content="{x:Static languageResources:Resources.Login_Label_Password}"/>
-            <DockPanel LastChildFill="True">
-                <Button 
-                    Name="LoginButton"
-                    DockPanel.Dock="Right" 
-                    Height="16pt" Width="16pt"
-                    Click="LoginButton_OnClick"
-                    IsDefault="True"
-                    Style="{DynamicResource AccentedSquareButtonStyle}"
-                    BorderBrush="Transparent">
-                    <iconPacks:PackIconFontAwesome Kind="ArrowRight" Width="10" Height="10"/>
-                </Button>
                 <PasswordBox
                     TabIndex="20"
                     Name="LoginPassword"
                     Height="16pt" 
                     controls:TextBoxHelper.Watermark="{x:Static languageResources:Resources.Shared_Password_Example}">
                 </PasswordBox>
-            </DockPanel>
                 
         </StackPanel>
+        <components:SendButton
+            x:Name="LoginButton"
+            MouseLeftButtonUp="LoginButton_OnClick"
+            Grid.Row="3" Grid.Column="1"
+            HorizontalAlignment="Right"/>
         <StackPanel 
             Name="LoginRegistrationStackPanel"
-            Grid.Column="1" Grid.Row="3"  
+            Grid.Column="1" Grid.Row="4"  
             Orientation="Vertical">
             <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
             <Label 
