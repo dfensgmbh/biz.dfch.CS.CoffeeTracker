@@ -132,6 +132,12 @@
   <data name="Login_Label_Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="Login_TextBox_CreatedAccount" xml:space="preserve">
+    <value>The account was successfully created</value>
+  </data>
+  <data name="Login_TextBox_InvalidCredentials" xml:space="preserve">
+    <value>Invalid email/password cimbination</value>
+  </data>
   <data name="Login_Title" xml:space="preserve">
     <value>CoffeeTracker - Login</value>
   </data>
@@ -143,6 +149,9 @@
   </data>
   <data name="Registration_Label_GoToLogin" xml:space="preserve">
     <value>Go to the Login page</value>
+  </data>
+  <data name="Registration_RegistrationFailed" xml:space="preserve">
+    <value>An error occurred. Could not create account</value>
   </data>
   <data name="Registration_Title" xml:space="preserve">
     <value>Registration</value>

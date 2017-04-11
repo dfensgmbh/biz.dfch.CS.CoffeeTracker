@@ -106,6 +106,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The account was successfully created.
+        /// </summary>
+        public static string Login_TextBox_CreatedAccount {
+            get {
+                return ResourceManager.GetString("Login_TextBox_CreatedAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email/password cimbination.
+        /// </summary>
+        public static string Login_TextBox_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Login_TextBox_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CoffeeTracker - Login.
         /// </summary>
         public static string Login_Title {
@@ -138,6 +156,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Registration_Label_GoToLogin {
             get {
                 return ResourceManager.GetString("Registration_Label_GoToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred. Could not create account.
+        /// </summary>
+        public static string Registration_RegistrationFailed {
+            get {
+                return ResourceManager.GetString("Registration_RegistrationFailed", resourceCulture);
             }
         }
         
