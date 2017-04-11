@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-using System;
-using System.Drawing;
-using System.Linq;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
-using TestStack.White.UIItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WPFUIItems;
 

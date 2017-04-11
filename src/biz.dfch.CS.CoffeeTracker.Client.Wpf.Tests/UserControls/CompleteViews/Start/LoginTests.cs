@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 using System;
-using System.Drawing;
-using System.IO;
-using System.Net.Mime;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WPFUIItems;
 using Application = TestStack.White.Application;
-using Button = TestStack.White.UIItems.Button;
-using Label = TestStack.White.UIItems.Label;
-using TextBox = TestStack.White.UIItems.TextBox;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.Start
 {
