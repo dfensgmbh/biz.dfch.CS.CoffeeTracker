@@ -66,7 +66,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         {
             //Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
-            var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
+            var hyperLink = baseWindow.Get(SearchCriteria.ByAutomationId("LoginHyperLink"));
 
             //Act
             hyperLink.Click();
@@ -85,16 +85,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
-            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
-            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
-            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+            var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
+            var emailTextBox = emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox"));
 
             //// Get Password TextBox
             var passwordLabeledPasswordBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
             var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
-            var loginButton = baseWindow.Get<Button>("LoginButton");
+            var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
             emailTextBox.Enter(_userNameWhichShouldNotExist);
@@ -103,8 +102,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.WaitWhileBusy();
 
             //Assert
-            var invalidMessageTextBlockCriteria = SearchCriteria.ByAutomationId("LoginInvalidCredsTextBlock");
-            var invalidMessageTextBlock = baseWindow.Get(invalidMessageTextBlockCriteria);
+            var invalidMessageTextBlock = baseWindow.Get(SearchCriteria.ByAutomationId("LoginMessageTextBlock"));
 
             Assert.IsTrue(invalidMessageTextBlock.Visible);
 
@@ -118,17 +116,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
-            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
-            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
-            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+            var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
+            var emailTextBox = emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox"));
 
             //// Get Password TextBox
-            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
-            var passwordLabeledPasswordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordLabeledPasswordBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
             var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
-            var loginButton = baseWindow.Get<Button>("LoginButton");
+            var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
             emailTextBox.Enter(_userWhichExists);
