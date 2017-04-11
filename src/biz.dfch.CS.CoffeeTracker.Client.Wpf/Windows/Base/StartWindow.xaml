@@ -10,5 +10,8 @@
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="2">
     <Grid>
+        <controls:TransitioningContentControl
+            Name="StartWindowContent"
+            Transition="Right"/>
     </Grid>
 </controls:MetroWindow>

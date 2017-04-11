@@ -26,7 +26,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 
         public static void Switch(UserControl newPage)
         {
-            StartWindow.Navigate(newPage);
+            StartWindow.StartWindowContent.Content = newPage;
             var newPageClassName = newPage.GetType().Name;
 
             // validate which page is loaded, and set the corresponding title
