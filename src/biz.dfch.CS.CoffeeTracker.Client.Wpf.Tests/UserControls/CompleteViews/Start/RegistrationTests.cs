@@ -53,59 +53,36 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //Act / Assert
-            var registerHyperLink = baseWindow.Get<Label>("LoginHyperLink");
+            var registerHyperLink = baseWindow.Get(SearchCriteria.ByAutomationId("LoginHyperLink"));
             registerHyperLink.Click();
 
             Assert.AreEqual(Resources.LanguageResources.Resources.Registration_Title, baseWindow.Title);
-            var loginHyperLink = baseWindow.Get<Label>("RegistrationLoginHyperLink");
+            var loginHyperLink = baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationLoginHyperLink"));
 
             loginHyperLink.Click();
             Assert.AreEqual(Resources.LanguageResources.Resources.Login_Title, baseWindow.Title);
+            application.Close();
         }
 
+        // If the test fails, make sure the user doesn't already exist in the database
         [TestMethod]
         public void RegistrationWithValidFormularRedirectsToLoginPage()
         {
             // Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
-            baseWindow.Get<Label>("LoginHyperLink").Click();
+            baseWindow.Get(SearchCriteria.ByAutomationId("LoginHyperLink")).Click();
             
 
             // Act
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationEmailTextBox")).Get(SearchCriteria.ByClassName("TextBox")).Enter(VALID_EMAIL);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationPasswordPasswordBox")).Get(SearchCriteria.ByClassName("PasswordBox")).Enter(VALID_PASSWORD);
             baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationReEnterPasswordPasswordBox")).Get(SearchCriteria.ByClassName("PasswordBox")).Enter(VALID_PASSWORD);
-            baseWindow.Get<Button>("RegistrationButton").Click();
+            baseWindow.Get(SearchCriteria.ByAutomationId("RegistrationButton")).Click();
             baseWindow.WaitWhileBusy();
 
             // Assert
             Assert.IsTrue(baseWindow.Get(SearchCriteria.ByAutomationId("LoginMessageTextBlock")).Visible);
-        }
-
-        [TestCleanup]
-        public void CloseApplicationIfNotAlreadyClosed()
-        {
-            try
-            {
-                application.Close();
-            }
-            catch (Exception)
-            {
-                application.Kill();
-            }
-        }
-
-        [ClassCleanup]
-        public void RemoveUserIfExists()
-        {
-            var client = ClientContext.GetServiceContext();
-            // strange exception if only FirstOrDefault is called
-            var user = client.Users.Where(u => u.Name == VALID_EMAIL).FirstOrDefault();
-            if (null != user)
-            {
-                client.DeleteObject(user);
-                client.SaveChanges();
-            }
+            application.Close();
         }
     }
 }
