@@ -42,27 +42,33 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
         private static string _applicationPath = "";
 
+        private Application application;
+
         public  LoginTests()
         {
             _applicationPath = SharedTestData.GetExecutablePath();
+        }
+
+        [TestInitialize]
+        public void StartApplication()
+        {
+            application = Application.Launch(_applicationPath);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void LoginLaunchAndCloseApplicationSucceeds()
         {
-            var sut = Application.Launch(_applicationPath);
-            sut.Close();
+            application.Close();
 
             // Should Throw an InvalidOperationException, because the process doesn't exist anymore
-            var arbitraryVar = sut.Name;
+            var arbitraryVar = application.Name;
         }
 
         [TestMethod]
         public void LoginSwitchToRegisterByHyperLinkOnClickSucceeds()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
             var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
 
@@ -80,7 +86,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         public void LoginTryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
@@ -114,7 +119,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         public void LoginTryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
@@ -143,6 +147,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             Assert.IsTrue(baseWindow.IsClosed);
             
             application.Close();
+        }
+
+        [TestCleanup]
+        public void CloseApplicationIfNotAlreadyClosed()
+        {
+            try
+            {
+                application.Close();
+            }
+            catch (Exception)
+            {
+                // N/A
+            }
         }
     }
 }
