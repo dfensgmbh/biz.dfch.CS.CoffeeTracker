@@ -24,5 +24,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
         {
             InitializeComponent();
         }
+
+        protected override void OnAccessKey(AccessKeyEventArgs e)
+        {
+            base.OnAccessKey(e);
+            this.OnMouseLeftButtonUp(null);
+        }
     }
 }
