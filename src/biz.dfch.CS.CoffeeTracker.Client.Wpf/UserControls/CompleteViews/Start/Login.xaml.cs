@@ -1,36 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
     /// <summary>
     /// Interaction logic for Login.xaml
     /// </summary>
-    public partial class Login : UserControl
+    public partial class Login
     {
-        public Login()
+        public Login(bool justCreatedAccount = false)
         {
             InitializeComponent();
+            if (justCreatedAccount)
+            {
+                ShowCreatedAccountMessage();
+            }
         }
 
         private void CreateAccountLabel_OnMouseUp(object sender, RoutedEventArgs e)
@@ -44,18 +31,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             if (isValid)
             {
                 var client = ClientContext.GetServiceContext();
-                LoginInvalidCredsTextBlock.Visibility = Visibility.Collapsed;
+                LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
                 try
                 {
-                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.Password);
+                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
                     StartWindowSwitcher.StartWindow.Close();
                 }
                 catch (Exception)
                 {
                     if (client.authenticationHelper.bearerToken == string.Empty)
                     {
-                        LoginInvalidCredsTextBlock.Visibility = Visibility.Visible;
+                        DisplayInvalidCredentialError();
                     }
                 }
                 HideLoading();
@@ -88,7 +75,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         public bool ValidateInputs()
         {
-            var passwordHasValue = string.Empty != LoginPassword.Password;
+            var passwordHasValue = string.Empty != LoginPassword.UserControlPasswordBox.Password;
 
             if (!passwordHasValue)
             {
@@ -100,6 +87,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             }
 
             return LoginEmail.Validate() && passwordHasValue;
+        }
+
+        public void DisplayInvalidCredentialError()
+        {
+            LoginMessageTextBlock.Text = Wpf.Resources.LanguageResources.Resources.Login_TextBox_InvalidCredentials;
+            LoginMessageTextBlock.Foreground = Brushes.Red;
+            LoginMessageTextBlock.Visibility = Visibility.Visible;
+        }
+
+        public void ShowCreatedAccountMessage()
+        {
+            LoginMessageTextBlock.Text = Wpf.Resources.LanguageResources.Resources.Login_TextBox_CreatedAccount;
+            LoginMessageTextBlock.Foreground = Brushes.Green;
+            LoginMessageTextBlock.Visibility = Visibility.Visible;
         }
     }
 }

@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 using System;
-using System.Drawing;
-using System.IO;
-using System.Net.Mime;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WPFUIItems;
 using Application = TestStack.White.Application;
-using Button = TestStack.White.UIItems.Button;
-using Label = TestStack.White.UIItems.Label;
-using TextBox = TestStack.White.UIItems.TextBox;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.Start
 {
@@ -40,37 +31,34 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
         private readonly string _userPassword = "123456";
 
-        private static readonly string projectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
         private static string _applicationPath = "";
 
-        [AssemblyInitialize]
-        public static void AssembylyInit(TestContext context)
+        private Application application;
+
+        [TestInitialize]
+        public void StartApplication()
         {
-            // create path to executable file in biz.dfch.CS.CoffeeTracker.Client.Wpf/bin/Debug
-            var baseDirectory = AppContext.BaseDirectory;
-            var toReplace = string.Format("{0}{1}", projectName, ".Tests");
-            var newBaseDirectory = baseDirectory.Replace(toReplace, projectName);
-            _applicationPath = Path.Combine(newBaseDirectory, projectName + ".exe");
+            _applicationPath = SharedTestData.GetExecutablePath();
+            application = Application.Launch(_applicationPath);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void LaunchAndCloseApplicationSucceeds()
+        public void LoginLaunchAndCloseApplicationSucceeds()
         {
-            var sut = Application.Launch(_applicationPath);
-            sut.Close();
+            application.Close();
 
             // Should Throw an InvalidOperationException, because the process doesn't exist anymore
-            var arbitraryVar = sut.Name;
+            // ReSharper disable once UnusedVariable
+            var arbitraryVar = application.Name;
         }
 
         [TestMethod]
-        public void SwitchToRegisterByHyperLinkOnClickSucceeds()
+        public void LoginSwitchToRegisterByHyperLinkOnClickSucceeds()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
-            var hyperLink = baseWindow.Get<Label>("LoginHyperLink");
+            var hyperLink = baseWindow.Get(SearchCriteria.ByAutomationId("LoginHyperLink"));
 
             //Act
             hyperLink.Click();
@@ -83,23 +71,21 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
-        public void TryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
+        public void LoginTryLoginPassWrongCredentialsShowsLoadingAndAfterLoadInvalidMessage()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
-            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
-            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
-            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+            var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
+            var emailTextBox = emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox"));
 
             //// Get Password TextBox
-            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
-            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordLabeledPasswordBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
+            var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
-            var loginButton = baseWindow.Get<Button>("LoginButton");
+            var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
             emailTextBox.Enter(_userNameWhichShouldNotExist);
@@ -108,8 +94,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.WaitWhileBusy();
 
             //Assert
-            var invalidMessageTextBlockCriteria = SearchCriteria.ByAutomationId("LoginInvalidCredsTextBlock");
-            var invalidMessageTextBlock = baseWindow.Get(invalidMessageTextBlockCriteria);
+            var invalidMessageTextBlock = baseWindow.Get(SearchCriteria.ByAutomationId("LoginMessageTextBlock"));
 
             Assert.IsTrue(invalidMessageTextBlock.Visible);
 
@@ -117,23 +102,21 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         }
 
         [TestMethod]
-        public void TryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
+        public void LoginTryLoginPassCorrectCredentialsShowsLoadingAndAfterLoadClosesWindow()
         {
             //Arrange
-            var application = Application.Launch(_applicationPath);
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
             //// Get Email Textbox
-            var emailTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginEmail");
-            var emailLabeledTextBox = baseWindow.Get(emailTextBoxSearchCriteria);
-            var emailTextBox = emailLabeledTextBox.Get<TextBox>("EmailTextBox");
+            var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
+            var emailTextBox = emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox"));
 
             //// Get Password TextBox
-            var passwordTextBoxSearchCriteria = SearchCriteria.ByAutomationId("LoginPassword");
-            var passwordBox = baseWindow.Get(passwordTextBoxSearchCriteria);
+            var passwordLabeledPasswordBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
+            var passwordBox = passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox"));
 
             //// Get Additional Controls
-            var loginButton = baseWindow.Get<Button>("LoginButton");
+            var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
             emailTextBox.Enter(_userWhichExists);
@@ -149,6 +132,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             Assert.IsTrue(baseWindow.IsClosed);
             
             application.Close();
+        }
+
+        [TestCleanup]
+        public void CloseApplicationIfNotAlreadyClosed()
+        {
+            try
+            {
+                application.Close();
+            }
+            catch (Exception)
+            {
+                application.Kill();
+            }
         }
     }
 }

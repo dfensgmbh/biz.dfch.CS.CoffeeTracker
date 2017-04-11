@@ -182,7 +182,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Controls\ClientContext.cs" />
-    <Compile Include="IValidationable.cs" />
+    <Compile Include="IValidatable.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -197,6 +197,9 @@
     </Compile>
     <Compile Include="UserControls\Components\EmailLabeledTextBox.xaml.cs">
       <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
+      <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
@@ -226,6 +229,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Components\EmailLabeledTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
