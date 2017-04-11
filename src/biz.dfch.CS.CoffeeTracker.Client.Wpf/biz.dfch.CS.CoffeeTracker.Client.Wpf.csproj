@@ -201,9 +201,6 @@
     <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
       <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\SendButton.xaml.cs">
-      <DependentUpon>SendButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
@@ -236,10 +233,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Components\SendButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
