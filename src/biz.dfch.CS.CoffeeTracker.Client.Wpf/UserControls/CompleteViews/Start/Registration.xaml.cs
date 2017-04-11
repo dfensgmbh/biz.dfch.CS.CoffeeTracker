@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
@@ -35,9 +38,27 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         {
             if (IsValidForm())
             {
-            }
-            else
-            {
+                var email = RegistrationEmailTextBox.EmailTextBox.Text;
+                var password = RegistrationPasswordPasswordBox.UserControlPasswordBox.Password;
+                var newAppUser = new ApplicationUser()
+                {
+                    Name = email,
+                    Password = password,
+                    AspNetUserId = ""
+                };
+
+                var client = ClientContext.GetServiceContext();
+                try
+                {
+                    client.AddToUsers(newAppUser);
+                    client.SaveChanges();
+                    StartWindowSwitcher.Switch(new Login(true));
+                }
+                catch (Exception)
+                {
+                    // If this error is visible, there's an error with the client side code
+                    RegistrationFailedTextBlock.Visibility = Visibility.Visible;
+                }
             }
         }
 
