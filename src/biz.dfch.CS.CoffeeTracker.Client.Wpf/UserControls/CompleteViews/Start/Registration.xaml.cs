@@ -30,5 +30,56 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         {
             StartWindowSwitcher.Switch(new Login());
         }
+
+        private void RegistrationButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (IsValidForm())
+            {
+            }
+            else
+            {
+            }
+        }
+
+        private bool IsValidForm()
+        {
+            var validatableObjects = RegistrationGrid.Children.OfType<IValidatable>();
+
+            var isValid = true;
+            foreach (var validatable in validatableObjects)
+            {
+                if (!validatable.Validate())
+                {
+                    isValid = false;
+                }
+            }
+
+            if (!EqualPasswords())
+            {
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private bool EqualPasswords()
+        {
+            
+            var password = RegistrationPasswordPasswordBox.UserControlPasswordBox.Password;
+            var reEnteredPassword = RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.Password;
+            var isValid = password.Equals(reEnteredPassword);
+            if (!isValid)
+            {
+                isValid = false;
+                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                // Set BorderBrush to its original brush
+                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush = RegistrationReEnterPasswordPasswordBox.oldBorderBrush;
+            }
+
+            return isValid;
+        }
     }
 }

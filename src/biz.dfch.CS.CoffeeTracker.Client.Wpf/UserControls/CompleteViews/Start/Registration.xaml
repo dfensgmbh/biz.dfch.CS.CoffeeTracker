@@ -8,8 +8,8 @@
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="500" d:DesignWidth="300">
+    <Grid Name="RegistrationGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -22,20 +22,25 @@
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-       
         <components:EmailLabeledTextBox
+            x:Name="RegistrationEmailTextBox"
+            ToolTipContent="{x:Static languageResources:Resources.UserControl_EmailLabeledTextBox_EnterValidMail}"
             Grid.Row="0" Grid.Column="1"/>
         <components:PasswordLabeledTextBox
+            x:Name="RegistrationPasswordPasswordBox"
+            ToolTipContent = "{x:Static languageResources:Resources.UserControl_PasswordLabeledPasswordBox_ValidPassword}"
             Grid.Row="1" Grid.Column="1"/>
         <components:PasswordLabeledTextBox
+            x:Name="RegistrationReEnterPasswordPasswordBox"
+            ToolTipContent = "{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}"
             Grid.Row="2" Grid.Column="1"/>
-        <Button 
+        <Button
             Style="{DynamicResource MetroCircleButtonStyle}" 
-            x:Name="LoginButton"
+            x:Name="RegistrationButton"
             Grid.Row="3" Grid.Column="1"
             Width="40" Height="40"
             HorizontalAlignment="Right"
-            
+            Click="RegistrationButton_OnClick"
             IsDefault="True">
             <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent"/>
         </Button>
