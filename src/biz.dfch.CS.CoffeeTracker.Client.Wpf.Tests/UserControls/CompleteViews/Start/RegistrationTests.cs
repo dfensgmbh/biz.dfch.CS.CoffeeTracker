@@ -16,6 +16,8 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems;
@@ -90,6 +92,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             catch (Exception)
             {
                 application.Kill();
+            }
+        }
+
+        [ClassCleanup]
+        public void RemoveUserIfExists()
+        {
+            var client = ClientContext.GetServiceContext();
+            // strange exception if only FirstOrDefault is called
+            var user = client.Users.Where(u => u.Name == VALID_EMAIL).FirstOrDefault();
+            if (null != user)
+            {
+                client.DeleteObject(user);
+                client.SaveChanges();
             }
         }
     }
