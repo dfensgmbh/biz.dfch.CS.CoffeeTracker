@@ -44,7 +44,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 {
                     if (client.authenticationHelper.bearerToken == string.Empty)
                     {
-                        ShowInvalidCredentialError();
+                        DisplayInvalidCredentialError();
                     }
                 }
                 HideLoading();
@@ -91,15 +91,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             return LoginEmail.Validate() && passwordHasValue;
         }
 
-        public void ShowInvalidCredentialError()
+        public void DisplayInvalidCredentialError()
         {
             LoginMessageTextBlock.Text = Wpf.Resources.LanguageResources.Resources.Login_TextBox_InvalidCredentials;
             LoginMessageTextBlock.Foreground = Brushes.Red;
+            LoginMessageTextBlock.Visibility = Visibility.Visible;
         }
 
         public void ShowCreatedAccountMessage()
         {
-            LoginMessageTextBlock.Visibility = Visibility.Visible;LoginMessageTextBlock.Text = Wpf.Resources.LanguageResources.Resources.Login_TextBox_CreatedAccount;
+            LoginMessageTextBlock.Text = Wpf.Resources.LanguageResources.Resources.Login_TextBox_CreatedAccount;
             LoginMessageTextBlock.Foreground = Brushes.Green;
             LoginMessageTextBlock.Visibility = Visibility.Visible;
         }
