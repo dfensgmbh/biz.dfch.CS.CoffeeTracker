@@ -167,5 +167,23 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
                 return ResourceManager.GetString("Shared_Password_Example", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid Email address.
+        /// </summary>
+        public static string UserControl_EmailLabeledTextBox_EnterValidMail {
+            get {
+                return ResourceManager.GetString("UserControl_EmailLabeledTextBox_EnterValidMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a password which contains at least 6 characters.
+        /// </summary>
+        public static string UserControl_PasswordLabeledPasswordBox_ValidPassword {
+            get {
+                return ResourceManager.GetString("UserControl_PasswordLabeledPasswordBox_ValidPassword", resourceCulture);
+            }
+        }
     }
 }

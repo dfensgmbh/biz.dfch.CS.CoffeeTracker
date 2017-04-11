@@ -153,4 +153,10 @@
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>
   </data>
+  <data name="UserControl_EmailLabeledTextBox_EnterValidMail" xml:space="preserve">
+    <value>Enter a valid Email address</value>
+  </data>
+  <data name="UserControl_PasswordLabeledPasswordBox_ValidPassword" xml:space="preserve">
+    <value>Enter a password which contains at least 6 characters</value>
+  </data>
 </root>
