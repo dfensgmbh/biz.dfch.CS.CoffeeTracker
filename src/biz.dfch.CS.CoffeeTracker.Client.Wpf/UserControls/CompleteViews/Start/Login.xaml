@@ -38,11 +38,16 @@
                 </PasswordBox>
                 
         </StackPanel>
-        <components:SendButton
+        <Button 
+            Style="{DynamicResource MetroCircleButtonStyle}" 
             x:Name="LoginButton"
-            MouseLeftButtonUp="LoginButton_OnClick"
             Grid.Row="3" Grid.Column="1"
-            HorizontalAlignment="Right"/>
+            Width="40" Height="40"
+            HorizontalAlignment="Right"
+            Click="LoginButton_OnClick"
+            IsDefault="True">
+            <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent"/>
+        </Button>
         <StackPanel 
             Name="LoginRegistrationStackPanel"
             Grid.Column="1" Grid.Row="4"  
