@@ -28,12 +28,9 @@
             Grid.Row="1" Grid.Column="1"/>
         <components:PasswordLabeledTextBox
             Grid.Row="2" Grid.Column="1"/>
-        <Button 
-            Grid.Row="3" Grid.Column="1"
-            Margin="90 15 0 10"
-            Style="{DynamicResource AccentedSquareButtonStyle}"
-            Content="{x:Static languageResources:Resources.Registration_Button_Create}"/>
-        
+        <components:SendButton 
+            Grid.Row="3" Grid.Column="1" 
+            HorizontalAlignment="Right"/>
         <StackPanel
             Orientation="Vertical"
             Grid.Row="4" Grid.Column="1">
