@@ -21,7 +21,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// </summary>
     public partial class PasswordLabeledTextBox : UserControl, IValidatable
     {
-        private Brush oldBorderBrush;
+        public Brush oldBorderBrush;
         public static readonly DependencyProperty ToolTipContentProperty = DependencyProperty.Register("ToolTipContent", typeof(string), typeof(PasswordLabeledTextBox));
 
         public string ToolTipContent
