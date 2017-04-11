@@ -131,7 +131,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             baseWindow.WaitWhileBusy();
 
             // Assert
-            // When this call doesn't end in an exception, the winow is back in login and shows the message
+            // When this call doesn't end in an exception, the window is back in login and shows the message
             baseWindow.Get(SearchCriteria.ByAutomationId("LoginRegistrationSucceededTextBlock"));
         }
 
