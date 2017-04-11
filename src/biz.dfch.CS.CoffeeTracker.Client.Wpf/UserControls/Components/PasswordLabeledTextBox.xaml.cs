@@ -10,7 +10,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// </summary>
     public partial class PasswordLabeledTextBox : UserControl, IValidatable
     {
-        public Brush oldBorderBrush;
         public static readonly DependencyProperty ToolTipContentProperty = DependencyProperty.Register("ToolTipContent", typeof(string), typeof(PasswordLabeledTextBox));
 
         public string ToolTipContent
@@ -28,7 +27,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
         public PasswordLabeledTextBox()
         {
             InitializeComponent();
-            oldBorderBrush = UserControlPasswordBox.BorderBrush;
             var dpd = DependencyPropertyDescriptor.FromProperty(ToolTipContentProperty, typeof(PasswordLabeledTextBox));
             dpd.AddValueChanged(this, (sender, args) =>
             {
@@ -45,7 +43,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             }
             else
             {
-                UserControlPasswordBox.BorderBrush = oldBorderBrush;
+                UserControlPasswordBox.BorderBrush = Brushes.Green;
             }
             return isValid;
         }

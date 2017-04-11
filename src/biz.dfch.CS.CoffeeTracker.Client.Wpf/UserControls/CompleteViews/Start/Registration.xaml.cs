@@ -104,9 +104,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             }
             else
             {
-                // Set BorderBrush to its original brush
-                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush =
-                    RegistrationReEnterPasswordPasswordBox.oldBorderBrush;
+                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush = Brushes.Green;
             }
 
             return isValid;
