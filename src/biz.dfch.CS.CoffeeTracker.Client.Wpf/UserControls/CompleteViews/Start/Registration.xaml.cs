@@ -6,6 +6,7 @@ using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -37,9 +38,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     AspNetUserId = ""
                 };
 
-                var client = ClientContext.GetServiceContext();
+                DisableControls();
                 try
                 {
+                    var client = ClientContext.GetServiceContext();
                     client.AddToUsers(newAppUser);
                     client.SaveChanges();
                     StartWindowSwitcher.Switch(new Login(true));
@@ -54,14 +56,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         private bool IsValidForm()
         {
-            var validatableObjects = RegistrationGrid.Children.OfType<IValidatable>();
+            var stackPanelChildren = RegistrationFormStackPanel.Children;
 
             var isValid = true;
-            foreach (var validatable in validatableObjects)
+            foreach (var child in stackPanelChildren)
             {
-                if (!validatable.Validate())
+                var validatable = child as IValidatable;
+                if (null != validatable)
                 {
-                    isValid = false;
+                    if (!validatable.Validate())
+                    {
+                        isValid = false;
+                    }
                 }
             }
 
@@ -91,6 +97,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             }
 
             return isValid;
+        }
+
+        private void DisableControls()
+        {
+            RegistrationGrid.Children.OfType<EmailLabeledTextBox>().All(tb => tb.IsEnabled = false);
+            RegistrationGrid.Children.OfType<PasswordLabeledTextBox>().All(pb => pb.IsEnabled = false);
+            RegistrationGrid.Children.OfType<Button>().All(b => b.IsEnabled = false);
         }
     }
 }

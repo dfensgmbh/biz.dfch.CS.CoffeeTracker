@@ -1,65 +1,69 @@
 ﻿<UserControl x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start.Registration"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start"
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" 
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="300">
     <Grid Name="RegistrationGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <components:EmailLabeledTextBox
-            x:Name="RegistrationEmailTextBox"
-            ToolTipContent="{x:Static languageResources:Resources.UserControl_EmailLabeledTextBox_EnterValidMail}"
-            Grid.Row="0" Grid.Column="1"/>
-        <components:PasswordLabeledTextBox
-            x:Name="RegistrationPasswordPasswordBox"
-            ToolTipContent = "{x:Static languageResources:Resources.UserControl_PasswordLabeledPasswordBox_ValidPassword}"
-            Grid.Row="1" Grid.Column="1"/>
-        <components:PasswordLabeledTextBox
-            x:Name="RegistrationReEnterPasswordPasswordBox"
-            ToolTipContent = "{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}"
-            Grid.Row="2" Grid.Column="1"/>
-        <Button
-            Style="{DynamicResource MetroCircleButtonStyle}" 
-            x:Name="RegistrationButton"
-            Grid.Row="3" Grid.Column="1"
-            Width="40" Height="40"
-            HorizontalAlignment="Right"
-            Click="RegistrationButton_OnClick"
-            IsDefault="True">
-            <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent"/>
-        </Button>
+        <StackPanel 
+            Name="RegistrationFormStackPanel"
+            Grid.Row="1" Grid.Column="1"
+            Orientation="Vertical">
+            <components:EmailLabeledTextBox
+                x:Name="RegistrationEmailTextBox"
+                ToolTipContent="{x:Static languageResources:Resources.UserControl_EmailLabeledTextBox_EnterValidMail}"/>
+            <components:PasswordLabeledTextBox
+                x:Name="RegistrationPasswordPasswordBox"
+                ToolTipContent="{x:Static languageResources:Resources.UserControl_PasswordLabeledPasswordBox_ValidPassword}"/>
+            <components:PasswordLabeledTextBox
+                x:Name="RegistrationReEnterPasswordPasswordBox"
+                ToolTipContent="{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}"/>
+            <Button
+                Style="{DynamicResource MetroCircleButtonStyle}"
+                x:Name="RegistrationButton"
+                Grid.Row="3" Grid.Column="1"
+                Width="40" Height="40"
+                HorizontalAlignment="Right"
+                Click="RegistrationButton_OnClick"
+                IsDefault="True">
+                <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" />
+            </Button>
+        </StackPanel>
         <TextBlock
             Name="RegistrationFailedTextBlock"
-            Grid.Row="4" Grid.Column="1"
+            Grid.Row="2" Grid.Column="1"
             Text="{x:Static languageResources:Resources.Registration_RegistrationFailed}"
-            Visibility="Collapsed"/>
+            Visibility="Collapsed" />
         <StackPanel
             Orientation="Vertical"
-            Grid.Row="5" Grid.Column="1">
-            <Label 
-                Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}"/>
-            <Label 
+            Grid.Row="2" Grid.Column="1">
+            <Label
+                Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}" />
+            <Label
                 Name="RegistrationLoginHyperLink"
                 Style="{DynamicResource HyperLinkStyle}"
                 Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
-                MouseLeftButtonUp="SwitchToLogin_Click"/>
+                MouseLeftButtonUp="SwitchToLogin_Click" />
         </StackPanel>
+        <controls:ProgressRing 
+            Name="RegistrationProgressRing"
+            Grid.Row="2" Grid.Column="1"
+            IsActive="False"/>
     </Grid>
 </UserControl>
