@@ -48,7 +48,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 DisplayLoading();
                 try
                 {
-                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.Password);
+                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
                     StartWindowSwitcher.StartWindow.Close();
                 }
                 catch (Exception)
@@ -88,7 +88,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         public bool ValidateInputs()
         {
-            var passwordHasValue = string.Empty != LoginPassword.Password;
+            var passwordHasValue = string.Empty != LoginPassword.UserControlPasswordBox.Password;
 
             if (!passwordHasValue)
             {

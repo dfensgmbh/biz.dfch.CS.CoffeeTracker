@@ -29,6 +29,7 @@
             Grid.Row="1" Grid.Column="1"/>
 
         <components:PasswordLabeledTextBox
+            x:Name="LoginPassword"
             Grid.Row="2" Grid.Column="1"/>
         <Button 
             Style="{DynamicResource MetroCircleButtonStyle}" 
