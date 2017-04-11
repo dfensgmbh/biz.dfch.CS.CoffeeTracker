@@ -1,5 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -25,7 +29,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             StartWindowSwitcher.Switch(new Login());
         }
 
-        private void RegistrationButton_OnClick(object sender, RoutedEventArgs e)
+        private async void RegistrationButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (IsValidForm())
             {
@@ -38,20 +42,30 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     AspNetUserId = ""
                 };
 
-                DisableControls();
-                try
+                DisplayLoading();
+
+                var worker = new BackgroundWorker();
+                worker.DoWork += (o, ea) =>
                 {
                     var client = ClientContext.GetServiceContext();
                     client.AddToUsers(newAppUser);
                     client.SaveChanges();
                     StartWindowSwitcher.Switch(new Login(true));
-                }
-                catch (Exception)
+                };
+
+                worker.RunWorkerAsync();
+                worker.RunWorkerCompleted += (o, args) =>
                 {
                     // If this error is visible, there's an error with the client side code
                     RegistrationFailedTextBlock.Visibility = Visibility.Visible;
-                }
+                    HideLoading();
+                };
             }
+        }
+
+        private async Task Test()
+        {
+            Thread.Sleep(5000);
         }
 
         private bool IsValidForm()
@@ -81,19 +95,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         private bool EqualPasswords()
         {
-            
             var password = RegistrationPasswordPasswordBox.UserControlPasswordBox.Password;
             var reEnteredPassword = RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.Password;
             var isValid = password.Equals(reEnteredPassword);
             if (!isValid)
             {
-                isValid = false;
                 RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush = Brushes.Red;
             }
             else
             {
                 // Set BorderBrush to its original brush
-                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush = RegistrationReEnterPasswordPasswordBox.oldBorderBrush;
+                RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.BorderBrush =
+                    RegistrationReEnterPasswordPasswordBox.oldBorderBrush;
             }
 
             return isValid;
@@ -101,9 +114,32 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 
         private void DisableControls()
         {
-            RegistrationGrid.Children.OfType<EmailLabeledTextBox>().All(tb => tb.IsEnabled = false);
-            RegistrationGrid.Children.OfType<PasswordLabeledTextBox>().All(pb => pb.IsEnabled = false);
-            RegistrationGrid.Children.OfType<Button>().All(b => b.IsEnabled = false);
+            RegistrationEmailTextBox.EmailTextBox.IsEnabled = false;
+            RegistrationPasswordPasswordBox.UserControlPasswordBox.IsEnabled = false;
+            RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.IsEnabled = false;
+            RegistrationButton.IsEnabled = false;
+            RegistrationLinkStackPanel.Visibility = Visibility.Collapsed;
+        }
+
+        private void EnableControls()
+        {
+            RegistrationEmailTextBox.EmailTextBox.IsEnabled = true;
+            RegistrationPasswordPasswordBox.UserControlPasswordBox.IsEnabled = true;
+            RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.IsEnabled = true;
+            RegistrationButton.IsEnabled = true;
+            RegistrationLinkStackPanel.Visibility = Visibility.Visible;
+        }
+
+        private void DisplayLoading()
+        {
+            DisableControls();
+            RegistrationProgressRing.IsActive = true;
+        }
+
+        private void HideLoading()
+        {
+            RegistrationProgressRing.IsActive = false;
+            EnableControls();
         }
     }
 }

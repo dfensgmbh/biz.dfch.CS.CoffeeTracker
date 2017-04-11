@@ -50,7 +50,12 @@
             Grid.Row="2" Grid.Column="1"
             Text="{x:Static languageResources:Resources.Registration_RegistrationFailed}"
             Visibility="Collapsed" />
+        <controls:ProgressRing 
+            Name="RegistrationProgressRing"
+            Grid.Row="2" Grid.Column="1"
+            IsActive="False"/>
         <StackPanel
+            Name="RegistrationLinkStackPanel"
             Orientation="Vertical"
             Grid.Row="2" Grid.Column="1">
             <Label
@@ -61,9 +66,5 @@
                 Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
                 MouseLeftButtonUp="SwitchToLogin_Click" />
         </StackPanel>
-        <controls:ProgressRing 
-            Name="RegistrationProgressRing"
-            Grid.Row="2" Grid.Column="1"
-            IsActive="False"/>
     </Grid>
 </UserControl>
