@@ -79,6 +79,17 @@
                     Kind="SignOut"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
+            <Grid
+                DockPanel.Dock="Bottom"
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="UserCircle"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
         </DockPanel>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
