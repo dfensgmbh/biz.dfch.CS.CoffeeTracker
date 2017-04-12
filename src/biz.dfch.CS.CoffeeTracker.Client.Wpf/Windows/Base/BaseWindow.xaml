@@ -1,0 +1,72 @@
+﻿<controls:MetroWindow x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base.BaseWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
+                      xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      mc:Ignorable="d"
+                      Title="BaseWindow" Height="480" Width="720"
+                      WindowTitleBrush="{DynamicResource AccentBaseColorBrush}"
+                      BorderBrush="{DynamicResource AccentBaseColorBrush}"
+                      BorderThickness="2">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical"
+                    x:Name="BaseWindowSideBarStackPanel"
+                    Background="#FF444444"
+                    Width="50">
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Home"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="LineChart"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Table"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Coffee"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            
+        </StackPanel>
+        <controls:TransitioningContentControl
+            Name="BaseWindowContent"
+            Grid.Column="1"
+            Transition="Right" />
+    </Grid>
+</controls:MetroWindow>

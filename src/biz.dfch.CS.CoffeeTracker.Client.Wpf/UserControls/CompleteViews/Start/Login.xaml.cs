@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -36,6 +37,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 try
                 {
                     await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
+                    var baseWindow = new BaseWindow();
+                    baseWindow.Show();
                     StartWindowSwitcher.StartWindow.Close();
                 }
                 catch (Exception)

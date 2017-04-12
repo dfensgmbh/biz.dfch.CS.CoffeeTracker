@@ -61,6 +61,42 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CoffeeOrder.
+        /// </summary>
+        public static string BaseWindow_SideBar_CoffeeOrder {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_CoffeeOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coffees.
+        /// </summary>
+        public static string BaseWindow_SideBar_Coffees {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_Coffees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string BaseWindow_SideBar_Home {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_Home", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string BaseWindow_SideBar_Statistics {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login_Button_Login {
