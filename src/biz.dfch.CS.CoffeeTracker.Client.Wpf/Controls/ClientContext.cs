@@ -26,6 +26,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 
         private static CoffeeTrackerServiceContext _coffeeTrackerClient;
 
+        public static string CurrentUserName = "";
+
         public static CoffeeTrackerServiceContext GetServiceContext()
         {
             if (null == _coffeeTrackerClient)
