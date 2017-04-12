@@ -202,9 +202,6 @@
     <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
       <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\SideBarItem.xaml.cs">
-      <DependentUpon>SideBarItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Base\BaseWindow.xaml.cs">
       <DependentUpon>BaseWindow.xaml</DependentUpon>
     </Compile>
@@ -240,10 +237,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\Components\SideBarItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
