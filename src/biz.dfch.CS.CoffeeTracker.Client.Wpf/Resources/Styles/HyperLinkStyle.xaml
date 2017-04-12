@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.Styles">
+                    xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.Styles"
+                    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks">
     <Style TargetType="{x:Type Label}" x:Key="HyperLinkStyle">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
@@ -16,7 +17,16 @@
         </Style.Triggers>
         <Setter Property="Foreground" Value="Blue" />
     </Style>
-    <Style TargetType="{x:Type Label}" x:Key="SideBarButtonStyle">
-        <Setter Property="FontSize" Value="20pt"/>
+    
+    <Style TargetType="{x:Type iconPacks:PackIconFontAwesome}" x:Key="SideBarItemStyle">
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
+    <Style TargetType="{x:Type Grid}" x:Key="SideBarGridStyle">
+        <Setter Property="Margin" Value="0 10 0 10"/>
     </Style>
 </ResourceDictionary>
