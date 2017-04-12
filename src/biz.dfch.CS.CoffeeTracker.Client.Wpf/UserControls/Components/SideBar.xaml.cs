@@ -10,20 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 {
     /// <summary>
-    /// Interaction logic for BaseWindow.xaml
+    /// Interaction logic for SideBar.xaml
     /// </summary>
-    public partial class BaseWindow : Window
+    public partial class SideBar : UserControl
     {
-        public BaseWindow()
+        public SideBar()
         {
             InitializeComponent();
-            BaseWindowSwitcher.BaseWindow = this;
         }
     }
 }

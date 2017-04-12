@@ -6,10 +6,22 @@
         xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="BaseWindow" Height="300" Width="300">
+        Title="BaseWindow" Height="480" Width="720">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <controls:MetroAnimatedTabControl
+            Grid.Column="0">
+            <TabItem Header="Home"></TabItem>
+            <TabItem Header="Statistics"></TabItem>
+            <TabItem Header="CoffeeOrder"></TabItem>
+            <TabItem Header="Coffees"></TabItem>
+        </controls:MetroAnimatedTabControl>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
+            Grid.Column="1"
             Transition="Right"/>
     </Grid>
 </Window>

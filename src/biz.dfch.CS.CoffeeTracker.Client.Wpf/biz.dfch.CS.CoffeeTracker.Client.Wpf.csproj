@@ -188,6 +188,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Switcher\BaseWindowSwitcher.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
     <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -200,6 +201,9 @@
     </Compile>
     <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
       <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Components\SideBar.xaml.cs">
+      <DependentUpon>SideBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Base\BaseWindow.xaml.cs">
       <DependentUpon>BaseWindow.xaml</DependentUpon>
@@ -236,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Components\SideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
