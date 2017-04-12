@@ -53,15 +53,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     client.SaveChanges();
                 };
 
-                worker.RunWorkerCompleted += (o, args) =>
+                worker.RunWorkerCompleted += async (o, args) =>
                 {
-                    ApplicationUser user;
                     try
                     {
                         var client = ClientContext.GetServiceContext();
-                        user = client.Users.Where(u => u.Name.Equals(email)).FirstOrDefault();
-                        if (null != user)
+                        await client.authenticationHelper.ReceiveAndSetToken(email, password);
+                        if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
                         {
+                            client.authenticationHelper.bearerToken = "";
                             StartWindowSwitcher.Switch(new Login(true));
                         }
                         else

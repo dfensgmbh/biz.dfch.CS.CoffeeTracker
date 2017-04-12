@@ -37,9 +37,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 try
                 {
                     await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
-                    var baseWindow = new BaseWindow();
-                    baseWindow.Show();
-                    StartWindowSwitcher.StartWindow.Close();
+                    StartWindowSwitcher.OpenBaseWindow();
                 }
                 catch (Exception)
                 {
