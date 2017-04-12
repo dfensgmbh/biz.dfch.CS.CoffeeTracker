@@ -6,22 +6,64 @@
                       xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
+                      xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                       mc:Ignorable="d"
                       Title="BaseWindow" Height="480" Width="720"
+                      WindowTitleBrush="{DynamicResource AccentBaseColorBrush}"
                       BorderBrush="{DynamicResource AccentBaseColorBrush}"
                       BorderThickness="2">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Gray">
-            <StackPanel Orientation="Vertical"
-                        x:Name="BaseWindowHamburgerMenu">
-                <components:SideBarItem
-                    LabelContent="Hello"/>
-            </StackPanel>
-        </Border>
+        <StackPanel Orientation="Vertical"
+                    x:Name="BaseWindowSideBarStackPanel"
+                    Background="#FF444444"
+                    Width="50">
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Home"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="LineChart"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Table"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="Coffee"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            
+        </StackPanel>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
             Grid.Column="1"
