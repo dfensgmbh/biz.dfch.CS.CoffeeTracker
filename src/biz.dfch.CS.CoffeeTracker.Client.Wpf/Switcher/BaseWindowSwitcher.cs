@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
@@ -30,18 +31,26 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 
         public static void Switch(UserControl newPage)
         {
-            //BaseWindow.BaseWindowContent.Content = newPage;
-            //var newPageClassName = newPage.GetType().Name;
+            BaseWindow.BaseWindowContent.Content = newPage;
+            var newPageClassName = newPage.GetType().Name;
 
             // validate which page is loaded, and set the corresponding title
-            //if (newPageClassName.Equals(nameof(Login)))
-            //{
-
-            //}
-            //else if (newPageClassName.Equals(nameof(Registration)))
-            //{
-
-            //}
+            if (newPageClassName.Equals(nameof(Home)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Home_Title;
+            }
+            else if (newPageClassName.Equals(nameof(Statistics)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Statistics_Title;
+            }
+            else if (newPageClassName.Equals(nameof(CoffeeOrders)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.CoffeeOrders_Title;
+            }
+            else if (newPageClassName.Equals(nameof(Coffees)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Coffees_Title;
+            }
         }
     }
 }
