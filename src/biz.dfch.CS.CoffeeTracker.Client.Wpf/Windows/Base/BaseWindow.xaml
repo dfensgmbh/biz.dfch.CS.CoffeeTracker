@@ -18,11 +18,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical"
-                    x:Name="BaseWindowSideBarStackPanel"
-                    Background="#FF444444"
-                    Width="50">
+        <DockPanel
+            LastChildFill="False"
+            Grid.Column="0"
+            x:Name="BaseWindowSideBarStackPanel"
+            Background="#FF444444"
+            Width="50">
             <Grid
+                DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -33,6 +36,7 @@
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -43,6 +47,7 @@
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -53,6 +58,7 @@
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -62,8 +68,18 @@
                     Kind="Coffee"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
-            
-        </StackPanel>
+            <Grid
+                DockPanel.Dock="Bottom"
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="SignOut"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+        </DockPanel>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
             Grid.Column="1"
