@@ -38,10 +38,10 @@ namespace biz.dfch.CS.CoffeeTracker.Core.Provider
                 context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
                 var userManager = new ApplicationUserManager(new AppUserStore(), true);
-                var userExists = userManager.UserExists(context.UserName);
-                Contract.Assert(userExists, "|404|");
+                var user = await userManager.FindAsync(context.UserName, context.Password);
+                Contract.Assert(null != user, "|400|");
 
-                // Workaround. When this line is removed, a build error comes (Contract error)
+                // Workaround. When this line is removed, a build error occurs (Contract error)
                 await Task.Delay(1);
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim("sub", context.UserName));
