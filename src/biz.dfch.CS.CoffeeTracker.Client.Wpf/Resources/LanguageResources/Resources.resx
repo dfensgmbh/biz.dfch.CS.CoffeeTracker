@@ -126,6 +126,9 @@
   <data name="BaseWindow_SideBar_Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="BaseWindow_SideBar_Logout" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
   <data name="BaseWindow_SideBar_Statistics" xml:space="preserve">
     <value>Statistics</value>
   </data>

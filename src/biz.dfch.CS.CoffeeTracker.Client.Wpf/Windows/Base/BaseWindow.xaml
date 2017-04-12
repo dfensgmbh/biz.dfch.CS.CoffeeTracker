@@ -8,6 +8,7 @@
                       xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
                       xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:local1="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls"
                       mc:Ignorable="d"
                       Title="BaseWindow" Height="480" Width="720"
                       WindowTitleBrush="{DynamicResource AccentBaseColorBrush}"
@@ -25,6 +26,7 @@
             Background="#FF444444"
             Width="50">
             <Grid
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Home}"
                 DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
@@ -37,6 +39,7 @@
             </Grid>
             <Grid
                 DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Statistics}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -48,6 +51,7 @@
             </Grid>
             <Grid
                 DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_CoffeeOrder}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -59,6 +63,7 @@
             </Grid>
             <Grid
                 DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Coffees}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -70,6 +75,7 @@
             </Grid>
             <Grid
                 DockPanel.Dock="Bottom"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Logout}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
@@ -81,6 +87,7 @@
             </Grid>
             <Grid
                 DockPanel.Dock="Bottom"
+                ToolTip="{x:Static local1:ClientContext.CurrentUserName}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"

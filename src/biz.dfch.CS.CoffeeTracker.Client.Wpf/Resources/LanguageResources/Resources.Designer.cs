@@ -88,6 +88,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign out.
+        /// </summary>
+        public static string BaseWindow_SideBar_Logout {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
         public static string BaseWindow_SideBar_Statistics {
