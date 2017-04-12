@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BaseWindow_SideBar_CoffeeOrder" xml:space="preserve">
+    <value>CoffeeOrder</value>
+  </data>
+  <data name="BaseWindow_SideBar_Coffees" xml:space="preserve">
+    <value>Coffees</value>
+  </data>
+  <data name="BaseWindow_SideBar_Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="BaseWindow_SideBar_Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
   <data name="Login_Button_Login" xml:space="preserve">
     <value>Login</value>
   </data>
