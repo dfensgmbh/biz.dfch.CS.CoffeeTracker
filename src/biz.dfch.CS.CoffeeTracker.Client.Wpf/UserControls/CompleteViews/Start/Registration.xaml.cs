@@ -11,6 +11,7 @@ using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -50,22 +51,40 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     var client = ClientContext.GetServiceContext();
                     client.AddToUsers(newAppUser);
                     client.SaveChanges();
-                    StartWindowSwitcher.Switch(new Login(true));
+                };
+
+                worker.RunWorkerCompleted += (o, args) =>
+                {
+                    ApplicationUser user;
+                    try
+                    {
+                        var client = ClientContext.GetServiceContext();
+                        user = client.Users.Where(u => u.Name.Equals(email)).FirstOrDefault();
+                        if (null != user)
+                        {
+                            StartWindowSwitcher.Switch(new Login(true));
+                        }
+                        else
+                        {
+                            // If this error is visible, there's an error with the client side code
+                            RegistrationFailedTextBlock.Text =
+                                Wpf.Resources.LanguageResources.Resources.Registration_RegistrationFailed;
+                            RegistrationFailedTextBlock.Visibility = Visibility.Visible;
+                            HideLoading();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // If this error is visible, there's an error with the client side code
+                        RegistrationFailedTextBlock.Text =
+                            Wpf.Resources.LanguageResources.Resources.Registration_ServiceNotAvailable;
+                        RegistrationFailedTextBlock.Visibility = Visibility.Visible;
+                        HideLoading();
+                    }
                 };
 
                 worker.RunWorkerAsync();
-                worker.RunWorkerCompleted += (o, args) =>
-                {
-                    // If this error is visible, there's an error with the client side code
-                    RegistrationFailedTextBlock.Visibility = Visibility.Visible;
-                    HideLoading();
-                };
             }
-        }
-
-        private async Task Test()
-        {
-            Thread.Sleep(5000);
         }
 
         private bool IsValidForm()

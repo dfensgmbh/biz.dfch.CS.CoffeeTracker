@@ -205,6 +205,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The service is currently not available.
+        /// </summary>
+        public static string Registration_ServiceNotAvailable {
+            get {
+                return ResourceManager.GetString("Registration_ServiceNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration.
         /// </summary>
         public static string Registration_Title {
