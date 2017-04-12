@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
 {
     /// <summary>
     /// Interaction logic for BaseWindow.xaml
     /// </summary>
-    public partial class BaseWindow : Window
+    public partial class BaseWindow : MetroWindow
     {
         public BaseWindow()
         {

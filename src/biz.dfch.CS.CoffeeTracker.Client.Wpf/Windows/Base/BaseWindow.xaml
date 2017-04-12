@@ -1,27 +1,30 @@
-﻿<Window x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base.BaseWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
-        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        mc:Ignorable="d"
-        Title="BaseWindow" Height="480" Width="720">
+﻿<controls:MetroWindow x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base.BaseWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
+                      mc:Ignorable="d"
+                      Title="BaseWindow" Height="480" Width="720"
+                      BorderBrush="{DynamicResource AccentBaseColorBrush}"
+                      BorderThickness="2">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <controls:MetroAnimatedTabControl
-            Grid.Column="0">
-            <TabItem Header="Home"></TabItem>
-            <TabItem Header="Statistics"></TabItem>
-            <TabItem Header="CoffeeOrder"></TabItem>
-            <TabItem Header="Coffees"></TabItem>
-        </controls:MetroAnimatedTabControl>
+        <Border BorderBrush="Gray">
+            <StackPanel Orientation="Vertical"
+                        x:Name="BaseWindowHamburgerMenu">
+                <components:SideBarItem
+                    LabelContent="Hello"/>
+            </StackPanel>
+        </Border>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
             Grid.Column="1"
-            Transition="Right"/>
+            Transition="Right" />
     </Grid>
-</Window>
+</controls:MetroWindow>
