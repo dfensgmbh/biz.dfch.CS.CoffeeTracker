@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
+using MahApps.Metro.Controls;
+
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
+{
+    /// <summary>
+    /// Interaction logic for CoffeeSelector.xaml
+    /// </summary>
+    public partial class CoffeeSelector : UserControl
+    {
+        private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
+        private List<Coffee> coffees = new List<Coffee>();
+
+        public CoffeeSelector()
+        {
+            InitializeComponent();
+            var client = ClientContext.GetServiceContext();
+            coffees = client.Coffees.ToList();
+            var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().ToList();
+            foreach (var brand in allBrands)
+            {
+                brands.Add(brand);
+            }
+
+            CoffeeSelectorBrandSplitButton.ItemsSource = brands;
+        }
+
+        private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
+        {
+            var splitButton = sender as SplitButton;
+            var brand = splitButton.SelectedItem as string;
+            var allCoffeesOfBrand = coffees.Where(c => c.Brand == brand).ToList<Coffee>();
+            var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
+            foreach (var coffee in allCoffeesOfBrand)
+            {
+                allCoffeesOfBrandObservableCollection.Add(coffee);
+            }
+
+            CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+            CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
+        }
+    }
+}
