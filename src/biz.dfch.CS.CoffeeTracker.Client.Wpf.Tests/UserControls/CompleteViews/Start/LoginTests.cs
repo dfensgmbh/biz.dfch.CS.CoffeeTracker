@@ -25,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class LoginTests
     {
-        private readonly string _userNameWhichShouldNotExist = "NotExistentName";
+        private readonly string _userNameWhichShouldNotExist = "NotExistentName@existent.com";
         private readonly string _invalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
 
         private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
