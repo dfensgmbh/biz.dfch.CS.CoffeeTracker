@@ -15,6 +15,7 @@
  */
 
 using System.Windows.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
@@ -37,6 +38,17 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             else if (newPageClassName.Equals(nameof(Registration)))
             {
                 StartWindow.Title = Resources.LanguageResources.Resources.Registration_Title;
+            }
+        }
+
+        public static void OpenBaseWindow()
+        {
+            var client = ClientContext.GetServiceContext();
+            if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
+            {
+                var baseWindow = new BaseWindow();
+                baseWindow.Show();
+                StartWindow.Close();
             }
         }
     }
