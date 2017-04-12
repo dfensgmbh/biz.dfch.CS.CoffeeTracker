@@ -190,6 +190,18 @@
     </Compile>
     <Compile Include="Switcher\BaseWindowSwitcher.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
+    <Compile Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">
+      <DependentUpon>CoffeeOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Coffees.xaml.cs">
+      <DependentUpon>Coffees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -221,6 +233,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\HyperLinkStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Coffees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Statistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,8 +311,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UserControls\CompleteViews\AdminUIs\" />
-    <Folder Include="UserControls\CompleteViews\SharedUIs\" />
     <Folder Include="Windows\ConfirmationWindows\" />
   </ItemGroup>
   <ItemGroup>

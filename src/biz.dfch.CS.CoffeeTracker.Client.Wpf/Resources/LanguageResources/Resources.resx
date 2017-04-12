@@ -132,6 +132,15 @@
   <data name="BaseWindow_SideBar_Statistics" xml:space="preserve">
     <value>Statistics</value>
   </data>
+  <data name="CoffeeOrders_Title" xml:space="preserve">
+    <value>CoffeeOrders</value>
+  </data>
+  <data name="Coffees_Title" xml:space="preserve">
+    <value>Coffees</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="Login_Button_Login" xml:space="preserve">
     <value>Login</value>
   </data>
@@ -182,6 +191,9 @@
   </data>
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>
+  </data>
+  <data name="Statistics_Title" xml:space="preserve">
+    <value>Statistics</value>
   </data>
   <data name="UserControl_EmailLabeledTextBox_EnterValidMail" xml:space="preserve">
     <value>Enter a valid Email address</value>

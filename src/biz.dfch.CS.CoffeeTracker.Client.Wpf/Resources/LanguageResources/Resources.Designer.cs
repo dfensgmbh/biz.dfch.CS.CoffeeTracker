@@ -106,6 +106,33 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CoffeeOrders.
+        /// </summary>
+        public static string CoffeeOrders_Title {
+            get {
+                return ResourceManager.GetString("CoffeeOrders_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coffees.
+        /// </summary>
+        public static string Coffees_Title {
+            get {
+                return ResourceManager.GetString("Coffees_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home_Title {
+            get {
+                return ResourceManager.GetString("Home_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login_Button_Login {
@@ -255,6 +282,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Shared_Password_Example {
             get {
                 return ResourceManager.GetString("Shared_Password_Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string Statistics_Title {
+            get {
+                return ResourceManager.GetString("Statistics_Title", resourceCulture);
             }
         }
         
