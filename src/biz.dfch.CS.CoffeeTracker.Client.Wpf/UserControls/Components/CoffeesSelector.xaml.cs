@@ -34,11 +34,22 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
         {
             InitializeComponent();
 
+            // these lines are needed for the XAML-Designer, if removed NullReferenceException in designer occurs
             if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
                 return;
             }
 
+            RefreshCoffeeBrands();
+        }
+
+        private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
+        {
+            RefreshCoffees();
+        }
+
+        private void RefreshCoffeeBrands()
+        {
             var client = ClientContext.GetServiceContext();
 
             // Load data in background and display loading screen
@@ -63,7 +74,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             worker.RunWorkerAsync();
         }
 
-        private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
+        private void RefreshCoffees()
         {
             DisplayLoading();
             var worker = new BackgroundWorker();
