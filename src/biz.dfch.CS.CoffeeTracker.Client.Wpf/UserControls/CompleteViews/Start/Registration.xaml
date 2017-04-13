@@ -28,10 +28,10 @@
             Orientation="Vertical">
             <components:EmailLabeledTextBox
                 x:Name="RegistrationEmailTextBox"
-                ToolTipContent="{x:Static languageResources:Resources.UserControl_EmailLabeledTextBox_EnterValidMail}"/>
+                ToolTipContent="{x:Static languageResources:Resources.EmailLabeledTextBox_ToolTip_EnterValidMail}"/>
             <components:PasswordLabeledTextBox
                 x:Name="RegistrationPasswordPasswordBox"
-                ToolTipContent="{x:Static languageResources:Resources.UserControl_PasswordLabeledPasswordBox_ValidPassword}"/>
+                ToolTipContent="{x:Static languageResources:Resources.PasswordLabeledPasswordBox_ToolTip_ValidPassword}"/>
             <components:PasswordLabeledTextBox
                 x:Name="RegistrationReEnterPasswordPasswordBox"
                 ToolTipContent="{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}"/>

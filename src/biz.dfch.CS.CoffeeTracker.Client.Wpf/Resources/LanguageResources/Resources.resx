@@ -135,8 +135,14 @@
   <data name="CoffeeOrders_Title" xml:space="preserve">
     <value>CoffeeOrders</value>
   </data>
+  <data name="CoffeesSelector_Label_SelectCoffee" xml:space="preserve">
+    <value>Select a Coffee</value>
+  </data>
   <data name="Coffees_Title" xml:space="preserve">
     <value>Coffees</value>
+  </data>
+  <data name="EmailLabeledTextBox_ToolTip_EnterValidMail" xml:space="preserve">
+    <value>Enter a valid Email address</value>
   </data>
   <data name="Home_Title" xml:space="preserve">
     <value>Home</value>
@@ -164,6 +170,9 @@
   </data>
   <data name="Login_Title" xml:space="preserve">
     <value>CoffeeTracker - Login</value>
+  </data>
+  <data name="PasswordLabeledPasswordBox_ToolTip_ValidPassword" xml:space="preserve">
+    <value>Enter a password which contains at least 6 characters</value>
   </data>
   <data name="Registration_Button_Create" xml:space="preserve">
     <value>Create Account</value>
@@ -194,11 +203,5 @@
   </data>
   <data name="Statistics_Title" xml:space="preserve">
     <value>Statistics</value>
-  </data>
-  <data name="UserControl_EmailLabeledTextBox_EnterValidMail" xml:space="preserve">
-    <value>Enter a valid Email address</value>
-  </data>
-  <data name="UserControl_PasswordLabeledPasswordBox_ValidPassword" xml:space="preserve">
-    <value>Enter a password which contains at least 6 characters</value>
   </data>
 </root>

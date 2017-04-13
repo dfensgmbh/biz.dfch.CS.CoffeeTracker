@@ -124,6 +124,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select a Coffee.
+        /// </summary>
+        public static string CoffeesSelector_Label_SelectCoffee {
+            get {
+                return ResourceManager.GetString("CoffeesSelector_Label_SelectCoffee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid Email address.
+        /// </summary>
+        public static string EmailLabeledTextBox_ToolTip_EnterValidMail {
+            get {
+                return ResourceManager.GetString("EmailLabeledTextBox_ToolTip_EnterValidMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home_Title {
@@ -201,6 +219,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Login_Title {
             get {
                 return ResourceManager.GetString("Login_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a password which contains at least 6 characters.
+        /// </summary>
+        public static string PasswordLabeledPasswordBox_ToolTip_ValidPassword {
+            get {
+                return ResourceManager.GetString("PasswordLabeledPasswordBox_ToolTip_ValidPassword", resourceCulture);
             }
         }
         
@@ -291,24 +318,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Statistics_Title {
             get {
                 return ResourceManager.GetString("Statistics_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter a valid Email address.
-        /// </summary>
-        public static string UserControl_EmailLabeledTextBox_EnterValidMail {
-            get {
-                return ResourceManager.GetString("UserControl_EmailLabeledTextBox_EnterValidMail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Enter a password which contains at least 6 characters.
-        /// </summary>
-        public static string UserControl_PasswordLabeledPasswordBox_ValidPassword {
-            get {
-                return ResourceManager.GetString("UserControl_PasswordLabeledPasswordBox_ValidPassword", resourceCulture);
             }
         }
     }
