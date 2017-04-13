@@ -14,28 +14,52 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Windows.Documents;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
     public static class ClientContext
     {
         private static readonly ApiClientConfigurationSection _apiClientConfigurationSection
-            = (ApiClientConfigurationSection)ConfigurationManager.GetSection("apiClientConfiguration");
+            = (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
 
 
         private static CoffeeTrackerServiceContext _coffeeTrackerClient;
-
         public static string CurrentUserName = "";
+        private static List<Coffee> coffees = new List<Coffee>();
+
+        public static List<Coffee> Coffees
+        {
+            get
+            {
+                return RefreshCoffeeList();
+            }
+
+            set
+            {
+                coffees = value;
+            }
+        }
 
         public static CoffeeTrackerServiceContext GetServiceContext()
         {
             if (null == _coffeeTrackerClient)
             {
-                _coffeeTrackerClient = new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+                _coffeeTrackerClient =
+                    new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
             }
 
             return _coffeeTrackerClient;
+        }
+
+        private static List<Coffee> RefreshCoffeeList()
+        {
+            Coffees = GetServiceContext().Coffees.ToList();
+            return Coffees;
         }
     }
 }
