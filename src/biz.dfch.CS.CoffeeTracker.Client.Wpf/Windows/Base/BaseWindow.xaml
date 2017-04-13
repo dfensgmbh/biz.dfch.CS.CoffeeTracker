@@ -20,9 +20,14 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <DockPanel
             LastChildFill="False"
             Grid.Column="0"
+            Grid.RowSpan="2"
             x:Name="BaseWindowSideBarStackPanel"
             Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
             Width="50">
@@ -99,9 +104,14 @@
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
         </DockPanel>
+        <Viewbox Grid.Row="1" Grid.Column="1"
+            DockPanel.Dock="Bottom"
+            Stretch="Uniform">
+            <Label 
+                Name="BaseWindowUserMessageLabel"/>
+        </Viewbox>
         <controls:TransitioningContentControl
             Name="BaseWindowContent"
-            Grid.Column="1"
             Transition="Right" />
     </Grid>
 </controls:MetroWindow>
