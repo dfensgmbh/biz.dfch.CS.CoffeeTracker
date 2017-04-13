@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              mc:Ignorable="d"
@@ -19,8 +20,8 @@
         </Grid.ColumnDefinitions>
         <components:CoffeesSelector
             Grid.Row="0" Grid.Column="0"
-            CoffeeSelected="CoffeesSelector_OnCoffeeSelected"/>
-        <StackPanel 
+            CoffeeSelected="CoffeesSelector_OnCoffeeSelected" />
+        <StackPanel
             Orientation="Vertical"
             Grid.Row="1" Grid.Column="0">
             <DockPanel>
@@ -28,27 +29,40 @@
                     Name="HomePriceLabel"
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Right"
-                    Content="0.00"/>
+                    Content="0.00" />
                 <Label
                     DockPanel.Dock="Left"
-                    Content="{x:Static languageResources:Resources.Home_Label_Price}"/>
+                    Content="{x:Static languageResources:Resources.Home_Label_Price}" />
                 <Label
                     HorizontalAlignment="Right"
                     DockPanel.Dock="Right"
-                    Content="{x:Static languageResources:Resources.Shared_CurrencySwiss}"/>
+                    Content="{x:Static languageResources:Resources.Shared_CurrencySwiss}" />
 
             </DockPanel>
             <DockPanel>
                 <Label
                     DockPanel.Dock="Left"
-                    Content="{x:Static languageResources:Resources.Home_Label_Price}"/>
+                    Content="{x:Static languageResources:Resources.Home_Label_Price}" />
                 <Label
                     Name="HomeOnStockLabel"
                     DockPanel.Dock="Right"
                     HorizontalAlignment="Right"
-                    Content="0"/>
+                    Content="0" />
 
             </DockPanel>
+
         </StackPanel>
+        <!-- This grid is needed for the size of the icon provided -->
+        <Grid
+            Grid.Row="0" Grid.Column="1"
+            Margin="20">
+            <iconPacks:PackIconFontAwesome
+                Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
+                Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
+                Kind="Coffee"
+                Foreground="{DynamicResource AccentBaseColorBrush}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center" />
+        </Grid>
     </Grid>
 </UserControl>
