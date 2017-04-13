@@ -111,6 +111,7 @@
                 Name="BaseWindowUserMessageLabel"/>
         </Viewbox>
         <controls:TransitioningContentControl
+            Grid.Column="1"
             Name="BaseWindowContent"
             Transition="Right" />
     </Grid>
