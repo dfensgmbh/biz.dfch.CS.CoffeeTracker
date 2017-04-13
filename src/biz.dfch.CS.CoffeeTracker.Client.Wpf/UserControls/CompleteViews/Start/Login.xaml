@@ -35,11 +35,13 @@
             Style="{DynamicResource MetroCircleButtonStyle}" 
             x:Name="LoginButton"
             Grid.Row="3" Grid.Column="1"
-            Width="40" Height="40"
-            HorizontalAlignment="Right"
+            IsDefault="True"
             Click="LoginButton_OnClick"
-            IsDefault="True">
-            <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent"/>
+            BorderBrush="{DynamicResource AccentBaseColorBrush}"
+            Background="{DynamicResource AccentColorBrush}"
+            Width="40" Height="40"
+            HorizontalAlignment="Right">
+            <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" Foreground="White"/>
         </Button>
         <StackPanel 
             Name="LoginRegistrationStackPanel"
