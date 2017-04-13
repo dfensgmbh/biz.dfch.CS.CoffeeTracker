@@ -28,7 +28,8 @@
             Name="CoffeeSelectorCoffeeSplitButton"
             Grid.Row="1"
             HorizontalContentAlignment="Left"
-            IsEnabled="False">
+            IsEnabled="False"
+            DisplayMemberPath="Name">
             <controls:SplitButton.Icon>
                 <iconPacks:PackIconFontAwesome Kind="Coffee"/>
             </controls:SplitButton.Icon>
