@@ -28,6 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
         {
             InitializeComponent();
             BaseWindowSwitcher.BaseWindow = this;
+            BaseWindowSwitcher.Switch(new Home());
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

@@ -49,7 +49,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             {
                 var baseWindow = new BaseWindow();
                 baseWindow.Show();
-                Switch(new Home());
                 StartWindow.Close();
             }
         }
