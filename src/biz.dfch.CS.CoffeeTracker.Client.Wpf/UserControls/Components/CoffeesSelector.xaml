@@ -34,7 +34,8 @@
                 Grid.Row="1"
                 HorizontalContentAlignment="Left"
                 IsEnabled="False"
-                DisplayMemberPath="Name">
+                DisplayMemberPath="Name"
+                SelectionChanged="CoffeeSelectorCoffeeSplitButton_OnSelectionChanged">
                 <controls:SplitButton.Icon>
                     <iconPacks:PackIconFontAwesome Kind="Coffee" />
                 </controls:SplitButton.Icon>

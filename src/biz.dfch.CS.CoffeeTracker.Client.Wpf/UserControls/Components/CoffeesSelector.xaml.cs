@@ -27,6 +27,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// </summary>
     public partial class CoffeesSelector : UserControl
     {
+        public event EventHandler CoffeeSelected;
         private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
         private List<Coffee> coffees = new List<Coffee>();
 
@@ -111,6 +112,17 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
             CoffeeSelectorBrandSplitButton.IsEnabled = true;
             CoffeeSelectorProgressRing.IsActive = false;
+        }
+
+        private void CoffeeSelectorCoffeeSplitButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Raise coffee selected event
+            if (CoffeeSelected != null)
+            {
+                var coffee = CoffeeSelectorCoffeeSplitButton.SelectedItem as Coffee;
+                var eventArgs = new CoffeeSelectedEventArgs(coffee);
+                CoffeeSelected(this, eventArgs);
+            }
         }
     }
 }
