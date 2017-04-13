@@ -49,6 +49,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             };
             worker.RunWorkerCompleted += (o, args) =>
             {
+                RefreshStock(selectedCoffee);
                 HideLoading();
             };
 
@@ -67,6 +68,25 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             client.AddToCoffeeOrders(coffeeOrder);
             client.SaveChanges();
         }
+
+        private void RefreshPrice(Coffee coffee)
+        {
+            var refreshedCoffee = RefreshCoffee(coffee);
+            HomePriceLabel.Content = refreshedCoffee.Price;
+        }
+
+        private void RefreshStock(Coffee coffee)
+        {
+            var refreshedCoffee = RefreshCoffee(coffee);
+            HomeOnStockLabel.Content = refreshedCoffee.Stock;
+        }
+
+        private Coffee RefreshCoffee(Coffee coffee)
+        {
+            var client = ClientContext.GetServiceContext();
+            return client.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
+        }
+
 
         private void DisplayLoading()
         {

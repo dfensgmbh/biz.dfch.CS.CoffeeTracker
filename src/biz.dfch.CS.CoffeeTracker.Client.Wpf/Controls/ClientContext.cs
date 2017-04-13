@@ -43,6 +43,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
                     new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
             }
 
+            // Create new Client and pass old authenticationhelper to update entities
+            var authenticationHelper = _coffeeTrackerClient.authenticationHelper;
+            _coffeeTrackerClient = new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+            _coffeeTrackerClient.authenticationHelper = authenticationHelper;
+
             return _coffeeTrackerClient;
         }
 
