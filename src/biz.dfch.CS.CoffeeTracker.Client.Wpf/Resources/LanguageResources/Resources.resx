@@ -150,6 +150,9 @@
   <data name="Home_Label_CoffeeOrderPlaced" xml:space="preserve">
     <value>Your coffee has been successfully ordered</value>
   </data>
+  <data name="Home_Label_CoffeeOutOfStock" xml:space="preserve">
+    <value>The selected coffee is out of stock</value>
+  </data>
   <data name="Home_Label_CouldntPlaceOrder" xml:space="preserve">
     <value>Error while creating the order</value>
   </data>

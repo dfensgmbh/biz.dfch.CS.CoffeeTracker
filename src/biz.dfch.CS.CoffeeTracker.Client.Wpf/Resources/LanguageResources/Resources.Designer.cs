@@ -160,6 +160,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The selected coffee is out of stock.
+        /// </summary>
+        public static string Home_Label_CoffeeOutOfStock {
+            get {
+                return ResourceManager.GetString("Home_Label_CoffeeOutOfStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while creating the order.
         /// </summary>
         public static string Home_Label_CouldntPlaceOrder {
