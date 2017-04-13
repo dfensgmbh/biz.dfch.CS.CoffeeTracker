@@ -33,15 +33,29 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
         public CoffeeSelector()
         {
             InitializeComponent();
-            var client = ClientContext.GetServiceContext();
-            coffees = client.Coffees.ToList();
-            var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().ToList();
-            foreach (var brand in allBrands)
-            {
-                brands.Add(brand);
-            }
 
-            CoffeeSelectorBrandSplitButton.ItemsSource = brands;
+            var client = ClientContext.GetServiceContext();
+
+            // Load data in background and display loading screen
+            var worker = new BackgroundWorker();
+            DisplayLoading();
+            worker.DoWork += (o, args) =>
+            {
+                // Give the current thread the permission to manipulate data
+                this.Dispatcher.Invoke(() =>
+                {
+                    coffees = client.Coffees.ToList();
+                    var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().ToList();
+                    foreach (var brand in allBrands)
+                    {
+                        brands.Add(brand);
+                    }
+
+                    CoffeeSelectorBrandSplitButton.ItemsSource = brands;
+                });
+            };
+            worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
+            worker.RunWorkerAsync();
         }
 
         private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
@@ -50,23 +64,22 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             var worker = new BackgroundWorker();
             worker.DoWork += (o, args) =>
             {
-                var splitButton = sender as SplitButton;
-                var brand = splitButton.SelectedItem as string;
-                var allCoffeesOfBrand = coffees.Where(c => c.Brand == brand).ToList<Coffee>();
-                var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
-                foreach (var coffee in allCoffeesOfBrand)
+                this.Dispatcher.Invoke(() =>
                 {
-                    allCoffeesOfBrandObservableCollection.Add(coffee);
-                }
+                    var brand = CoffeeSelectorBrandSplitButton.SelectedItem as string;
 
-                CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+                    var allCoffeesOfBrand = coffees.Where(c => c.Brand.Equals(brand)).ToList<Coffee>();
+                    var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
+                    foreach (var coffee in allCoffeesOfBrand)
+                    {
+                        allCoffeesOfBrandObservableCollection.Add(coffee);
+                    }
+
+                    CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+                });
             };
 
-            worker.RunWorkerCompleted += async (o, args) =>
-            {
-                await Task.Delay(3000);
-                HideLoading();
-            };
+            worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
             worker.RunWorkerAsync();
         }
 
