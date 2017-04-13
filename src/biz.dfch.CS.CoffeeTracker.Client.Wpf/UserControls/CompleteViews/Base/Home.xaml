@@ -42,7 +42,7 @@
             <DockPanel>
                 <Label
                     DockPanel.Dock="Left"
-                    Content="{x:Static languageResources:Resources.Home_Label_Price}" />
+                    Content="{x:Static languageResources:Resources.Home_Label_OnStock}" />
                 <Label
                     Name="HomeOnStockLabel"
                     DockPanel.Dock="Right"
@@ -52,10 +52,22 @@
             </DockPanel>
 
         </StackPanel>
-        <!-- This grid is needed for the size of the icon provided -->
+        <!-- These grids are needed for responsive sizing of the provided icon -->
         <Grid
-            Grid.Row="0" Grid.Column="1"
-            Margin="20">
+            Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid
+                Grid.Row="1" Grid.Column="1">
+                
             <iconPacks:PackIconFontAwesome
                 Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
                 Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
@@ -63,6 +75,7 @@
                 Foreground="{DynamicResource AccentBaseColorBrush}"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center" />
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
