@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 {
@@ -23,6 +24,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
         public Home()
         {
             InitializeComponent();
+        }
+
+        private void CoffeesSelector_OnCoffeeSelected(object sender, CoffeeSelectedEventArgs e)
+        {
+            MessageBox.Show(e.SelectedCoffee.Name);
         }
     }
 }

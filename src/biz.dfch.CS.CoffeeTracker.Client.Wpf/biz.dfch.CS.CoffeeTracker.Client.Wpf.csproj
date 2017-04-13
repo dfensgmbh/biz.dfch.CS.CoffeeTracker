@@ -188,7 +188,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="CoffeeSelectedEventArgs.cs" />
+    <Compile Include="CustomEvents\CoffeeSelectedEventArgs.cs" />
     <Compile Include="Switcher\BaseWindowSwitcher.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
     <Compile Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">

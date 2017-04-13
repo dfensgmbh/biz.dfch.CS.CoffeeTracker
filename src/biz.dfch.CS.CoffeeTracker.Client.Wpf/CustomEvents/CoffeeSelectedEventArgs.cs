@@ -15,13 +15,9 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents
 {
     public class CoffeeSelectedEventArgs : EventArgs
     {

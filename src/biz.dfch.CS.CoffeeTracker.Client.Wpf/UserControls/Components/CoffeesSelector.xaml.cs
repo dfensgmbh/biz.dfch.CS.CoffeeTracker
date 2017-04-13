@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using MahApps.Metro.Controls;
 
@@ -27,7 +28,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// </summary>
     public partial class CoffeesSelector : UserControl
     {
-        public event EventHandler CoffeeSelected;
+        public event EventHandler<CoffeeSelectedEventArgs> CoffeeSelected;
         private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
         private List<Coffee> coffees = new List<Coffee>();
 
