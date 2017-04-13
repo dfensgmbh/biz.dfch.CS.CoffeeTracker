@@ -8,6 +8,7 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -86,6 +87,7 @@
             </Grid>
         </Grid>
         <Viewbox
+            Name="HomeAddOrderViewBox"
             Grid.Row="1" Grid.Column="1">
             <StackPanel>
                 <Button
@@ -97,14 +99,34 @@
                     BorderBrush="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
                     Width="40" Height="40"
                     HorizontalAlignment="Center">
-                    <iconPacks:PackIconFontAwesome 
-                        Kind="Plus" 
+                    <iconPacks:PackIconFontAwesome
+                        Kind="Plus"
                         Background="Transparent"
-                        Foreground="White"/>
+                        Foreground="White" />
                 </Button>
                 <Label Content="{x:Static languageResources:Resources.Home_Label_AddOrder}" />
             </StackPanel>
         </Viewbox>
+        <Grid
+            Name="HomeAddOrderGridLoading"
+            Grid.Row="1" Grid.Column="1"
+            Visibility="Collapsed">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Viewbox
+                Grid.Row="1" Grid.Column="1">
+                <controls:ProgressRing />
+            </Viewbox>
+        </Grid>
     </Grid>
 
 </UserControl>
