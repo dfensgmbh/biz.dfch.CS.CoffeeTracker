@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base"
+             xmlns:basenamespace="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
@@ -18,64 +19,91 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <components:CoffeesSelector
-            Grid.Row="0" Grid.Column="0"
-            CoffeeSelected="CoffeesSelector_OnCoffeeSelected" />
-        <StackPanel
-            Orientation="Vertical"
+        <Viewbox>
+
+            <components:CoffeesSelector
+                Grid.Row="0" Grid.Column="0"
+                CoffeeSelected="CoffeesSelector_OnCoffeeSelected" />
+        </Viewbox>
+        <Viewbox
             Grid.Row="1" Grid.Column="0">
-            <DockPanel>
-                <Label
-                    Name="HomePriceLabel"
-                    DockPanel.Dock="Right"
-                    HorizontalAlignment="Right"
-                    Content="0.00" />
-                <Label
-                    DockPanel.Dock="Left"
-                    Content="{x:Static languageResources:Resources.Home_Label_Price}" />
-                <Label
-                    HorizontalAlignment="Right"
-                    DockPanel.Dock="Right"
-                    Content="{x:Static languageResources:Resources.Shared_CurrencySwiss}" />
 
-            </DockPanel>
-            <DockPanel>
-                <Label
-                    DockPanel.Dock="Left"
-                    Content="{x:Static languageResources:Resources.Home_Label_OnStock}" />
-                <Label
-                    Name="HomeOnStockLabel"
-                    DockPanel.Dock="Right"
-                    HorizontalAlignment="Right"
-                    Content="0" />
+            <StackPanel
+                Orientation="Vertical">
+                <DockPanel>
+                    <Label
+                        Name="HomePriceLabel"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Content="0.00" />
+                    <Label
+                        DockPanel.Dock="Left"
+                        Content="{x:Static languageResources:Resources.Home_Label_Price}" />
+                    <Label
+                        HorizontalAlignment="Right"
+                        DockPanel.Dock="Right"
+                        Content="{x:Static languageResources:Resources.Shared_CurrencySwiss}" />
 
-            </DockPanel>
+                </DockPanel>
+                <DockPanel>
 
-        </StackPanel>
+                    <Label
+                        DockPanel.Dock="Left"
+                        Content="{x:Static languageResources:Resources.Home_Label_OnStock}" />
+                    <Label
+                        Name="HomeOnStockLabel"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        Content="0" />
+
+                </DockPanel>
+
+            </StackPanel>
+        </Viewbox>
         <!-- These grids are needed for responsive sizing of the provided icon -->
         <Grid
             Grid.Row="0" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="8*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid
                 Grid.Row="1" Grid.Column="1">
-                
-            <iconPacks:PackIconFontAwesome
-                Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
-                Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
-                Kind="Coffee"
-                Foreground="{DynamicResource AccentBaseColorBrush}"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center" />
+
+                <iconPacks:PackIconFontAwesome
+                    Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}"
+                    Height="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Path=ActualHeight}"
+                    Kind="Coffee"
+                    Foreground="{DynamicResource AccentBaseColorBrush}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center" />
             </Grid>
         </Grid>
+        <Viewbox
+            Grid.Row="1" Grid.Column="1">
+            <StackPanel>
+                <Button
+                    x:Name="LoginButton"
+                    Style="{DynamicResource MetroCircleButtonStyle}"
+                    Background="Green"
+                    BorderBrush="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
+                    Width="40" Height="40"
+                    HorizontalAlignment="Center"
+                    IsDefault="True">
+                    <iconPacks:PackIconFontAwesome 
+                        Kind="Plus" 
+                        Background="Transparent"
+                        Foreground="White"/>
+                </Button>
+                <Label Content="{x:Static languageResources:Resources.Home_Label_AddOrder}" />
+            </StackPanel>
+        </Viewbox>
     </Grid>
+
 </UserControl>

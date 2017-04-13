@@ -142,6 +142,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order Coffee.
+        /// </summary>
+        public static string Home_Label_AddOrder {
+            get {
+                return ResourceManager.GetString("Home_Label_AddOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on Stock:.
         /// </summary>
         public static string Home_Label_OnStock {

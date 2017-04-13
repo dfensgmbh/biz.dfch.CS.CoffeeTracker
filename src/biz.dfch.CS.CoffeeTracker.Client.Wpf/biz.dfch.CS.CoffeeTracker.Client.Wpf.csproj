@@ -191,6 +191,7 @@
     <Compile Include="CustomEvents\CoffeeSelectedEventArgs.cs" />
     <Compile Include="Switcher\BaseWindowSwitcher.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
+    <Compile Include="UiConfigs.cs" />
     <Compile Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">
       <DependentUpon>CoffeeOrders.xaml</DependentUpon>
     </Compile>

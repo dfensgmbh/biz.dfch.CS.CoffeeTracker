@@ -4,6 +4,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
+                      xmlns:basenamespace="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
                       xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
@@ -23,7 +24,7 @@
             LastChildFill="False"
             Grid.Column="0"
             x:Name="BaseWindowSideBarStackPanel"
-            Background="#FF444444"
+            Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
             Width="50">
             <Grid
                 ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Home}"

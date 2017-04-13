@@ -144,6 +144,9 @@
   <data name="EmailLabeledTextBox_ToolTip_EnterValidMail" xml:space="preserve">
     <value>Enter a valid Email address</value>
   </data>
+  <data name="Home_Label_AddOrder" xml:space="preserve">
+    <value>Order Coffee</value>
+  </data>
   <data name="Home_Label_OnStock" xml:space="preserve">
     <value>on Stock:</value>
   </data>
