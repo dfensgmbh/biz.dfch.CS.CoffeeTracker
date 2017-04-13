@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.Services.Client;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 {
@@ -35,13 +39,39 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             DisplayLoading();
             worker.DoWork += (o, args) =>
             {
-                AddCoffeeOrder();
+                try
+                {
+                    AddCoffeeOrder();
+                    RefreshStock(selectedCoffee);
+                }
+                catch (Exception x)
+                {
+                    if (x.GetType() == typeof(DataServiceRequestException))
+                    {
+                        x = x as DataServiceRequestException;
+                        if (x.InnerException.GetType() == typeof(DataServiceClientException))
+                        {
+                            HttpStatusCode statusCode;
+                            var dataServiceClientException = x.InnerException as DataServiceClientException;
+                            Enum.TryParse(dataServiceClientException.StatusCode.ToString(), out statusCode);
+                            if (HttpStatusCode.BadRequest == statusCode)
+                            {
+                                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Home_Label_CoffeeOutOfStock);
+                            }
+                            else if (HttpStatusCode.InternalServerError == statusCode)
+                            {
+                                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Home_Label_CouldntPlaceOrder);
+                            }
+                            else if (HttpStatusCode.BadGateway == statusCode)
+                            {
+                                BaseWindowSwitcher.DisplayError(
+                                    Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
+                            }
+                        }
+                    }
+                }
             };
-            worker.RunWorkerCompleted += (o, args) =>
-            {
-                RefreshStock(selectedCoffee);
-                HideLoading();
-            };
+            worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
 
             worker.RunWorkerAsync();
         }
@@ -51,7 +81,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             var client = ClientContext.GetServiceContext();
             var coffeeOrder = new CoffeeOrder()
             {
-                Name = ClientContext.CurrentUserName+DateTimeOffset.Now,
+                Name = ClientContext.CurrentUserName + DateTimeOffset.Now,
                 UserId = ClientContext.CurrentUserId,
                 CoffeeId = selectedCoffee.Id
             };
