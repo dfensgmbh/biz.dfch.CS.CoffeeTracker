@@ -142,6 +142,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to on Stock:.
+        /// </summary>
+        public static string Home_Label_OnStock {
+            get {
+                return ResourceManager.GetString("Home_Label_OnStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price:.
+        /// </summary>
+        public static string Home_Label_Price {
+            get {
+                return ResourceManager.GetString("Home_Label_Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
         public static string Home_Title {
@@ -291,6 +309,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Registration_Tooltip_ReEnterPassword {
             get {
                 return ResourceManager.GetString("Registration_Tooltip_ReEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CHF.
+        /// </summary>
+        public static string Shared_CurrencySwiss {
+            get {
+                return ResourceManager.GetString("Shared_CurrencySwiss", resourceCulture);
             }
         }
         
