@@ -147,6 +147,12 @@
   <data name="Home_Label_AddOrder" xml:space="preserve">
     <value>Order Coffee</value>
   </data>
+  <data name="Home_Label_CoffeeOrderPlaced" xml:space="preserve">
+    <value>Your coffee has been successfully ordered</value>
+  </data>
+  <data name="Home_Label_CouldntPlaceOrder" xml:space="preserve">
+    <value>Error while creating the order</value>
+  </data>
   <data name="Home_Label_OnStock" xml:space="preserve">
     <value>on Stock:</value>
   </data>
@@ -195,9 +201,6 @@
   <data name="Registration_RegistrationFailed" xml:space="preserve">
     <value>An error occurred. Could not create account</value>
   </data>
-  <data name="Registration_ServiceNotAvailable" xml:space="preserve">
-    <value>The service is currently not available</value>
-  </data>
   <data name="Registration_Title" xml:space="preserve">
     <value>Registration</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>
+  </data>
+  <data name="Shared_ServiceNotAvailable" xml:space="preserve">
+    <value>The service is currently not available</value>
   </data>
   <data name="Statistics_Title" xml:space="preserve">
     <value>Statistics</value>

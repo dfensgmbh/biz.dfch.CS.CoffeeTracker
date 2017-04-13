@@ -151,6 +151,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your coffee has been successfully ordered.
+        /// </summary>
+        public static string Home_Label_CoffeeOrderPlaced {
+            get {
+                return ResourceManager.GetString("Home_Label_CoffeeOrderPlaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while creating the order.
+        /// </summary>
+        public static string Home_Label_CouldntPlaceOrder {
+            get {
+                return ResourceManager.GetString("Home_Label_CouldntPlaceOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to on Stock:.
         /// </summary>
         public static string Home_Label_OnStock {
@@ -295,15 +313,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service is currently not available.
-        /// </summary>
-        public static string Registration_ServiceNotAvailable {
-            get {
-                return ResourceManager.GetString("Registration_ServiceNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Registration.
         /// </summary>
         public static string Registration_Title {
@@ -345,6 +354,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Shared_Password_Example {
             get {
                 return ResourceManager.GetString("Shared_Password_Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service is currently not available.
+        /// </summary>
+        public static string Shared_ServiceNotAvailable {
+            get {
+                return ResourceManager.GetString("Shared_ServiceNotAvailable", resourceCulture);
             }
         }
         
