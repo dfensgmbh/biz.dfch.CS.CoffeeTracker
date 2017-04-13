@@ -71,7 +71,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     {
                         // If this error is visible, there's an error with the client side code
                         RegistrationFailedTextBlock.Text =
-                            Wpf.Resources.LanguageResources.Resources.Registration_ServiceNotAvailable;
+                            Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable;
                         RegistrationFailedTextBlock.Visibility = Visibility.Visible;
                         HideLoading();
                     }
