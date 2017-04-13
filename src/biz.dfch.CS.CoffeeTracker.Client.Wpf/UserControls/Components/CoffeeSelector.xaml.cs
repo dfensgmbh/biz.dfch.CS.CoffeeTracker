@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,17 +46,42 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
         {
-            var splitButton = sender as SplitButton;
-            var brand = splitButton.SelectedItem as string;
-            var allCoffeesOfBrand = coffees.Where(c => c.Brand == brand).ToList<Coffee>();
-            var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
-            foreach (var coffee in allCoffeesOfBrand)
+            DisplayLoading();
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, args) =>
             {
-                allCoffeesOfBrandObservableCollection.Add(coffee);
-            }
+                var splitButton = sender as SplitButton;
+                var brand = splitButton.SelectedItem as string;
+                var allCoffeesOfBrand = coffees.Where(c => c.Brand == brand).ToList<Coffee>();
+                var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
+                foreach (var coffee in allCoffeesOfBrand)
+                {
+                    allCoffeesOfBrandObservableCollection.Add(coffee);
+                }
 
-            CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+                CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+            };
+
+            worker.RunWorkerCompleted += async (o, args) =>
+            {
+                await Task.Delay(3000);
+                HideLoading();
+            };
+            worker.RunWorkerAsync();
+        }
+
+        private void DisplayLoading()
+        {
+            CoffeeSelectorCoffeeSplitButton.IsEnabled = false;
+            CoffeeSelectorBrandSplitButton.IsEnabled = false;
+            CoffeeSelectorProgressRing.IsActive = true;
+        }
+
+        private void HideLoading()
+        {
             CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
+            CoffeeSelectorBrandSplitButton.IsEnabled = true;
+            CoffeeSelectorProgressRing.IsActive = false;
         }
     }
 }
