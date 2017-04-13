@@ -23,16 +23,21 @@ using MahApps.Metro.Controls;
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 {
     /// <summary>
-    /// Interaction logic for CoffeeSelector.xaml
+    /// Interaction logic for CoffeesSelector.xaml
     /// </summary>
-    public partial class CoffeeSelector : UserControl
+    public partial class CoffeesSelector : UserControl
     {
         private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
         private List<Coffee> coffees = new List<Coffee>();
 
-        public CoffeeSelector()
+        public CoffeesSelector()
         {
             InitializeComponent();
+
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
 
             var client = ClientContext.GetServiceContext();
 

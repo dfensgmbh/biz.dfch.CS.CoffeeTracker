@@ -8,6 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <components:CoffeeSelector></components:CoffeeSelector>
+        <DockPanel Dock="Left">
+            <components:CoffeesSelector DockPanel.Dock="Left"/>
+        </DockPanel>
     </Grid>
 </UserControl>
+
