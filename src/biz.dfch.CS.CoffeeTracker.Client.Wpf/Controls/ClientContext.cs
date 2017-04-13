@@ -30,20 +30,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 
         private static CoffeeTrackerServiceContext _coffeeTrackerClient;
         public static string CurrentUserName = "";
-        private static List<Coffee> coffees = new List<Coffee>();
-
-        public static List<Coffee> Coffees
-        {
-            get
-            {
-                return RefreshCoffeeList();
-            }
-
-            set
-            {
-                coffees = value;
-            }
-        }
 
         public static CoffeeTrackerServiceContext GetServiceContext()
         {
@@ -54,12 +40,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
             }
 
             return _coffeeTrackerClient;
-        }
-
-        private static List<Coffee> RefreshCoffeeList()
-        {
-            Coffees = GetServiceContext().Coffees.ToList();
-            return Coffees;
         }
     }
 }
