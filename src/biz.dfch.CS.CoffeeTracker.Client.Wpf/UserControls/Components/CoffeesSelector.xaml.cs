@@ -41,13 +41,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             {
                 return;
             }
-
+            DisplayLoading();
             RefreshCoffeeBrands();
+            HideLoading();
         }
 
         private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
         {
+            DisplayLoading();
             RefreshCoffees();
+            HideLoading(true);
         }
 
         private void RefreshCoffeeBrands()
@@ -56,7 +59,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
             // Load data in background and display loading screen
             var worker = new BackgroundWorker();
-            DisplayLoading();
             worker.DoWork += (o, args) =>
             {
                 // Give the current thread the permission to manipulate data
@@ -72,13 +74,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                     CoffeeSelectorBrandSplitButton.ItemsSource = brands;
                 });
             };
-            worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
             worker.RunWorkerAsync();
         }
 
         private void RefreshCoffees()
         {
-            DisplayLoading();
             var worker = new BackgroundWorker();
             worker.DoWork += (o, args) =>
             {
@@ -96,8 +96,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                     CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
                 });
             };
-
-            worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
             worker.RunWorkerAsync();
         }
 
@@ -108,9 +106,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             CoffeeSelectorProgressRing.IsActive = true;
         }
 
-        private void HideLoading()
+        private void HideLoading(bool brandSelected = false)
         {
-            CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
+            if (brandSelected)
+            {
+                CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
+                
+            }
             CoffeeSelectorBrandSplitButton.IsEnabled = true;
             CoffeeSelectorProgressRing.IsActive = false;
         }
