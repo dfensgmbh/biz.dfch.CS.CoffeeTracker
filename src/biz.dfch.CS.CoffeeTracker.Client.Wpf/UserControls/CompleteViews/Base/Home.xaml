@@ -89,13 +89,14 @@
             Grid.Row="1" Grid.Column="1">
             <StackPanel>
                 <Button
-                    x:Name="LoginButton"
+                    Name="HomeOrderButton"
+                    IsEnabled="False"
+                    Click="HomeOrderButton_OnClick"
                     Style="{DynamicResource MetroCircleButtonStyle}"
                     Background="Green"
                     BorderBrush="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
                     Width="40" Height="40"
-                    HorizontalAlignment="Center"
-                    IsDefault="True">
+                    HorizontalAlignment="Center">
                     <iconPacks:PackIconFontAwesome 
                         Kind="Plus" 
                         Background="Transparent"

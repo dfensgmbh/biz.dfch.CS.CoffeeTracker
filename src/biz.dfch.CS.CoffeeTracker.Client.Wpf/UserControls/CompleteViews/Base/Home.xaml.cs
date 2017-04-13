@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
@@ -30,6 +32,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
         {
             HomePriceLabel.Content = e.SelectedCoffee.Price;
             HomeOnStockLabel.Content = e.SelectedCoffee.Stock;
+            HomeOrderButton.IsEnabled = true;
+        }
+
+        private void HomeOrderButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var client = ClientContext.GetServiceContext();
+            var coffeeOrder = new CoffeeOrder()
+            {
+                
+            };
         }
     }
 }

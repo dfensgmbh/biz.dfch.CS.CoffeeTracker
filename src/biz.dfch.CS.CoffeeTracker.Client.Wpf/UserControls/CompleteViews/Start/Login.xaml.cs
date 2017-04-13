@@ -34,13 +34,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 var client = ClientContext.GetServiceContext();
                 LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
-                try
+                var succeeded = await ClientContext.Login(LoginEmail.EmailTextBox.Text,
+                    LoginPassword.UserControlPasswordBox.Password);
+                if (succeeded)
                 {
-                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
-                    ClientContext.CurrentUserName = LoginEmail.EmailTextBox.Text;
                     StartWindowSwitcher.OpenBaseWindow();
                 }
-                catch (Exception)
+                else
                 {
                     if (client.authenticationHelper.bearerToken == string.Empty)
                     {
@@ -70,7 +70,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             LoginButton.IsEnabled = true;
             LoginPassword.IsEnabled = true;
             LoginRegistrationStackPanel.Visibility = Visibility.Visible;
-            
+
             // hide loading sequence
             ProgressRing.IsActive = false;
         }

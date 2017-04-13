@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
@@ -30,6 +33,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 
         private static CoffeeTrackerServiceContext _coffeeTrackerClient;
         public static string CurrentUserName = "";
+        public static long CurrentUserId = 0;
 
         public static CoffeeTrackerServiceContext GetServiceContext()
         {
@@ -40,6 +44,23 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
             }
 
             return _coffeeTrackerClient;
+        }
+
+        public static async Task<bool> Login(string email, string password)
+        {
+            try
+            {
+                await GetServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
+                var user = GetServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
+                CurrentUserName = user.Name;
+                CurrentUserId = user.Id;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
