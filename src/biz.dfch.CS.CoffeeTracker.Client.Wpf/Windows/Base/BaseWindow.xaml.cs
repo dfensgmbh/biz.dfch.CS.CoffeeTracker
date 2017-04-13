@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using MahApps.Metro.Controls;
-using MahApps.Metro.IconPacks;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
 {

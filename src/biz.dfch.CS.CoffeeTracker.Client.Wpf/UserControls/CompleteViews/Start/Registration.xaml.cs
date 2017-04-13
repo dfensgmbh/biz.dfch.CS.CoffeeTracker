@@ -1,17 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {

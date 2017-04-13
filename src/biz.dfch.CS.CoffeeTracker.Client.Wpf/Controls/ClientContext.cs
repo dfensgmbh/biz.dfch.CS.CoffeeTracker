@@ -15,13 +15,9 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {

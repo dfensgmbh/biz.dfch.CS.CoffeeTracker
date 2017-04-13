@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
