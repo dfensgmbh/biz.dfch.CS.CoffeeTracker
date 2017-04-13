@@ -15,8 +15,10 @@
  */
 
 using System.Windows.Controls;
+using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 {
@@ -46,6 +48,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             {
                 BaseWindow.Title = Resources.LanguageResources.Resources.Coffees_Title;
             }
+        }
+
+        public static void DisplayError(string message)
+        {
+            BaseWindow.BaseWindowUserMessageLabel.Invoke(() =>
+            {
+                BaseWindow.BaseWindowUserMessageLabel.Foreground = Brushes.Red;
+                BaseWindow.BaseWindowUserMessageLabel.Content = message;
+            });
+        }
+
+        public static void DisplaySuccess(string message)
+        {
+            BaseWindow.BaseWindowUserMessageLabel.Invoke(() =>
+            {
+                BaseWindow.BaseWindowUserMessageLabel.Foreground = Brushes.Green;
+                BaseWindow.BaseWindowUserMessageLabel.Content = message;
+            });
         }
     }
 }
