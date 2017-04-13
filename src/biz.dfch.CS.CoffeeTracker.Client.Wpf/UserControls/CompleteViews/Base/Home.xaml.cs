@@ -28,7 +28,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 
         private void CoffeesSelector_OnCoffeeSelected(object sender, CoffeeSelectedEventArgs e)
         {
-            MessageBox.Show(e.SelectedCoffee.Name);
+            HomePriceLabel.Content = e.SelectedCoffee.Price;
+            HomeOnStockLabel.Content = e.SelectedCoffee.Stock;
         }
     }
 }
