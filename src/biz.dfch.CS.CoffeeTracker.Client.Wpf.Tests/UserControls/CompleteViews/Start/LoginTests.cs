@@ -28,9 +28,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         private readonly string _userNameWhichShouldNotExist = "NotExistentName@existent.com";
         private readonly string _invalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
 
-        private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
-        private readonly string _userPassword = "123456";
-
         private static string _applicationPath = "";
 
         private Application application;
@@ -106,6 +103,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         {
             //Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+
+            // DF-ToDo Arrange Mocking using JustMock
 
             //// Get Email Textbox
             var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));

@@ -21,6 +21,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests
     public static class SharedTestData
     {
         public static readonly string ProjectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
+        public static readonly string UserWhichExists = "steven.pilatschek@d-fens.net";
+        public static readonly string PasswordForUserWhichExists = "123456";
+
 
         public static string GetExecutablePath()
         {
