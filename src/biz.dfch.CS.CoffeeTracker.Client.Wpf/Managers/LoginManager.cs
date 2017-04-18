@@ -15,14 +15,45 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
     public class LoginManager
     {
+        private CoffeeTrackerServiceContext context;
 
+        public LoginManager(CoffeeTrackerServiceContext ctx)
+        {
+            Contract.Requires(null != ctx);
+
+            context = ctx;
+        }
+
+        public async Task<bool> Login(string email, string password)
+        {
+            Contract.Requires(!String.IsNullOrWhiteSpace(email));
+            Contract.Requires(!String.IsNullOrWhiteSpace(password));
+
+            try
+            {
+                await ClientContext.CreateServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
+                // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
+                var user = ClientContext.CreateServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
+                Contract.Assert(null != user, email);
+                ClientContext.CurrentUserName = user.Name;
+                ClientContext.CurrentUserId = user.Id;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

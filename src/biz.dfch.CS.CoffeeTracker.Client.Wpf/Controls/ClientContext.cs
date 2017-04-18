@@ -42,27 +42,5 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
                 authenticationHelper = _authenticationHelper
             };
         }
-
-        public static async Task<bool> Login(string email, string password)
-        {
-            Contract.Requires(!string.IsNullOrWhiteSpace(email));
-            Contract.Requires(!string.IsNullOrWhiteSpace(password));
-
-            try
-            {
-                await CreateServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
-                // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
-                var user = CreateServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
-                Contract.Assert(null != user, email);
-                CurrentUserName = user.Name;
-                CurrentUserId = user.Id;
-
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 }

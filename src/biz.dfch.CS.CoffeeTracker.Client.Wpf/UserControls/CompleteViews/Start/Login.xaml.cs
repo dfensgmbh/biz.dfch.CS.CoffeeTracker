@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
@@ -31,8 +32,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             {
                 LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
-                var client = ClientContext.CreateServiceContext();
-                var succeeded = await ClientContext.Login(LoginEmail.EmailTextBox.Text,
+                var loginManager = new LoginManager(ClientContext.CreateServiceContext());
+                var succeeded = await loginManager.Login(LoginEmail.EmailTextBox.Text,
                     LoginPassword.UserControlPasswordBox.Password);
                 if (succeeded)
                 {
@@ -40,11 +41,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 }
                 else
                 {
-                    if (client.authenticationHelper.bearerToken == string.Empty)
-                    {
-                        DisplayInvalidCredentialError();
-                    }
+                    DisplayInvalidCredentialError();
                 }
+
                 HideLoading();
             }
         }
