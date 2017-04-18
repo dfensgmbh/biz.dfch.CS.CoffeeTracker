@@ -26,6 +26,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     {
         private Application application;
 
+        [TestInitialize]
+        public void StartApplication()
+        {
+            application = Application.Launch(SharedTestData.ExecutablePath);
+        }
+
         [TestMethod]
         public void LoginGetsToHomeSucceeds()
         {

@@ -25,16 +25,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class LoginTests
     {
-        
-        private static string _applicationPath = "";
-
         private Application application;
 
         [TestInitialize]
         public void StartApplication()
         {
-            _applicationPath = SharedTestData.GetExecutablePath();
-            application = Application.Launch(_applicationPath);
+            application = Application.Launch(SharedTestData.ExecutablePath);
         }
 
         [TestMethod]
