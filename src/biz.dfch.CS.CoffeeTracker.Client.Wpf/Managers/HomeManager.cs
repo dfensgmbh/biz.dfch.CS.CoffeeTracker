@@ -37,21 +37,21 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 
         public Coffee RefreshCoffee(Coffee coffee)
         {
-            var client = ClientContext.CreateServiceContext();
-            return client.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
+            context.Detach(coffee);
+            return context.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
         }
 
         public void AddCoffeeOrder(long coffeeId)
         {
-            var client = ClientContext.CreateServiceContext();
             var coffeeOrder = new CoffeeOrder()
             {
                 Name = ClientContext.CurrentUserName + DateTimeOffset.Now,
                 UserId = ClientContext.CurrentUserId,
                 CoffeeId = coffeeId
             };
-            client.AddToCoffeeOrders(coffeeOrder);
-            client.SaveChanges();
+            context.AddToCoffeeOrders(coffeeOrder);
+            context.SaveChanges();
+            context.Detach(coffeeOrder);
         }
     }
 }

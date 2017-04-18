@@ -31,16 +31,21 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
         private static readonly AuthenticationHelper _authenticationHelper = 
             new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri).authenticationHelper;
 
+        public static readonly CoffeeTrackerServiceContext CoffeeTrackerServiceContext = 
+            new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+
         public static string CurrentUserName = "";
         public static long CurrentUserId = 0;
 
-        public static CoffeeTrackerServiceContext CreateServiceContext()
-        {
+        //public static CoffeeTrackerServiceContext CreateServiceContext()
+        //{
             // Create new Client and pass old authenticationhelper to update entities
-            return new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri)
-            {
-                authenticationHelper = _authenticationHelper
-            };
-        }
+            //return new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri)
+            //{
+            //    authenticationHelper = _authenticationHelper
+            //};
+
+
+        //}
     }
 }

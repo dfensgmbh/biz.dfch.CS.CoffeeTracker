@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Data.Services.Client;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -45,12 +46,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 
         private void RefreshPriceOnUi(decimal price)
         {
-            HomePriceLabel.Content = price;
+            Dispatcher.Invoke(() => { HomePriceLabel.Content = price.ToString(CultureInfo.InvariantCulture); });
         }
 
-        private void RefreshStockOnUi(decimal stock)
+        private void RefreshStockOnUi(long stock)
         {
-            HomeOnStockLabel.Content = stock;
+            Dispatcher.Invoke(() => { HomeOnStockLabel.Content = stock.ToString(); });
         }
 
         private void DisplayLoading()
@@ -69,7 +70,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
         {
             try
             {
-                var homeManager = new HomeManager(ClientContext.CreateServiceContext());
+                var homeManager = new HomeManager(ClientContext.CoffeeTrackerServiceContext);
                 homeManager.AddCoffeeOrder(selectedCoffee.Id);
                 selectedCoffee = homeManager.RefreshCoffee(selectedCoffee);
                 RefreshPriceOnUi(selectedCoffee.Price);

@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             {
                 LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
-                var loginManager = new LoginManager(ClientContext.CreateServiceContext());
+                var loginManager = new LoginManager(ClientContext.CoffeeTrackerServiceContext);
                 var succeeded = await loginManager.Login(LoginEmail.EmailTextBox.Text,
                     LoginPassword.UserControlPasswordBox.Password);
                 if (succeeded)

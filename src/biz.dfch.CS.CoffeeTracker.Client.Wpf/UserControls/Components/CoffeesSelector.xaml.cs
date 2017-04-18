@@ -43,7 +43,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void RefreshCoffeeBrands()
         {
-            var client = ClientContext.CreateServiceContext();
+            var client = ClientContext.CoffeeTrackerServiceContext;
 
             // Load data in background and display loading screen
             var worker = new BackgroundWorker();
@@ -52,6 +52,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                 // Give the current thread the permission to manipulate data
                 this.Dispatcher.Invoke(() =>
                 {
+                    if (0 < coffees.Count)
+                    {
+                        client.Detach(client.Coffees);
+                    }
                     coffees = client.Coffees.ToList();
                     var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().ToList();
                     foreach (var brand in allBrands)
@@ -78,6 +82,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                     var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
                     foreach (var coffee in allCoffeesOfBrand)
                     {
+
                         allCoffeesOfBrandObservableCollection.Add(coffee);
                     }
 
@@ -107,6 +112,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void CoffeeSelectorCoffeeSplitButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            RefreshCoffeeBrands();
+            RefreshCoffees();
             // Raise coffee selected event
             if (CoffeeSelected != null)
             {

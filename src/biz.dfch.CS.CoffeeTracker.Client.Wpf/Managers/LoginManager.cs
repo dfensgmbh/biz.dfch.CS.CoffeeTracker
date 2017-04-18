@@ -41,9 +41,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 
             try
             {
-                await ClientContext.CreateServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
+                await ClientContext.CoffeeTrackerServiceContext.authenticationHelper.ReceiveAndSetToken(email, password);
                 // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
-                var user = ClientContext.CreateServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
+                var user = ClientContext.CoffeeTrackerServiceContext.Users.Where(u => u.Name == email).FirstOrDefault();
                 Contract.Assert(null != user, email);
                 ClientContext.CurrentUserName = user.Name;
                 ClientContext.CurrentUserId = user.Id;
