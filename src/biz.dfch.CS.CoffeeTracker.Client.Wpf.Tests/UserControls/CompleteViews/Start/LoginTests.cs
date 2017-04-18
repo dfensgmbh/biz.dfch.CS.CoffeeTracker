@@ -83,8 +83,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
-            emailTextBox.Enter(SharedTestData._userNameWhichShouldNotExist);
-            passwordBox.Enter(SharedTestData._invalidPassword);
+            emailTextBox.Enter(SharedTestData.UserNameWhichShouldNotExist);
+            passwordBox.Enter(SharedTestData.InvalidPassword);
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
