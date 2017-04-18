@@ -18,6 +18,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
 {
     public interface IValidatable
     {
-        bool Validate();
+        bool IsValid();
     }
 }

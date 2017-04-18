@@ -33,7 +33,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             });
         }
 
-        public bool Validate()
+        public bool IsValid()
         {
             var isValid = IsValidEmail(EmailTextBox.Text);
             if (!isValid)

@@ -89,13 +89,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             foreach (var child in stackPanelChildren)
             {
                 var validatable = child as IValidatable;
-                if (null != validatable)
+                if (null == validatable)
                 {
-                    if (!validatable.Validate())
-                    {
-                        isValid = false;
-                    }
+                    continue;
                 }
+                if (validatable.IsValid())
+                {
+                    continue;
+                }
+                isValid = false;
             }
 
             if (!EqualPasswords())

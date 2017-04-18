@@ -86,7 +86,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 LoginPassword.BorderBrush = Brushes.Black;
             }
 
-            return LoginEmail.Validate() && passwordHasValue;
+            return LoginEmail.IsValid() && passwordHasValue;
         }
 
         public void DisplayInvalidCredentialError()
