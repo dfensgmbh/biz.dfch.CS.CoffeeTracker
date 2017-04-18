@@ -15,6 +15,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Telerik.JustMock;
 using TestStack.White;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WPFUIItems;
