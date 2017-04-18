@@ -82,7 +82,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                     var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
                     foreach (var coffee in allCoffeesOfBrand)
                     {
-
                         allCoffeesOfBrandObservableCollection.Add(coffee);
                     }
 
@@ -104,7 +103,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             if (brandSelected)
             {
                 CoffeeSelectorCoffeeSplitButton.IsEnabled = true;
-                
             }
             CoffeeSelectorBrandSplitButton.IsEnabled = true;
             CoffeeSelectorProgressRing.IsActive = false;
@@ -115,12 +113,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             RefreshCoffeeBrands();
             RefreshCoffees();
             // Raise coffee selected event
-            if (CoffeeSelected != null)
+            if (CoffeeSelected == null)
             {
-                var coffee = CoffeeSelectorCoffeeSplitButton.SelectedItem as Coffee;
-                var eventArgs = new CoffeeSelectedEventArgs(coffee);
-                CoffeeSelected(this, eventArgs);
+                return;
             }
+            var coffee = CoffeeSelectorCoffeeSplitButton.SelectedItem as Coffee;
+            var eventArgs = new CoffeeSelectedEventArgs(coffee);
+            CoffeeSelected(this, eventArgs);
         }
     }
 }
