@@ -16,43 +16,44 @@
 
 using System;
 using System.Configuration;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Tests;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
     public static class ClientContext
     {
-        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection
-            = (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
+        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection = 
+            (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
 
+        private static readonly AuthenticationHelper _authenticationHelper = 
+            new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri).authenticationHelper;
 
-        private static CoffeeTrackerServiceContext _coffeeTrackerClient;
         public static string CurrentUserName = "";
         public static long CurrentUserId = 0;
 
-        public static CoffeeTrackerServiceContext GetServiceContext()
+        public static CoffeeTrackerServiceContext CreateServiceContext()
         {
-            if (null == _coffeeTrackerClient)
-            {
-                _coffeeTrackerClient =
-                    new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
-            }
-
             // Create new Client and pass old authenticationhelper to update entities
-            var authenticationHelper = _coffeeTrackerClient.authenticationHelper;
-            _coffeeTrackerClient = new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
-            _coffeeTrackerClient.authenticationHelper = authenticationHelper;
-
-            return _coffeeTrackerClient;
+            return new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri)
+            {
+                authenticationHelper = _authenticationHelper
+            };
         }
 
         public static async Task<bool> Login(string email, string password)
         {
+            Contract.Requires(!string.IsNullOrWhiteSpace(email));
+            Contract.Requires(!string.IsNullOrWhiteSpace(password));
+
             try
             {
-                await GetServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
-                var user = GetServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
+                await CreateServiceContext().authenticationHelper.ReceiveAndSetToken(email, password);
+                // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
+                var user = CreateServiceContext().Users.Where(u => u.Name == email).FirstOrDefault();
+                Contract.Assert(null != user, email);
                 CurrentUserName = user.Name;
                 CurrentUserId = user.Id;
 

@@ -42,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 var worker = new BackgroundWorker();
                 worker.DoWork += (o, ea) =>
                 {
-                    var client = ClientContext.GetServiceContext();
+                    var client = ClientContext.CreateServiceContext();
                     client.AddToUsers(newAppUser);
                     client.SaveChanges();
                 };
@@ -51,7 +51,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 {
                     try
                     {
-                        var client = ClientContext.GetServiceContext();
+                        var client = ClientContext.CreateServiceContext();
                         await client.authenticationHelper.ReceiveAndSetToken(email, password);
                         if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
                         {

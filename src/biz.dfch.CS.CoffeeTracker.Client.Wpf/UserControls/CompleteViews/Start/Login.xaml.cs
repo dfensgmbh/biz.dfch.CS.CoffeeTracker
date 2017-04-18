@@ -29,9 +29,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             var isValid = ValidateInputs();
             if (isValid)
             {
-                var client = ClientContext.GetServiceContext();
                 LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
+                var client = ClientContext.CreateServiceContext();
                 var succeeded = await ClientContext.Login(LoginEmail.EmailTextBox.Text,
                     LoginPassword.UserControlPasswordBox.Password);
                 if (succeeded)

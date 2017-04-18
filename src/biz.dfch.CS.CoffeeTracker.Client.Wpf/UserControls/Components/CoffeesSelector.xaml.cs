@@ -43,7 +43,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void RefreshCoffeeBrands()
         {
-            var client = ClientContext.GetServiceContext();
+            var client = ClientContext.CreateServiceContext();
 
             // Load data in background and display loading screen
             var worker = new BackgroundWorker();

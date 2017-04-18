@@ -78,7 +78,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 
         private void AddCoffeeOrder()
         {
-            var client = ClientContext.GetServiceContext();
+            var client = ClientContext.CreateServiceContext();
             var coffeeOrder = new CoffeeOrder()
             {
                 Name = ClientContext.CurrentUserName + DateTimeOffset.Now,
@@ -103,7 +103,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 
         private Coffee RefreshCoffee(Coffee coffee)
         {
-            var client = ClientContext.GetServiceContext();
+            var client = ClientContext.CreateServiceContext();
             return client.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
         }
 
