@@ -19,6 +19,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
@@ -31,6 +33,25 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
             Contract.Requires(null != ctx);
 
             context = ctx;
+        }
+
+        public Coffee RefreshCoffee(Coffee coffee)
+        {
+            var client = ClientContext.CreateServiceContext();
+            return client.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
+        }
+
+        public void AddCoffeeOrder(long coffeeId)
+        {
+            var client = ClientContext.CreateServiceContext();
+            var coffeeOrder = new CoffeeOrder()
+            {
+                Name = ClientContext.CurrentUserName + DateTimeOffset.Now,
+                UserId = ClientContext.CurrentUserId,
+                CoffeeId = coffeeId
+            };
+            client.AddToCoffeeOrders(coffeeOrder);
+            client.SaveChanges();
         }
     }
 }

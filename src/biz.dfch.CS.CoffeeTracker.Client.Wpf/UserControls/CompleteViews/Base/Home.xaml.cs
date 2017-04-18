@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
@@ -37,74 +38,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
         {
             var worker = new BackgroundWorker();
             DisplayLoading();
-            worker.DoWork += (o, args) =>
-            {
-                try
-                {
-                    AddCoffeeOrder();
-                    RefreshStock(selectedCoffee);
-                }
-                catch (Exception x)
-                {
-                    if (x.GetType() == typeof(DataServiceRequestException))
-                    {
-                        x = x as DataServiceRequestException;
-                        if (x.InnerException.GetType() == typeof(DataServiceClientException))
-                        {
-                            HttpStatusCode statusCode;
-                            var dataServiceClientException = x.InnerException as DataServiceClientException;
-                            Enum.TryParse(dataServiceClientException.StatusCode.ToString(), out statusCode);
-                            if (HttpStatusCode.BadRequest == statusCode)
-                            {
-                                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Home_Label_CoffeeOutOfStock);
-                            }
-                            else if (HttpStatusCode.InternalServerError == statusCode)
-                            {
-                                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Home_Label_CouldntPlaceOrder);
-                            }
-                            else if (HttpStatusCode.BadGateway == statusCode)
-                            {
-                                BaseWindowSwitcher.DisplayError(
-                                    Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
-                            }
-                        }
-                    }
-                }
-            };
+            worker.DoWork += BackgroundWorkerDoWork;
             worker.RunWorkerCompleted += (o, args) => { HideLoading(); };
-
             worker.RunWorkerAsync();
         }
 
-        private void AddCoffeeOrder()
+        private void RefreshPriceOnUi(decimal price)
         {
-            var client = ClientContext.CreateServiceContext();
-            var coffeeOrder = new CoffeeOrder()
-            {
-                Name = ClientContext.CurrentUserName + DateTimeOffset.Now,
-                UserId = ClientContext.CurrentUserId,
-                CoffeeId = selectedCoffee.Id
-            };
-            client.AddToCoffeeOrders(coffeeOrder);
-            client.SaveChanges();
+            HomePriceLabel.Content = price;
         }
 
-        private void RefreshPrice(Coffee coffee)
+        private void RefreshStockOnUi(decimal stock)
         {
-            var refreshedCoffee = RefreshCoffee(coffee);
-            HomePriceLabel.Content = refreshedCoffee.Price;
-        }
-
-        private void RefreshStock(Coffee coffee)
-        {
-            var refreshedCoffee = RefreshCoffee(coffee);
-            HomeOnStockLabel.Content = refreshedCoffee.Stock;
-        }
-
-        private Coffee RefreshCoffee(Coffee coffee)
-        {
-            var client = ClientContext.CreateServiceContext();
-            return client.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
+            HomeOnStockLabel.Content = stock;
         }
 
         private void DisplayLoading()
@@ -117,6 +63,44 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
         {
             HomeAddOrderViewBox.Visibility = Visibility.Visible;
             HomeAddOrderGridLoading.Visibility = Visibility.Collapsed;
+        }
+
+        private void BackgroundWorkerDoWork(object o, EventArgs args)
+        {
+            try
+            {
+                var homeManager = new HomeManager(ClientContext.CreateServiceContext());
+                homeManager.AddCoffeeOrder(selectedCoffee.Id);
+                selectedCoffee = homeManager.RefreshCoffee(selectedCoffee);
+                RefreshPriceOnUi(selectedCoffee.Price);
+                RefreshStockOnUi(selectedCoffee.Stock);
+            }
+            catch (Exception x)
+            {
+                if (x is DataServiceRequestException)
+                {
+                    x = x as DataServiceRequestException;
+                    if (x.InnerException is DataServiceClientException)
+                    {
+                        HttpStatusCode statusCode;
+                        var dataServiceClientException = x.InnerException as DataServiceClientException;
+                        Enum.TryParse(dataServiceClientException.StatusCode.ToString(), out statusCode);
+                        if (statusCode == HttpStatusCode.BadRequest)
+                            BaseWindowSwitcher.DisplayError(
+                                Wpf.Resources.LanguageResources.Resources.Home_Label_CoffeeOutOfStock);
+                        else if (statusCode == HttpStatusCode.InternalServerError)
+                        {
+                            BaseWindowSwitcher.DisplayError(
+                                Wpf.Resources.LanguageResources.Resources.Home_Label_CouldntPlaceOrder);
+                        }
+                        else if (statusCode == HttpStatusCode.BadGateway)
+                        {
+                            BaseWindowSwitcher.DisplayError(
+                                Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
+                        }
+                    }
+                }
+            }
         }
     }
 }
