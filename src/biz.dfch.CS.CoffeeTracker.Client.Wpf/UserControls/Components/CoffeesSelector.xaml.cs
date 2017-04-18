@@ -14,7 +14,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// <summary>
     /// Interaction logic for CoffeesSelector.xaml
     /// </summary>
-    public partial class CoffeesSelector : UserControl
+    public partial class CoffeesSelector
     {
         public event EventHandler<CoffeeSelectedEventArgs> CoffeeSelected;
         private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
@@ -25,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             InitializeComponent();
 
             // these lines are needed for the XAML-Designer, if removed NullReferenceException in designer occurs
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 return;
             }
@@ -50,7 +50,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             worker.DoWork += (o, args) =>
             {
                 // Give the current thread the permission to manipulate data
-                this.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
                     if (0 < coffees.Count)
                     {
@@ -74,11 +74,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             var worker = new BackgroundWorker();
             worker.DoWork += (o, args) =>
             {
-                this.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
                     var brand = CoffeeSelectorBrandSplitButton.SelectedItem as string;
 
-                    var allCoffeesOfBrand = coffees.Where(c => c.Brand.Equals(brand)).ToList<Coffee>();
+                    var allCoffeesOfBrand = coffees.Where(c => c.Brand.Equals(brand)).ToList();
                     var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
                     foreach (var coffee in allCoffeesOfBrand)
                     {
