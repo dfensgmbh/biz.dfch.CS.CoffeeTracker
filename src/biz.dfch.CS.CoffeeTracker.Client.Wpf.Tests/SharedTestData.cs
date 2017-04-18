@@ -23,7 +23,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests
         public static readonly string ProjectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
         public static readonly string UserWhichExists = "steven.pilatschek@d-fens.net";
         public static readonly string PasswordForUserWhichExists = "123456";
-
+        public static readonly string UserNameWhichShouldNotExist = "NotExistentName@existent.com";
+        public static readonly string InvalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
 
         public static string GetExecutablePath()
         {

@@ -25,9 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class LoginTests
     {
-        private readonly string _userNameWhichShouldNotExist = "NotExistentName@existent.com";
-        private readonly string _invalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
-
+        
         private static string _applicationPath = "";
 
         private Application application;
@@ -85,8 +83,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
-            emailTextBox.Enter(_userNameWhichShouldNotExist);
-            passwordBox.Enter(_invalidPassword);
+            emailTextBox.Enter(SharedTestData._userNameWhichShouldNotExist);
+            passwordBox.Enter(SharedTestData._invalidPassword);
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
@@ -118,8 +116,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
-            emailTextBox.Enter(_userWhichExists);
-            passwordBox.Enter(_userPassword);
+            emailTextBox.Enter(SharedTestData.UserWhichExists);
+            passwordBox.Enter(SharedTestData.PasswordForUserWhichExists);
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
