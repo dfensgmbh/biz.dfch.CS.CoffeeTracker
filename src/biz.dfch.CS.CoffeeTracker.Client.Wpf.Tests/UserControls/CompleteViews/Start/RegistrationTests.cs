@@ -39,7 +39,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             application = Application.Launch(SharedTestData.ExecutablePath);
         }
 
-
         [TestMethod]
         public void RegistrationSwitchToRegisterPageAndBackChangesTitleSucceeds()
         {

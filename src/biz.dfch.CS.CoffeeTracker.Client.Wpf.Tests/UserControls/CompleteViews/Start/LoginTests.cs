@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -123,7 +124,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             // Assert
             Assert.IsTrue(baseWindow.IsClosed);
-            
+
             application.Close();
         }
 
