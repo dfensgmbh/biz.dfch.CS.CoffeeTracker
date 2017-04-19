@@ -45,12 +45,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher
         public static void OpenBaseWindow()
         {
             var client = ClientContext.CoffeeTrackerServiceContext;
-            if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
+            if (string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
             {
-                var baseWindow = new BaseWindow();
-                baseWindow.Show();
-                StartWindow.Close();
+                return;
             }
+            var baseWindow = new BaseWindow();
+            baseWindow.Show();
+            StartWindow.Close();
         }
     }
 }
