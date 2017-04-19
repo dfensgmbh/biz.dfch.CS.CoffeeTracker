@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base;
 using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base

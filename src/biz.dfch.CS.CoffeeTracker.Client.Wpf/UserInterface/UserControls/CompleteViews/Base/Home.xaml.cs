@@ -2,23 +2,21 @@
 using System.ComponentModel;
 using System.Data.Services.Client;
 using System.Globalization;
-using System.Linq;
 using System.Net;
 using System.Windows;
-using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base
 {
     /// <summary>
     /// Interaction logic for Home.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Home : ILoadable
     {
         private Coffee selectedCoffee;
 
@@ -54,13 +52,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             Dispatcher.Invoke(() => { HomeOnStockLabel.Content = stock.ToString(); });
         }
 
-        private void DisplayLoading()
+        public void DisplayLoading()
         {
             HomeAddOrderViewBox.Visibility = Visibility.Collapsed;
             HomeAddOrderGridLoading.Visibility = Visibility.Visible;
         }
 
-        private void HideLoading()
+        public void HideLoading()
         {
             HomeAddOrderViewBox.Visibility = Visibility.Visible;
             HomeAddOrderGridLoading.Visibility = Visibility.Collapsed;

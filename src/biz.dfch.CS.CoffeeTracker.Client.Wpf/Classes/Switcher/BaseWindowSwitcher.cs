@@ -17,6 +17,7 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 using MahApps.Metro.Controls;
 
