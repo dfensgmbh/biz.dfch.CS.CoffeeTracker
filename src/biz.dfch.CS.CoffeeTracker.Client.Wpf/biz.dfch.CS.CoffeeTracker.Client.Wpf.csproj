@@ -188,57 +188,57 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Controls\ApiClientConfigurationSection.cs" />
-    <Compile Include="Controls\ClientContext.cs" />
-    <Compile Include="IValidatable.cs" />
-    <Compile Include="Logging\Logging.cs" />
-    <Compile Include="Managers\CoffeeSelectorManager.cs" />
-    <Compile Include="Managers\HomeManager.cs" />
-    <Compile Include="Managers\LoginManager.cs" />
+    <Compile Include="Classes\Constants.cs" />
+    <Compile Include="Classes\Controls\ApiClientConfigurationSection.cs" />
+    <Compile Include="Classes\Controls\ClientContext.cs" />
+    <Compile Include="Classes\Interfaces\IValidatable.cs" />
+    <Compile Include="Classes\Logging\Logging.cs" />
+    <Compile Include="Classes\Managers\CoffeeSelectorManager.cs" />
+    <Compile Include="Classes\Managers\HomeManager.cs" />
+    <Compile Include="Classes\Managers\LoginManager.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="CustomEvents\CoffeeSelectedEventArgs.cs" />
-    <Compile Include="Switcher\BaseWindowSwitcher.cs" />
-    <Compile Include="Switcher\StartWindowSwitcher.cs" />
+    <Compile Include="Classes\CustomEvents\CoffeeSelectedEventArgs.cs" />
+    <Compile Include="Classes\Switcher\BaseWindowSwitcher.cs" />
+    <Compile Include="Classes\Switcher\StartWindowSwitcher.cs" />
     <Compile Include="UiConfigs.cs" />
-    <Compile Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">
       <DependentUpon>CoffeeOrders.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Base\Coffees.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Base\Coffees.xaml.cs">
       <DependentUpon>Coffees.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Base\Home.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Base\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Base\Statistics.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Base\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CompleteViews\Start\Registration.xaml.cs">
+    <Compile Include="UserInterface\UserControls\CompleteViews\Start\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\CoffeesSelector.xaml.cs">
+    <Compile Include="UserInterface\UserControls\Components\CoffeesSelector.xaml.cs">
       <DependentUpon>CoffeesSelector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\EmailLabeledTextBox.xaml.cs">
+    <Compile Include="UserInterface\UserControls\Components\EmailLabeledTextBox.xaml.cs">
       <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\PasswordLabeledTextBox.xaml.cs">
+    <Compile Include="UserInterface\UserControls\Components\PasswordLabeledTextBox.xaml.cs">
       <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Components\SideBar.xaml.cs">
+    <Compile Include="UserInterface\UserControls\Components\SideBar.xaml.cs">
       <DependentUpon>SideBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Base\BaseWindow.xaml.cs">
+    <Compile Include="UserInterface\Windows\Base\BaseWindow.xaml.cs">
       <DependentUpon>BaseWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Base\StartWindow.xaml.cs">
+    <Compile Include="UserInterface\Windows\Base\StartWindow.xaml.cs">
       <DependentUpon>StartWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -257,51 +257,51 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Base\CoffeeOrders.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Base\Coffees.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Base\Coffees.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Base\Home.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Base\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Base\Statistics.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Base\Statistics.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Start\Login.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Start\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\CompleteViews\Start\Registration.xaml">
+    <Page Include="UserInterface\UserControls\CompleteViews\Start\Registration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Components\CoffeesSelector.xaml">
+    <Page Include="UserInterface\UserControls\Components\CoffeesSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Components\EmailLabeledTextBox.xaml">
+    <Page Include="UserInterface\UserControls\Components\EmailLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Components\PasswordLabeledTextBox.xaml">
+    <Page Include="UserInterface\UserControls\Components\PasswordLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Components\SideBar.xaml">
+    <Page Include="UserInterface\UserControls\Components\SideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Base\BaseWindow.xaml">
+    <Page Include="UserInterface\Windows\Base\BaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\Base\StartWindow.xaml">
+    <Page Include="UserInterface\Windows\Base\StartWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,7 +340,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Windows\ConfirmationWindows\" />
+    <Folder Include="UserInterface\Windows\ConfirmationWindows\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\WindowsIcons-license.txt" />
