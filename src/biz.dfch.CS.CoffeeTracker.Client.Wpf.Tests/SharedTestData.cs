@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.IO;
 
@@ -21,14 +22,23 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests
     public static class SharedTestData
     {
         public static readonly string ProjectName = "biz.dfch.CS.CoffeeTracker.Client.Wpf";
+        public static readonly string UserWhichExists = "steven.pilatschek@d-fens.net";
+        public static readonly string PasswordForUserWhichExists = "123456";
+        public static readonly string UserNameWhichShouldNotExist = "NotExistentName@existent.com";
 
-        public static string GetExecutablePath()
+        public static readonly string InvalidPassword = "InvPa";
+            //InvPa = InvalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
+
+        public static string ExecutablePath
         {
-            // create path to executable file in biz.dfch.CS.CoffeeTracker.Client.Wpf/bin/Debug
-            var baseDirectory = AppContext.BaseDirectory;
-            var toReplace = string.Format("{0}{1}", ProjectName, ".Tests");
-            var newBaseDirectory = baseDirectory.Replace(toReplace, ProjectName);
-            return Path.Combine(newBaseDirectory, ProjectName + ".exe");
+            get
+            {
+                // create path to executable file in biz.dfch.CS.CoffeeTracker.Client.Wpf/bin/Debug
+                var baseDirectory = AppContext.BaseDirectory;
+                var toReplace = string.Format("{0}{1}", ProjectName, ".Tests");
+                var newBaseDirectory = baseDirectory.Replace(toReplace, ProjectName);
+                return Path.Combine(newBaseDirectory, ProjectName + ".exe");
+            }
         }
     }
 }

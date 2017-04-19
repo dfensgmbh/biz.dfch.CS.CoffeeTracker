@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
@@ -25,6 +17,29 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
         {
             InitializeComponent();
             BaseWindowSwitcher.BaseWindow = this;
+            BaseWindowSwitcher.Switch(new Home());
+        }
+
+        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            ChangeToParentBackground(sender, e);
+            var panel = sender as Panel;
+            if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Home))
+            {
+                BaseWindowSwitcher.Switch(new Home());
+            }
+            else if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Statistics))
+            {
+                BaseWindowSwitcher.Switch(new Statistics());
+            }
+            else if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_CoffeeOrder))
+            {
+                BaseWindowSwitcher.Switch(new CoffeeOrders());
+            }
+            else if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Coffees))
+            {
+                BaseWindowSwitcher.Switch(new Coffees());
+            }
         }
 
         private void SetBackgroundToAccentColor(object sender, MouseEventArgs e)

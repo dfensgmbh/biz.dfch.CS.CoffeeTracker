@@ -126,8 +126,44 @@
   <data name="BaseWindow_SideBar_Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="BaseWindow_SideBar_Logout" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
   <data name="BaseWindow_SideBar_Statistics" xml:space="preserve">
     <value>Statistics</value>
+  </data>
+  <data name="CoffeeOrders_Title" xml:space="preserve">
+    <value>CoffeeOrders</value>
+  </data>
+  <data name="CoffeesSelector_Label_SelectCoffee" xml:space="preserve">
+    <value>Select a Coffee</value>
+  </data>
+  <data name="Coffees_Title" xml:space="preserve">
+    <value>Coffees</value>
+  </data>
+  <data name="EmailLabeledTextBox_ToolTip_EnterValidMail" xml:space="preserve">
+    <value>Enter a valid Email address</value>
+  </data>
+  <data name="Home_Label_AddOrder" xml:space="preserve">
+    <value>Order Coffee</value>
+  </data>
+  <data name="Home_Label_CoffeeOrderPlaced" xml:space="preserve">
+    <value>Your coffee has been successfully ordered</value>
+  </data>
+  <data name="Home_Label_CoffeeOutOfStock" xml:space="preserve">
+    <value>The selected coffee is out of stock</value>
+  </data>
+  <data name="Home_Label_CouldntPlaceOrder" xml:space="preserve">
+    <value>Error while creating the order</value>
+  </data>
+  <data name="Home_Label_OnStock" xml:space="preserve">
+    <value>on Stock:</value>
+  </data>
+  <data name="Home_Label_Price" xml:space="preserve">
+    <value>Price:</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>Home</value>
   </data>
   <data name="Login_Button_Login" xml:space="preserve">
     <value>Login</value>
@@ -153,6 +189,9 @@
   <data name="Login_Title" xml:space="preserve">
     <value>CoffeeTracker - Login</value>
   </data>
+  <data name="PasswordLabeledPasswordBox_ToolTip_ValidPassword" xml:space="preserve">
+    <value>Enter a password which contains at least 6 characters</value>
+  </data>
   <data name="Registration_Button_Create" xml:space="preserve">
     <value>Create Account</value>
   </data>
@@ -165,14 +204,14 @@
   <data name="Registration_RegistrationFailed" xml:space="preserve">
     <value>An error occurred. Could not create account</value>
   </data>
-  <data name="Registration_ServiceNotAvailable" xml:space="preserve">
-    <value>The service is currently not available</value>
-  </data>
   <data name="Registration_Title" xml:space="preserve">
     <value>Registration</value>
   </data>
   <data name="Registration_Tooltip_ReEnterPassword" xml:space="preserve">
     <value>Enter the password again</value>
+  </data>
+  <data name="Shared_CurrencySwiss" xml:space="preserve">
+    <value>CHF</value>
   </data>
   <data name="Shared_Email_Example" xml:space="preserve">
     <value>email@example.com</value>
@@ -180,10 +219,10 @@
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>
   </data>
-  <data name="UserControl_EmailLabeledTextBox_EnterValidMail" xml:space="preserve">
-    <value>Enter a valid Email address</value>
+  <data name="Shared_ServiceNotAvailable" xml:space="preserve">
+    <value>The service is currently not available</value>
   </data>
-  <data name="UserControl_PasswordLabeledPasswordBox_ValidPassword" xml:space="preserve">
-    <value>Enter a password which contains at least 6 characters</value>
+  <data name="Statistics_Title" xml:space="preserve">
+    <value>Statistics</value>
   </data>
 </root>

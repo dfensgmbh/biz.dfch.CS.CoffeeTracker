@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,21 +26,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class LoginTests
     {
-        private readonly string _userNameWhichShouldNotExist = "NotExistentName";
-        private readonly string _invalidPassword = "InvPa"; //InvPa = _invalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
-
-        private readonly string _userWhichExists = "steven.pilatschek@d-fens.net";
-        private readonly string _userPassword = "123456";
-
-        private static string _applicationPath = "";
-
         private Application application;
 
         [TestInitialize]
         public void StartApplication()
         {
-            _applicationPath = SharedTestData.GetExecutablePath();
-            application = Application.Launch(_applicationPath);
+            application = Application.Launch(SharedTestData.ExecutablePath);
         }
 
         [TestMethod]
@@ -88,8 +80,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
-            emailTextBox.Enter(_userNameWhichShouldNotExist);
-            passwordBox.Enter(_invalidPassword);
+            emailTextBox.Enter(SharedTestData.UserNameWhichShouldNotExist);
+            passwordBox.Enter(SharedTestData.InvalidPassword);
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
@@ -107,6 +99,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             //Arrange
             var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
 
+            // DF-ToDo Arrange Mocking using JustMock
+
             //// Get Email Textbox
             var emailLabeledTextBox = baseWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
             var emailTextBox = emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox"));
@@ -119,8 +113,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             var loginButton = baseWindow.Get(SearchCriteria.ByAutomationId("LoginButton"));
 
             //Act 
-            emailTextBox.Enter(_userWhichExists);
-            passwordBox.Enter(_userPassword);
+            emailTextBox.Enter(SharedTestData.UserWhichExists);
+            passwordBox.Enter(SharedTestData.PasswordForUserWhichExists);
             loginButton.Click();
             baseWindow.WaitWhileBusy();
 
@@ -130,7 +124,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             // Assert
             Assert.IsTrue(baseWindow.IsClosed);
-            
+
             application.Close();
         }
 

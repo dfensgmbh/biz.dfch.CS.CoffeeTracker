@@ -14,26 +14,38 @@
  * limitations under the License.
  */
 
+using System;
 using System.Configuration;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Tests;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
     public static class ClientContext
     {
-        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection
-            = (ApiClientConfigurationSection)ConfigurationManager.GetSection("apiClientConfiguration");
+        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection = 
+            (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
+
+        private static readonly AuthenticationHelper _authenticationHelper = 
+            new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri).authenticationHelper;
+
+        public static readonly CoffeeTrackerServiceContext CoffeeTrackerServiceContext = 
+            new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+
+        public static string CurrentUserName = "";
+        public static long CurrentUserId = 0;
+
+        //public static CoffeeTrackerServiceContext CreateServiceContext()
+        //{
+            // Create new Client and pass old authenticationhelper to update entities
+            //return new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri)
+            //{
+            //    authenticationHelper = _authenticationHelper
+            //};
 
 
-        private static CoffeeTrackerServiceContext _coffeeTrackerClient;
-
-        public static CoffeeTrackerServiceContext GetServiceContext()
-        {
-            if (null == _coffeeTrackerClient)
-            {
-                _coffeeTrackerClient = new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
-            }
-
-            return _coffeeTrackerClient;
-        }
+        //}
     }
 }

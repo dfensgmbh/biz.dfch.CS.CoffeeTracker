@@ -88,11 +88,119 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sign out.
+        /// </summary>
+        public static string BaseWindow_SideBar_Logout {
+            get {
+                return ResourceManager.GetString("BaseWindow_SideBar_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
         public static string BaseWindow_SideBar_Statistics {
             get {
                 return ResourceManager.GetString("BaseWindow_SideBar_Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CoffeeOrders.
+        /// </summary>
+        public static string CoffeeOrders_Title {
+            get {
+                return ResourceManager.GetString("CoffeeOrders_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coffees.
+        /// </summary>
+        public static string Coffees_Title {
+            get {
+                return ResourceManager.GetString("Coffees_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a Coffee.
+        /// </summary>
+        public static string CoffeesSelector_Label_SelectCoffee {
+            get {
+                return ResourceManager.GetString("CoffeesSelector_Label_SelectCoffee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter a valid Email address.
+        /// </summary>
+        public static string EmailLabeledTextBox_ToolTip_EnterValidMail {
+            get {
+                return ResourceManager.GetString("EmailLabeledTextBox_ToolTip_EnterValidMail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Coffee.
+        /// </summary>
+        public static string Home_Label_AddOrder {
+            get {
+                return ResourceManager.GetString("Home_Label_AddOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your coffee has been successfully ordered.
+        /// </summary>
+        public static string Home_Label_CoffeeOrderPlaced {
+            get {
+                return ResourceManager.GetString("Home_Label_CoffeeOrderPlaced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The selected coffee is out of stock.
+        /// </summary>
+        public static string Home_Label_CoffeeOutOfStock {
+            get {
+                return ResourceManager.GetString("Home_Label_CoffeeOutOfStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while creating the order.
+        /// </summary>
+        public static string Home_Label_CouldntPlaceOrder {
+            get {
+                return ResourceManager.GetString("Home_Label_CouldntPlaceOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to on Stock:.
+        /// </summary>
+        public static string Home_Label_OnStock {
+            get {
+                return ResourceManager.GetString("Home_Label_OnStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price:.
+        /// </summary>
+        public static string Home_Label_Price {
+            get {
+                return ResourceManager.GetString("Home_Label_Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string Home_Title {
+            get {
+                return ResourceManager.GetString("Home_Title", resourceCulture);
             }
         }
         
@@ -169,6 +277,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter a password which contains at least 6 characters.
+        /// </summary>
+        public static string PasswordLabeledPasswordBox_ToolTip_ValidPassword {
+            get {
+                return ResourceManager.GetString("PasswordLabeledPasswordBox_ToolTip_ValidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Account.
         /// </summary>
         public static string Registration_Button_Create {
@@ -205,15 +322,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service is currently not available.
-        /// </summary>
-        public static string Registration_ServiceNotAvailable {
-            get {
-                return ResourceManager.GetString("Registration_ServiceNotAvailable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Registration.
         /// </summary>
         public static string Registration_Title {
@@ -228,6 +336,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Registration_Tooltip_ReEnterPassword {
             get {
                 return ResourceManager.GetString("Registration_Tooltip_ReEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CHF.
+        /// </summary>
+        public static string Shared_CurrencySwiss {
+            get {
+                return ResourceManager.GetString("Shared_CurrencySwiss", resourceCulture);
             }
         }
         
@@ -250,20 +367,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a valid Email address.
+        ///   Looks up a localized string similar to The service is currently not available.
         /// </summary>
-        public static string UserControl_EmailLabeledTextBox_EnterValidMail {
+        public static string Shared_ServiceNotAvailable {
             get {
-                return ResourceManager.GetString("UserControl_EmailLabeledTextBox_EnterValidMail", resourceCulture);
+                return ResourceManager.GetString("Shared_ServiceNotAvailable", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a password which contains at least 6 characters.
+        ///   Looks up a localized string similar to Statistics.
         /// </summary>
-        public static string UserControl_PasswordLabeledPasswordBox_ValidPassword {
+        public static string Statistics_Title {
             get {
-                return ResourceManager.GetString("UserControl_PasswordLabeledPasswordBox_ValidPassword", resourceCulture);
+                return ResourceManager.GetString("Statistics_Title", resourceCulture);
             }
         }
     }

@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Controls;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
+using System.Windows.Media;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 {
@@ -30,18 +28,44 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 
         public static void Switch(UserControl newPage)
         {
-            //BaseWindow.BaseWindowContent.Content = newPage;
-            //var newPageClassName = newPage.GetType().Name;
+            BaseWindow.BaseWindowContent.Content = newPage;
+            var newPageClassName = newPage.GetType().Name;
 
             // validate which page is loaded, and set the corresponding title
-            //if (newPageClassName.Equals(nameof(Login)))
-            //{
+            if (newPageClassName.Equals(nameof(Home)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Home_Title;
+            }
+            else if (newPageClassName.Equals(nameof(Statistics)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Statistics_Title;
+            }
+            else if (newPageClassName.Equals(nameof(CoffeeOrders)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.CoffeeOrders_Title;
+            }
+            else if (newPageClassName.Equals(nameof(Coffees)))
+            {
+                BaseWindow.Title = Resources.LanguageResources.Resources.Coffees_Title;
+            }
+        }
 
-            //}
-            //else if (newPageClassName.Equals(nameof(Registration)))
-            //{
+        public static void DisplayError(string message)
+        {
+            BaseWindow.BaseWindowUserMessageLabel.Invoke(() =>
+            {
+                BaseWindow.BaseWindowUserMessageLabel.Foreground = Brushes.Red;
+                BaseWindow.BaseWindowUserMessageLabel.Content = message;
+            });
+        }
 
-            //}
+        public static void DisplaySuccess(string message)
+        {
+            BaseWindow.BaseWindowUserMessageLabel.Invoke(() =>
+            {
+                BaseWindow.BaseWindowUserMessageLabel.Foreground = Brushes.Green;
+                BaseWindow.BaseWindowUserMessageLabel.Content = message;
+            });
         }
     }
 }

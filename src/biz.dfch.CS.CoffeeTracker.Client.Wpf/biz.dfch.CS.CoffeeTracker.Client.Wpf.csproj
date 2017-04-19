@@ -183,18 +183,38 @@
     <Compile Include="Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Controls\ClientContext.cs" />
     <Compile Include="IValidatable.cs" />
+    <Compile Include="Managers\CoffeeSelectorManager.cs" />
+    <Compile Include="Managers\HomeManager.cs" />
+    <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="CustomEvents\CoffeeSelectedEventArgs.cs" />
     <Compile Include="Switcher\BaseWindowSwitcher.cs" />
     <Compile Include="Switcher\StartWindowSwitcher.cs" />
+    <Compile Include="UiConfigs.cs" />
+    <Compile Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml.cs">
+      <DependentUpon>CoffeeOrders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Coffees.xaml.cs">
+      <DependentUpon>Coffees.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CompleteViews\Base\Statistics.xaml.cs">
+      <DependentUpon>Statistics.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\CompleteViews\Start\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\CompleteViews\Start\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Components\CoffeesSelector.xaml.cs">
+      <DependentUpon>CoffeesSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Components\EmailLabeledTextBox.xaml.cs">
       <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
@@ -224,11 +244,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\CompleteViews\Base\CoffeeOrders.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Coffees.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CompleteViews\Base\Statistics.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\CompleteViews\Start\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CompleteViews\Start\Registration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Components\CoffeesSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -283,8 +323,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UserControls\CompleteViews\AdminUIs\" />
-    <Folder Include="UserControls\CompleteViews\SharedUIs\" />
     <Folder Include="Windows\ConfirmationWindows\" />
   </ItemGroup>
   <ItemGroup>

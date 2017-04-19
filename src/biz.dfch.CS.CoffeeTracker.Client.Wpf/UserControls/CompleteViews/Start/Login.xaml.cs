@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -31,21 +30,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             var isValid = ValidateInputs();
             if (isValid)
             {
-                var client = ClientContext.GetServiceContext();
                 LoginMessageTextBlock.Visibility = Visibility.Collapsed;
                 DisplayLoading();
-                try
+                var loginManager = new LoginManager(ClientContext.CoffeeTrackerServiceContext);
+                var succeeded = await loginManager.Login(LoginEmail.EmailTextBox.Text,
+                    LoginPassword.UserControlPasswordBox.Password);
+                if (succeeded)
                 {
-                    await client.authenticationHelper.ReceiveAndSetToken(LoginEmail.EmailTextBox.Text, LoginPassword.UserControlPasswordBox.Password);
                     StartWindowSwitcher.OpenBaseWindow();
                 }
-                catch (Exception)
+                else
                 {
-                    if (client.authenticationHelper.bearerToken == string.Empty)
-                    {
-                        DisplayInvalidCredentialError();
-                    }
+                    DisplayInvalidCredentialError();
                 }
+
                 HideLoading();
             }
         }
@@ -69,7 +67,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             LoginButton.IsEnabled = true;
             LoginPassword.IsEnabled = true;
             LoginRegistrationStackPanel.Visibility = Visibility.Visible;
-            
+
             // hide loading sequence
             ProgressRing.IsActive = false;
         }
@@ -87,7 +85,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 LoginPassword.BorderBrush = Brushes.Black;
             }
 
-            return LoginEmail.Validate() && passwordHasValue;
+            return LoginEmail.IsValid() && passwordHasValue;
         }
 
         public void DisplayInvalidCredentialError()

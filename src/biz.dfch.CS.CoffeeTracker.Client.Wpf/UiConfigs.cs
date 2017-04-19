@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+using System.Windows.Media;
+
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
 {
-    public interface IValidatable
+    public static class UiConfigs
     {
-        bool IsValid();
+        public static Brush UiBackgroundColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF444444"));
+        
     }
 }

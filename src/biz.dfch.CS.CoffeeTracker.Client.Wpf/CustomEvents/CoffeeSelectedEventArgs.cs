@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
+using System;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents
 {
-    public interface IValidatable
+    public class CoffeeSelectedEventArgs : EventArgs
     {
-        bool IsValid();
+        public CoffeeSelectedEventArgs(Coffee coffee)
+        {
+            SelectedCoffee = coffee;
+        }
+
+        public Coffee SelectedCoffee;
     }
 }

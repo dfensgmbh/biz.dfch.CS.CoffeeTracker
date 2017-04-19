@@ -4,10 +4,12 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                       xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
+                      xmlns:basenamespace="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
                       xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:local1="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls"
                       mc:Ignorable="d"
                       Title="BaseWindow" Height="480" Width="720"
                       WindowTitleBrush="{DynamicResource AccentBaseColorBrush}"
@@ -18,55 +20,99 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical"
-                    x:Name="BaseWindowSideBarStackPanel"
-                    Background="#FF444444"
-                    Width="50">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel
+            LastChildFill="False"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+            x:Name="BaseWindowSideBarStackPanel"
+            Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
+            Width="50">
             <Grid
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Home}"
+                DockPanel.Dock="Top"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
                 MouseLeave="ChangeToParentBackground">
                 <iconPacks:PackIconFontAwesome
                     Kind="Home"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Statistics}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
                 MouseLeave="ChangeToParentBackground">
                 <iconPacks:PackIconFontAwesome
                     Kind="LineChart"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_CoffeeOrder}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
                 MouseLeave="ChangeToParentBackground">
                 <iconPacks:PackIconFontAwesome
                     Kind="Table"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
             <Grid
+                DockPanel.Dock="Top"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Coffees}"
                 Style="{StaticResource SideBarGridStyle}"
                 MouseEnter="SetBackgroundToAccentColor"
                 MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="ChangeToParentBackground"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
                 MouseLeave="ChangeToParentBackground">
                 <iconPacks:PackIconFontAwesome
                     Kind="Coffee"
                     Style="{StaticResource SideBarItemStyle}" />
             </Grid>
-            
-        </StackPanel>
+            <Grid
+                DockPanel.Dock="Bottom"
+                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Logout}"
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="SignOut"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+            <Grid
+                DockPanel.Dock="Bottom"
+                ToolTip="{x:Static local1:ClientContext.CurrentUserName}"
+                Style="{StaticResource SideBarGridStyle}"
+                MouseEnter="SetBackgroundToAccentColor"
+                MouseLeftButtonDown="SetBackgroundToDarkGray"
+                MouseLeftButtonUp="OnMouseLeftButtonUp"
+                MouseLeave="ChangeToParentBackground">
+                <iconPacks:PackIconFontAwesome
+                    Kind="UserCircle"
+                    Style="{StaticResource SideBarItemStyle}" />
+            </Grid>
+        </DockPanel>
+        <Viewbox Grid.Row="1" Grid.Column="1"
+            DockPanel.Dock="Bottom"
+            Stretch="Uniform">
+            <Label 
+                Name="BaseWindowUserMessageLabel"/>
+        </Viewbox>
         <controls:TransitioningContentControl
-            Name="BaseWindowContent"
             Grid.Column="1"
+            Name="BaseWindowContent"
             Transition="Right" />
     </Grid>
 </controls:MetroWindow>

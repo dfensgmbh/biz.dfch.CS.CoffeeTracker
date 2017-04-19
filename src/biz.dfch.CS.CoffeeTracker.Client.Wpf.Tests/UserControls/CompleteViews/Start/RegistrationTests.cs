@@ -15,6 +15,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Telerik.JustMock;
 using TestStack.White;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.WPFUIItems;
@@ -24,7 +25,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
     [TestClass]
     public class RegistrationTests
     {
-        private static string _applicationPath = "";
         private const string VALID_EMAIL = "email@example.com";
         private const string VALID_PASSWORD = "123456";
 
@@ -36,10 +36,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
         [TestInitialize]
         public void StartApplication()
         {
-            _applicationPath = SharedTestData.GetExecutablePath();
-            application = Application.Launch(_applicationPath);
+            application = Application.Launch(SharedTestData.ExecutablePath);
         }
-
 
         [TestMethod]
         public void RegistrationSwitchToRegisterPageAndBackChangesTitleSucceeds()

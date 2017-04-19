@@ -43,7 +43,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 
         public static void OpenBaseWindow()
         {
-            var client = ClientContext.GetServiceContext();
+            var client = ClientContext.CoffeeTrackerServiceContext;
             if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
             {
                 var baseWindow = new BaseWindow();

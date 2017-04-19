@@ -1,17 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
 {
@@ -48,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 var worker = new BackgroundWorker();
                 worker.DoWork += (o, ea) =>
                 {
-                    var client = ClientContext.GetServiceContext();
+                    var client = ClientContext.CoffeeTrackerServiceContext;
                     client.AddToUsers(newAppUser);
                     client.SaveChanges();
                 };
@@ -57,7 +51,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                 {
                     try
                     {
-                        var client = ClientContext.GetServiceContext();
+                        var client = ClientContext.CoffeeTrackerServiceContext;
                         await client.authenticationHelper.ReceiveAndSetToken(email, password);
                         if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
                         {
@@ -77,7 +71,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
                     {
                         // If this error is visible, there's an error with the client side code
                         RegistrationFailedTextBlock.Text =
-                            Wpf.Resources.LanguageResources.Resources.Registration_ServiceNotAvailable;
+                            Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable;
                         RegistrationFailedTextBlock.Visibility = Visibility.Visible;
                         HideLoading();
                     }
@@ -95,13 +89,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             foreach (var child in stackPanelChildren)
             {
                 var validatable = child as IValidatable;
-                if (null != validatable)
+                if (null == validatable)
                 {
-                    if (!validatable.Validate())
-                    {
-                        isValid = false;
-                    }
+                    continue;
                 }
+                if (validatable.IsValid())
+                {
+                    continue;
+                }
+                isValid = false;
             }
 
             if (!EqualPasswords())

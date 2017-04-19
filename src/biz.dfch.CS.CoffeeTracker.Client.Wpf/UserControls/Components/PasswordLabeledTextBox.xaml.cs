@@ -34,7 +34,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             });
         }
 
-        public bool Validate()
+        public bool IsValid()
         {
             var isValid = UserControlPasswordBox.Password.Length >= 6;
             if (!isValid)
