@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
+using BaseWindow = biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base.BaseWindow;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
 {

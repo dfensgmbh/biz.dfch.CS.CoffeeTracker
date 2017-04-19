@@ -2,19 +2,17 @@
 using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base;
-using MahApps.Metro.Controls;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
 {
     /// <summary>
     /// Interaction logic for BaseWindow.xaml
     /// </summary>
-    public partial class BaseWindow : MetroWindow
+    public partial class BaseWindow : ILoadable
     {
         public BaseWindow()
         {
@@ -46,5 +44,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
             }
         }
 
+        public void DisplayLoading()
+        {
+            BaseWindowContent.Visibility = Visibility.Collapsed;
+            BaseWindowProgressRing.IsActive = true;
+        }
+
+        public void HideLoading()
+        {
+            BaseWindowContent.Visibility = Visibility.Visible;
+            BaseWindowProgressRing.IsActive = false;
+        }
     }
 }
