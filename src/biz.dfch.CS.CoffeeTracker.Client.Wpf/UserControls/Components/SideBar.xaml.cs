@@ -1,26 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-// ReSharper disable All
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 {
     /// <summary>
     /// Interaction logic for SideBar.xaml
     /// </summary>
-    public partial class SideBar : UserControl
+    public partial class SideBar
     {
         public EventHandler ButtonClickedEventHandler;
 
@@ -39,7 +30,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void OnButtonMouseUpClick_RaiseEvent(object sender, EventArgs e)
         {
-            ChangeToParentBackground(sender);
+            ChangeToParentBackground(sender as Panel);
+            // ReSharper disable once UseNullPropagation
             if (null == ButtonClickedEventHandler)
             {
                 return;
@@ -50,41 +42,44 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void ChangeToParentBackgroundEvent(object sender, MouseEventArgs e)
         {
-            ChangeToParentBackground(sender);
+            ChangeToParentBackground(sender as Panel);
         }
-
 
         private void ChangeBackgroundToAccentColorEvent(object sender, MouseEventArgs e)
         {
-            ChangeBackGroundToAccentColor(sender);
+            ChangeBackGroundToAccentColor(sender as Panel);
         }
 
         private void SetBackgroundToDarkGray(object sender, MouseButtonEventArgs e)
         {
             var panel = sender as Panel;
+            Contract.Assert(null != panel);
             panel.Background = Brushes.DarkGray;
         }
 
         #endregion
 
-        private void ChangeToParentBackground(object sender)
+        private void ChangeToParentBackground(Panel sender)
         {
-            var panel = sender as Panel;
-            if (panel.IsMouseOver)
+            Contract.Requires(null != sender);
+
+            if (sender.IsMouseOver)
             {
                 ChangeBackGroundToAccentColor(sender);
             }
             else
             {
-                var parent = panel.Parent as Panel;
-                panel.Background = parent.Background;
+                var parent = sender.Parent as Panel;
+                Contract.Assert(null != parent);
+
+                sender.Background = parent.Background;
             }
         }
 
-        private void ChangeBackGroundToAccentColor(object sender)
+        private void ChangeBackGroundToAccentColor(Panel sender)
         {
-            var panel = sender as Panel;
-            panel.Background = Application.Current.Resources["AccentColorBrush"] as Brush;
+            Contract.Requires(null != sender);
+            sender.Background = Application.Current.Resources["AccentColorBrush"] as Brush;
         }
     }
 }
