@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 {
@@ -17,8 +18,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     public partial class CoffeesSelector
     {
         public event EventHandler<CoffeeSelectedEventArgs> CoffeeSelected;
-        private readonly ObservableCollection<string> brands = new ObservableCollection<string>();
-        private List<Coffee> coffees = new List<Coffee>();
+        private ObservableCollection<string> brands;
+        private readonly CoffeeSelectorManager manager;
 
         public CoffeesSelector()
         {
@@ -30,46 +31,37 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                 return;
             }
             DisplayLoading();
-            RefreshCoffeeBrands();
+            RefreshCoffeeBrandsOnUi();
+            manager = new CoffeeSelectorManager(ClientContext.CoffeeTrackerServiceContext);
             HideLoading();
         }
 
         private void BrandSplitButton_OnSelection(object sender, RoutedEventArgs e)
         {
             DisplayLoading();
-            RefreshCoffees();
+            RefreshCoffeesOnUi();
             HideLoading(true);
         }
 
-        private void RefreshCoffeeBrands()
+        private void RefreshCoffeeBrandsOnUi()
         {
-            var client = ClientContext.CoffeeTrackerServiceContext;
-
             // Load data in background and display loading screen
             var worker = new BackgroundWorker();
             worker.DoWork += (o, args) =>
             {
-                // Give the current thread the permission to manipulate data
+                // Give the current thread the permission to manipulate data in UI
                 Dispatcher.Invoke(() =>
                 {
-                    if (0 < coffees.Count)
-                    {
-                        client.Detach(client.Coffees);
-                    }
-                    coffees = client.Coffees.ToList();
-                    var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().ToList();
-                    foreach (var brand in allBrands)
-                    {
-                        brands.Add(brand);
-                    }
-
+                    // Get BrandNames and set the corresponding list in the UI
+                    var brandList = manager.GetCoffeeBrandNames();
+                    brands = new ObservableCollection<string>(brandList);
                     CoffeeSelectorBrandSplitButton.ItemsSource = brands;
                 });
             };
             worker.RunWorkerAsync();
         }
 
-        private void RefreshCoffees()
+        private void RefreshCoffeesOnUi()
         {
             var worker = new BackgroundWorker();
             worker.DoWork += (o, args) =>
@@ -78,14 +70,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
                 {
                     var brand = CoffeeSelectorBrandSplitButton.SelectedItem as string;
 
-                    var allCoffeesOfBrand = coffees.Where(c => c.Brand.Equals(brand)).ToList();
-                    var allCoffeesOfBrandObservableCollection = new ObservableCollection<Coffee>();
-                    foreach (var coffee in allCoffeesOfBrand)
-                    {
-                        allCoffeesOfBrandObservableCollection.Add(coffee);
-                    }
-
-                    CoffeeSelectorCoffeeSplitButton.ItemsSource = allCoffeesOfBrandObservableCollection;
+                    var allCoffeesOfBrand = manager.GetCoffeesOfBrand(brand);
+                    // ObservableCollection updates Ui automatically
+                    CoffeeSelectorCoffeeSplitButton.ItemsSource = new ObservableCollection<Coffee>(allCoffeesOfBrand);
                 });
             };
             worker.RunWorkerAsync();
@@ -110,8 +97,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
 
         private void CoffeeSelectorCoffeeSplitButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            RefreshCoffeeBrands();
-            RefreshCoffees();
+            RefreshCoffeeBrandsOnUi();
+            RefreshCoffeesOnUi();
+
             // Raise coffee selected event
             if (CoffeeSelected == null)
             {

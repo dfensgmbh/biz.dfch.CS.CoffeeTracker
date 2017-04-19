@@ -183,6 +183,7 @@
     <Compile Include="Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Controls\ClientContext.cs" />
     <Compile Include="IValidatable.cs" />
+    <Compile Include="Managers\CoffeeSelectorManager.cs" />
     <Compile Include="Managers\HomeManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">

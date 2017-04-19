@@ -27,8 +27,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
     [TestClass]
     public class LoginManagerTests
     {
-        private const string EXAMPLEBEARER_TOKEN = "EXAMPLETOKENmZ1edKKACtPAb7zGlwSzvs72PvhAbGmB8K1ZrGxpcNM";
-
         [TestMethod]
         public async Task LoginManagerLoginSucceeds()
         {
@@ -37,7 +35,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
             Mock.Arrange(
                 () =>
                     fakeReference.authenticationHelper.ReceiveAndSetToken(SharedTestData.UserWhichExists,
-                        SharedTestData.PasswordForUserWhichExists)).MustBeCalled("ReceiveAndSetToken was not called");
+                        SharedTestData.PasswordForUserWhichExists)).DoNothing().MustBeCalled("ReceiveAndSetToken was not called");
 
             // Act
             var sut = new LoginManager(fakeReference);
