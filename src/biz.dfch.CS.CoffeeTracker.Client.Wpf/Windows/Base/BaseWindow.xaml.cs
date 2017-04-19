@@ -24,9 +24,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
 
         private void OnButtonClicked(object sender, EventArgs e)
         {
-            
             var panel = sender as Panel;
             Contract.Assert(null != panel);
+            
             if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Home))
             {
                 BaseWindowSwitcher.Switch(new Home());
