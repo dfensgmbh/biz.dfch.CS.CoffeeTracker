@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Components
 {
     /// <summary>
     /// Interaction logic for CoffeesSelector.xaml
     /// </summary>
-    public partial class CoffeesSelector
+    public partial class CoffeesSelector : ILoadable
     {
         public event EventHandler<CoffeeSelectedEventArgs> CoffeeSelected;
         private ObservableCollection<string> brands;
@@ -78,14 +77,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             worker.RunWorkerAsync();
         }
 
-        private void DisplayLoading()
+        public void DisplayLoading()
         {
             CoffeeSelectorCoffeeSplitButton.IsEnabled = false;
             CoffeeSelectorBrandSplitButton.IsEnabled = false;
             CoffeeSelectorProgressRing.IsActive = true;
         }
 
-        private void HideLoading(bool brandSelected = false)
+        //Interface Method
+        public void HideLoading()
+        {
+            HideLoading(false);
+        }
+
+        private void HideLoading(bool brandSelected)
         {
             if (brandSelected)
             {

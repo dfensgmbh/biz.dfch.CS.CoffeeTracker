@@ -17,9 +17,10 @@
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher
 {
     public static class StartWindowSwitcher
     {
@@ -44,12 +45,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
         public static void OpenBaseWindow()
         {
             var client = ClientContext.CoffeeTrackerServiceContext;
-            if (!string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
+            if (string.IsNullOrEmpty(client.authenticationHelper.bearerToken))
             {
-                var baseWindow = new BaseWindow();
-                baseWindow.Show();
-                StartWindow.Close();
+                return;
             }
+            var baseWindow = new BaseWindow();
+            baseWindow.Show();
+            StartWindow.Close();
         }
     }
 }
