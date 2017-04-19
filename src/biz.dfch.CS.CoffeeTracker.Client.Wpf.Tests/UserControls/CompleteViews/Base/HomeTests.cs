@@ -61,5 +61,43 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
 
             // Assert
         }
+
+        [TestMethod]
+        public void HomeAddOrderButtonOnlyEnabledWhenCoffeeIsSelected()
+        {
+            // Arrange
+            GetToHome();
+            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Home_Title);
+
+            // Act
+            var addOrderButton = baseWindow.Get(SearchCriteria.ByAutomationId("HomeOrderButton"));
+            addOrderButton.Click();
+
+            // Assert
+        }
+
+        [TestCleanup]
+        public void CloseApplicationIfNotAlreadyClosed()
+        {
+            try
+            {
+                application.Close();
+            }
+            catch (Exception)
+            {
+                application.Kill();
+            }
+        }
+
+        private void GetToHome()
+        {
+            var startWindow = application.GetWindow(Resources.LanguageResources.Resources.Login_Title);
+            var emailLabeledTextBox = startWindow.Get(SearchCriteria.ByAutomationId("LoginEmail"));
+            emailLabeledTextBox.Get(SearchCriteria.ByAutomationId("EmailTextBox")).Enter(SharedTestData.UserWhichExists);
+            var passwordLabeledPasswordBox = startWindow.Get(SearchCriteria.ByAutomationId("LoginPassword"));
+            passwordLabeledPasswordBox.Get(SearchCriteria.ByClassName("PasswordBox")).Enter(SharedTestData.PasswordForUserWhichExists);
+            startWindow.Get(SearchCriteria.ByAutomationId("LoginButton")).Click();
+            startWindow.WaitWhileBusy();
+        }
     }
 }
