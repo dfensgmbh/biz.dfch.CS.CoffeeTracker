@@ -185,6 +185,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Managers\HomeManagerTests.cs" />
     <Compile Include="Managers\LoginManagerTests.cs" />
     <Compile Include="SharedTestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
