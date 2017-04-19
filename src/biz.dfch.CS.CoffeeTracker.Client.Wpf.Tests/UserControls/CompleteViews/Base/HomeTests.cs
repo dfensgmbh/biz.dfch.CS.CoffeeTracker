@@ -62,20 +62,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.UserControls.CompleteViews.
             // Assert
         }
 
-        [TestMethod]
-        public void HomeAddOrderButtonOnlyEnabledWhenCoffeeIsSelected()
-        {
-            // Arrange
-            GetToHome();
-            var baseWindow = application.GetWindow(Resources.LanguageResources.Resources.Home_Title);
-
-            // Act
-            var addOrderButton = baseWindow.Get(SearchCriteria.ByAutomationId("HomeOrderButton"));
-            addOrderButton.Click();
-
-            // Assert
-        }
-
         [TestCleanup]
         public void CloseApplicationIfNotAlreadyClosed()
         {
