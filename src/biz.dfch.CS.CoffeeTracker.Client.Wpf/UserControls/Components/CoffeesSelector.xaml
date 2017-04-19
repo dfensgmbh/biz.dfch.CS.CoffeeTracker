@@ -35,7 +35,7 @@
                 HorizontalContentAlignment="Left"
                 IsEnabled="False"
                 DisplayMemberPath="Name"
-                SelectionChanged="CoffeeSelectorCoffeeSplitButton_OnSelectionChanged">
+                SelectionChanged="CoffeeSelectorCoffeeSplitButton_OnSelectionChanged_RaiseEvent">
                 <controls:SplitButton.Icon>
                     <iconPacks:PackIconFontAwesome Kind="Coffee" />
                 </controls:SplitButton.Icon>

@@ -95,12 +95,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
             CoffeeSelectorProgressRing.IsActive = false;
         }
 
-        private void CoffeeSelectorCoffeeSplitButton_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CoffeeSelectorCoffeeSplitButton_OnSelectionChanged_RaiseEvent(object sender, SelectionChangedEventArgs e)
         {
             RefreshCoffeeBrandsOnUi();
             RefreshCoffeesOnUi();
 
-            // Raise coffee selected event
+            // Raise coffee selected event only if it's assigned
             if (CoffeeSelected == null)
             {
                 return;

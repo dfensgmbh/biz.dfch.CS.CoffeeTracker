@@ -24,86 +24,9 @@
             <RowDefinition Height="10*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <DockPanel
-            LastChildFill="False"
+        <components:SideBar 
             Grid.Column="0"
-            Grid.RowSpan="2"
-            x:Name="BaseWindowSideBarStackPanel"
-            Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}"
-            Width="50">
-            <Grid
-                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Home}"
-                DockPanel.Dock="Top"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="Home"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-            <Grid
-                DockPanel.Dock="Top"
-                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Statistics}"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="LineChart"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-            <Grid
-                DockPanel.Dock="Top"
-                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_CoffeeOrder}"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="Table"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-            <Grid
-                DockPanel.Dock="Top"
-                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Coffees}"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="Coffee"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-            <Grid
-                DockPanel.Dock="Bottom"
-                ToolTip="{x:Static languageResources:Resources.BaseWindow_SideBar_Logout}"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="SignOut"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-            <Grid
-                DockPanel.Dock="Bottom"
-                ToolTip="{x:Static local1:ClientContext.CurrentUserName}"
-                Style="{StaticResource SideBarGridStyle}"
-                MouseEnter="SetBackgroundToAccentColor"
-                MouseLeftButtonDown="SetBackgroundToDarkGray"
-                MouseLeftButtonUp="OnMouseLeftButtonUp"
-                MouseLeave="ChangeToParentBackground">
-                <iconPacks:PackIconFontAwesome
-                    Kind="UserCircle"
-                    Style="{StaticResource SideBarItemStyle}" />
-            </Grid>
-        </DockPanel>
+            Grid.RowSpan="2"/>
         <Viewbox Grid.Row="1" Grid.Column="1"
             DockPanel.Dock="Bottom"
             Stretch="Uniform">

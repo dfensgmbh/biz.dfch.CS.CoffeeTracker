@@ -22,7 +22,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ChangeToParentBackground(sender, e);
+            
             var panel = sender as Panel;
             if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Home))
             {
@@ -42,30 +42,5 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
             }
         }
 
-        private void SetBackgroundToAccentColor(object sender, MouseEventArgs e)
-        {
-            var panel = sender as Panel;
-            panel.Background = Application.Current.Resources["AccentColorBrush"] as Brush;
-        }
-
-        private void SetBackgroundToDarkGray(object sender, MouseButtonEventArgs e)
-        {
-            var panel = sender as Panel;
-            panel.Background = Brushes.DarkGray;
-        }
-
-        private void ChangeToParentBackground(object sender, MouseEventArgs e)
-        {
-            var panel = sender as Panel;
-            if (panel.IsMouseOver)
-            {
-                SetBackgroundToAccentColor(sender, e);
-            }
-            else
-            {
-                var parent = panel.Parent as Panel;
-                panel.Background = parent.Background;
-            }
-        }
     }
 }
