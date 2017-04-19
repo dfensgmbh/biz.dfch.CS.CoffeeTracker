@@ -18,11 +18,10 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
 using MahApps.Metro.Controls;
-using BaseWindow = biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base.BaseWindow;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher
 {
     public static class BaseWindowSwitcher
     {
