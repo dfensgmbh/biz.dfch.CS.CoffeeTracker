@@ -36,7 +36,7 @@
             Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}">
             <Viewbox>
                 <Label
-                    Name="HomeTitleLabel"
+                    Name="BaseWindowTitleLabel"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Foreground="White">

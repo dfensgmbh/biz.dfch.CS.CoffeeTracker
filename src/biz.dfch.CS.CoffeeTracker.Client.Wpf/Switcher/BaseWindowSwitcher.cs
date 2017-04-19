@@ -34,20 +34,26 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher
             // validate which page is loaded, and set the corresponding title
             if (newPageClassName.Equals(nameof(Home)))
             {
-                BaseWindow.Title = Resources.LanguageResources.Resources.Home_Title;
+                SwitchTitle(Resources.LanguageResources.Resources.Home_Title);
             }
             else if (newPageClassName.Equals(nameof(Statistics)))
             {
-                BaseWindow.Title = Resources.LanguageResources.Resources.Statistics_Title;
+                SwitchTitle(Resources.LanguageResources.Resources.Statistics_Title);
             }
             else if (newPageClassName.Equals(nameof(CoffeeOrders)))
             {
-                BaseWindow.Title = Resources.LanguageResources.Resources.CoffeeOrders_Title;
+                SwitchTitle(Resources.LanguageResources.Resources.CoffeeOrders_Title);
             }
             else if (newPageClassName.Equals(nameof(Coffees)))
             {
-                BaseWindow.Title = Resources.LanguageResources.Resources.Coffees_Title;
+                SwitchTitle(Resources.LanguageResources.Resources.Coffees_Title);
             }
+        }
+
+        private static void SwitchTitle(string title)
+        {
+            BaseWindow.Title = title;
+            BaseWindow.BaseWindowTitleLabel.Content = title;
         }
 
         public static void DisplayError(string message)
