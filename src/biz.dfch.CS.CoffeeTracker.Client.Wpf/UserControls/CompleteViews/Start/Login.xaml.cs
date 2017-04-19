@@ -28,24 +28,26 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         private async void LoginButton_OnClick(object sender, RoutedEventArgs e)
         {
             var isValid = ValidateInputs();
-            if (isValid)
+            if (!isValid)
             {
-                LoginMessageTextBlock.Visibility = Visibility.Collapsed;
-                DisplayLoading();
-                var loginManager = new LoginManager(ClientContext.CoffeeTrackerServiceContext);
-                var succeeded = await loginManager.Login(LoginEmail.EmailTextBox.Text,
-                    LoginPassword.UserControlPasswordBox.Password);
-                if (succeeded)
-                {
-                    StartWindowSwitcher.OpenBaseWindow();
-                }
-                else
-                {
-                    DisplayInvalidCredentialError();
-                }
-
-                HideLoading();
+                return;
             }
+
+            LoginMessageTextBlock.Visibility = Visibility.Collapsed;
+            DisplayLoading();
+            var loginManager = new LoginManager(ClientContext.CoffeeTrackerServiceContext);
+            var succeeded = await loginManager.Login(LoginEmail.EmailTextBox.Text,
+                LoginPassword.UserControlPasswordBox.Password);
+            if (succeeded)
+            {
+                StartWindowSwitcher.OpenBaseWindow();
+            }
+            else
+            {
+                DisplayInvalidCredentialError();
+            }
+
+            HideLoading();
         }
 
         private void DisplayLoading()
