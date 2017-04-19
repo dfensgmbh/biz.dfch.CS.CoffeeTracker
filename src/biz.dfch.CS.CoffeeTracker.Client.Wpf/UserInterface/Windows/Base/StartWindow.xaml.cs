@@ -1,4 +1,4 @@
-﻿using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+﻿using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start;
 using MahApps.Metro.Controls;
 

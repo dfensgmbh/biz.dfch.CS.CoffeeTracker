@@ -6,10 +6,10 @@ using System.Net;
 using System.Windows;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base
 {

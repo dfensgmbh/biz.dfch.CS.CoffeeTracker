@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Switcher;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.CompleteViews.Base;
 
