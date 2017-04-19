@@ -13,7 +13,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
     /// </summary>
     public partial class SideBar
     {
-        public EventHandler ButtonClickedEventHandler;
+        public event EventHandler ButtonClicked;
 
         public SideBar()
         {
@@ -32,12 +32,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components
         {
             ChangeToParentBackground(sender as Panel);
             // ReSharper disable once UseNullPropagation
-            if (null == ButtonClickedEventHandler)
+            if (null == ButtonClicked)
             {
                 return;
             }
 
-            ButtonClickedEventHandler(sender, e);
+            ButtonClicked(sender, e);
         }
 
         private void ChangeToParentBackgroundEvent(object sender, MouseEventArgs e)
