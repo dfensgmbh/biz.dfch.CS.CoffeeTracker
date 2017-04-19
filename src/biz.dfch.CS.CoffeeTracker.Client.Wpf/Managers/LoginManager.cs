@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
@@ -50,8 +51,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Get(Logging.Logging.TraceSourceName.WPF_START).TraceException(ex);
                 return false;
             }
         }

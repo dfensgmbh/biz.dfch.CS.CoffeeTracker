@@ -131,10 +131,6 @@
       <HintPath>packages\biz.dfch.CS.Commons.1.12.0\lib\net46\biz.dfch.CS.Commons.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="biz.dfch.CS.Commons.Contracts, Version=1.12.0.28847, Culture=neutral, PublicKeyToken=ddc350d26de1d0d9, processorArchitecture=MSIL">
-      <HintPath>packages\biz.dfch.CS.Commons.1.12.0\lib\net46\CodeContracts\biz.dfch.CS.Commons.Contracts.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="MahApps.Metro, Version=1.4.3.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>packages\MahApps.Metro.1.4.3\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>

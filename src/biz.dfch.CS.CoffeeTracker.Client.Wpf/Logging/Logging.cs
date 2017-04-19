@@ -28,8 +28,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Logging
 
         public static class TraceSourceName
         {
-            public const string API_ACTIVITIES = "biz.dfch.CS.CoffeeTracker.Core";
-            public const string COFFEETRACKER_CONTROLLERS = "biz.dfch.CS.CoffeeTracker.Core.Controllers";
+            public const string WPF_START = "biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start";
+            public const string WPF_RUNNING = "biz.dfch.CS.CoffeeTracker.Core.Wpf.UserControls.CompleteViews.Base";
+            public const string WPF_COMPONENTS = "biz.dfch.CS.CoffeeTracker.Core.Wpf.UserControls.Components";
+            public const string WPF_GENERAL= "biz.dfch.CS.CoffeeTracker.Core.Wpf";
         }
     }
 }
