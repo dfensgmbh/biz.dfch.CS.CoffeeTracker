@@ -9,6 +9,7 @@
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:components1="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Components"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -22,7 +23,7 @@
         </Grid.ColumnDefinitions>
         <Viewbox>
 
-            <components:CoffeesSelector
+            <components1:CoffeesSelector
                 x:Name="CoffeesSelector"
                 Grid.Row="0" Grid.Column="0"
                 CoffeeSelected="CoffeesSelector_OnCoffeeSelected" />
