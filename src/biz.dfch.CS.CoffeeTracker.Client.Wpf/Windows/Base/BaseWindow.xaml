@@ -21,22 +21,41 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
             <RowDefinition Height="10*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <components:SideBar
             Grid.Column="0"
-            Grid.RowSpan="2"
-            ButtonClicked="OnMouseLeftButtonUp"/>
-        <Viewbox Grid.Row="1" Grid.Column="1"
-            DockPanel.Dock="Bottom"
-            Stretch="Uniform">
-            <Label 
-                Name="BaseWindowUserMessageLabel"/>
-        </Viewbox>
+            Grid.RowSpan="10"
+            ButtonClicked="OnButtonClicked" />
+        <Grid
+            Grid.Row="0"
+            Grid.Column="1"
+            Background="{x:Static basenamespace:UiConfigs.UiBackgroundColor}">
+            <Viewbox>
+                <Label
+                    Name="HomeTitleLabel"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Foreground="White">
+                    Base
+                </Label>
+            </Viewbox>
+        </Grid>
+
         <controls:TransitioningContentControl
             Grid.Column="1"
+            Grid.Row="1"
             Name="BaseWindowContent"
             Transition="Right" />
+
+        <Viewbox Grid.Row="2" Grid.Column="1"
+                 DockPanel.Dock="Bottom"
+                 Stretch="Uniform">
+            <Label
+                Name="BaseWindowUserMessageLabel" />
+        </Viewbox>
     </Grid>
 </controls:MetroWindow>
