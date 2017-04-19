@@ -1,67 +1,79 @@
 ﻿<UserControl x:Class="biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start.Login"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:languageResources="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.Components"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <components:EmailLabeledTextBox 
-            x:Name="LoginEmail"
-            Grid.Row="1" Grid.Column="1"/>
-
-        <components:PasswordLabeledTextBox
-            x:Name="LoginPassword"
-            Grid.Row="2" Grid.Column="1"/>
-        <Button 
-            Style="{DynamicResource MetroCircleButtonStyle}" 
-            x:Name="LoginButton"
-            Grid.Row="3" Grid.Column="1"
-            IsDefault="True"
-            Click="LoginButton_OnClick"
-            BorderBrush="{DynamicResource AccentBaseColorBrush}"
-            Background="{DynamicResource AccentColorBrush}"
-            Width="40" Height="40"
-            HorizontalAlignment="Right">
-            <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" Foreground="White"/>
-        </Button>
-        <StackPanel 
-            Name="LoginRegistrationStackPanel"
-            Grid.Column="1" Grid.Row="4"  
-            Orientation="Vertical">
-            <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}"/>
-            <Label 
-                Name="LoginHyperLink"
-                Height="18pt" 
-                Style="{StaticResource HyperLinkStyle}" 
-                Content="{x:Static languageResources:Resources.Login_Label_CreateOne}" 
-                MouseLeftButtonUp="CreateAccountLabel_OnMouseUp"/>
-        </StackPanel>
-        <controls:ProgressRing 
-            Name="ProgressRing"
-            Grid.Column="1" Grid.Row="4" 
-            IsActive="False"/>
-        <TextBlock
-            Name="LoginMessageTextBlock"
-            Grid.Column="1" Grid.Row="5"
-            Visibility="Collapsed"/>
+        <Grid Grid.Row="0"
+              Background="{DynamicResource AccentBaseColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="1">
+                <components:EmailLabeledTextBox
+                    x:Name="LoginEmail" />
+                <components:PasswordLabeledTextBox
+                    x:Name="LoginPassword" />
+                <Button
+                    Style="{DynamicResource MetroCircleButtonStyle}"
+                    x:Name="LoginButton"
+                    IsDefault="True"
+                    Click="LoginButton_OnClick"
+                    BorderBrush="Black"
+                    Background="{DynamicResource AccentColorBrush}"
+                    Width="40" Height="40"
+                    HorizontalAlignment="Right">
+                    <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" Foreground="White" />
+                </Button>
+                <TextBlock
+                    Name="LoginMessageTextBlock"
+                    Visibility="Collapsed" />
+            </StackPanel>
+            <controls:ProgressRing
+                Name="ProgressRing"
+                Grid.Column="1"
+                Grid.Row="1"
+                Foreground="White"
+                IsActive="False" />
+        </Grid>
+        <Grid
+            Grid.Row="1"
+            Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Name="LoginRegistrationStackPanel"
+                Grid.Column="1"
+                Orientation="Vertical">
+                <Label Height="18pt" Content="{x:Static languageResources:Resources.Login_Label_NoAccount}" />
+                <Label
+                    Name="LoginHyperLink"
+                    Height="18pt"
+                    Style="{StaticResource HyperLinkStyle}"
+                    Content="{x:Static languageResources:Resources.Login_Label_CreateOne}"
+                    MouseLeftButtonUp="CreateAccountLabel_OnMouseUp" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -7,13 +7,13 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="" 
-        Height="400" Width="350"
+        Height="450" Width="350"
         MinHeight="400" MinWidth="350"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="2">
     <Grid>
         <controls:TransitioningContentControl
             Name="StartWindowContent"
-            Transition="Right"/>
+            Transition="Up"/>
     </Grid>
 </controls:MetroWindow>
