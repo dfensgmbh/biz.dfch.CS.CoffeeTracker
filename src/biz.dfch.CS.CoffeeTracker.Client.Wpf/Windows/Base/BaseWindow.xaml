@@ -24,9 +24,10 @@
             <RowDefinition Height="10*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <components:SideBar 
+        <components:SideBar
             Grid.Column="0"
-            Grid.RowSpan="2"/>
+            Grid.RowSpan="2"
+            ButtonClicked="OnMouseLeftButtonUp"/>
         <Viewbox Grid.Row="1" Grid.Column="1"
             DockPanel.Dock="Bottom"
             Stretch="Uniform">

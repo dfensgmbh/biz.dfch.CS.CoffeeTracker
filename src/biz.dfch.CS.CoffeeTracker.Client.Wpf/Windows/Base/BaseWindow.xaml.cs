@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,10 +22,11 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base
             BaseWindowSwitcher.Switch(new Home());
         }
 
-        private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void OnButtonClicked(object sender, EventArgs e)
         {
             
             var panel = sender as Panel;
+            Contract.Assert(null != panel);
             if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Home))
             {
                 BaseWindowSwitcher.Switch(new Home());
