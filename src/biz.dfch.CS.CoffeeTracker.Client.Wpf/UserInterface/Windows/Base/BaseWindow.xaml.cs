@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,9 +24,22 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
 
         private void OnButtonClicked(object sender, EventArgs e)
         {
-            var panel = sender as Panel;
-            Contract.Assert(null != panel);
-            
+            Dispatcher.Invoke(DisplayLoading);
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, args) =>
+            {
+                var panel = sender as Panel;
+                Contract.Assert(null != panel);
+                Dispatcher.Invoke(() => { SwitchPages(panel); });
+            };
+            worker.RunWorkerCompleted += (o, args) => { Dispatcher.Invoke(HideLoading); };
+            worker.RunWorkerAsync();
+        }
+
+        public void SwitchPages(Panel panel)
+        {
+            Contract.Requires(null != panel);
+
             if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Home))
             {
                 BaseWindowSwitcher.Switch(new Home());
@@ -34,7 +48,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             {
                 BaseWindowSwitcher.Switch(new Statistics());
             }
-            else if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_CoffeeOrder))
+            else if (panel.ToolTip.ToString()
+                .Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_CoffeeOrder))
             {
                 BaseWindowSwitcher.Switch(new CoffeeOrders());
             }
