@@ -12,32 +12,29 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            
+           
             <components:CoffeesSelector
                 x:Name="CoffeeCoffeeSelector"
                 CoffeeSelected="CoffeeSelector_OnCoffeeSelected"
                 Grid.Column="0"/>
             <components:CoffeeForm
-                Grid.Column="1"
+                Grid.Row="1"
+                VerticalAlignment="Center"
                 x:Name="CoffeeCoffeeForm"/>
 
             <controls:ProgressRing
                 Name="CoffeesProgressRing"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                IsActive="False" 
-                Margin="0 50 0 0"/>
-        </Grid>
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                IsActive="False"/>
+        
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Grid.Row="1">
+                    VerticalAlignment="Bottom"
+                    Grid.Row="2">
             <Button
                     Style="{DynamicResource MetroCircleButtonStyle}"
                     x:Name="CoffeesUpdateButton"

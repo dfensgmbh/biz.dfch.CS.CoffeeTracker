@@ -78,7 +78,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             worker.RunWorkerAsync();
         }
 
-        public void SendUpdate()
+        private void SendUpdate()
         {
             var updateCoffee = currentlySelectedCoffee;
             Dispatcher.Invoke(() =>
