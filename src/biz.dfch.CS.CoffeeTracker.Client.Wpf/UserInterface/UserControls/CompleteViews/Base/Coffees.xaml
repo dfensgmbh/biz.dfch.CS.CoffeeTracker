@@ -22,7 +22,8 @@
             <components:CoffeesSelector
                 Grid.Column="0"/>
             <components:CoffeeForm
-                Grid.Column="1"/>
+                Grid.Column="1"
+                x:Name="CoffeeCoffeeForm"/>
         </Grid>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -40,11 +41,11 @@
             <Button
                     Style="{DynamicResource MetroCircleButtonStyle}"
                     x:Name="CoffeesAddButton"
+                    Click="AddButton_OnClick"
                     IsDefault="True"
                     BorderBrush="Black"
                     Background="{DynamicResource AccentColorBrush}"
-                    Width="40" Height="40"
-                    HorizontalAlignment="Right">
+                    Width="40" Height="40">
                 <iconPacks:PackIconFontAwesome Kind="Plus" Background="Transparent" Foreground="White" />
             </Button>
         </StackPanel>
