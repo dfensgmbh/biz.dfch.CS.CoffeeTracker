@@ -90,7 +90,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
                 updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
             });
 
-            Task.Delay(5000).Wait();
             manager.UpdateCoffee(updateCoffee);
         }
 
