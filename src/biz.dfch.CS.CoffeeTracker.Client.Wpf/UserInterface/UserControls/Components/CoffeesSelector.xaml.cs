@@ -29,6 +29,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             {
                 return;
             }
+
             DisplayLoading();
             manager = new CoffeeSelectorManager(ClientContext.CoffeeTrackerServiceContext);
             RefreshCoffeeBrandsOnUi();

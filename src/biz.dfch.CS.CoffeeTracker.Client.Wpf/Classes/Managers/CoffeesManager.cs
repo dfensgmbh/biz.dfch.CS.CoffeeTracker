@@ -38,5 +38,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
             Context.AddToCoffees(coffee);
             Context.SaveChanges();
         }
+
+        public void UpdateCoffee(Coffee coffee)
+        {
+            Contract.Requires(null != coffee);
+
+            Context.UpdateObject(coffee);
+            Context.SaveChanges();
+        }
     }
 }

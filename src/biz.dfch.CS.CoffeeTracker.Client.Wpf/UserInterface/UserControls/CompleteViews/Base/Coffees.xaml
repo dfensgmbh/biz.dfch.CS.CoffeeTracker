@@ -20,7 +20,8 @@
             </Grid.ColumnDefinitions>
             
             <components:CoffeesSelector
-                Grid.Column="0"/>
+                Grid.Column="0"
+                CoffeeSelected="CoffeeSelector_OnCoffeeSelected"/>
             <components:CoffeeForm
                 Grid.Column="1"
                 x:Name="CoffeeCoffeeForm"/>
@@ -31,6 +32,7 @@
             <Button
                     Style="{DynamicResource MetroCircleButtonStyle}"
                     x:Name="CoffeesUpdateButton"
+                    Click="Button_OnClick"
                     IsDefault="True"
                     BorderBrush="Black"
                     Background="{DynamicResource AccentColorBrush}"
@@ -41,7 +43,7 @@
             <Button
                     Style="{DynamicResource MetroCircleButtonStyle}"
                     x:Name="CoffeesAddButton"
-                    Click="AddButton_OnClick"
+                    Click="Button_OnClick"
                     IsDefault="True"
                     BorderBrush="Black"
                     Background="{DynamicResource AccentColorBrush}"
