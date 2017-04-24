@@ -19,7 +19,10 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
 using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
