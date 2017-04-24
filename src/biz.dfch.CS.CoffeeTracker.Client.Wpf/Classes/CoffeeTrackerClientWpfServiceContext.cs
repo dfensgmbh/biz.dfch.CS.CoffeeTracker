@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 using System;
-using System.Collections.Generic;
 using System.Data.Services.Client;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 {
@@ -29,7 +25,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
         public CoffeeTrackerClientWpfServiceContext(string hostUri) 
             : base(hostUri)
         {
-            this.ReceivingResponse += CheckAndRaiseUnAuthorized;
+            ReceivingResponse += CheckAndRaiseUnAuthorized;
         }
 
         public CoffeeTrackerClientWpfServiceContext(string hostUri, string userName, string password) 
