@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
@@ -70,14 +71,26 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
                 return;
             }
 
+            DisplayLoading();
+            var worker = new BackgroundWorker();
+            worker.DoWork += (o, eventArgs) => { SendUpdate(); };
+            worker.RunWorkerCompleted += (o, eventArgs) => { HideLoading(); };
+            worker.RunWorkerAsync();
+        }
+
+        public void SendUpdate()
+        {
             var updateCoffee = currentlySelectedCoffee;
+            Dispatcher.Invoke(() =>
+            {
+                updateCoffee.Name = CoffeeCoffeeForm.CoffeeFormNameTextBox.Text;
+                updateCoffee.Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text;
+                updateCoffee.Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text);
+                updateCoffee.Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text);
+                updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
+            });
 
-            updateCoffee.Name = CoffeeCoffeeForm.CoffeeFormNameTextBox.Text;
-            updateCoffee.Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text;
-            updateCoffee.Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text);
-            updateCoffee.Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text);
-            updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
-
+            Task.Delay(5000).Wait();
             manager.UpdateCoffee(updateCoffee);
         }
 

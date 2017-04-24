@@ -86,7 +86,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
 
         public void DisplayLoading()
         {
-            DisableControls();
+            SetEnabled(false);
             CoffeeSelectorProgressRing.IsActive = true;
         }
 
