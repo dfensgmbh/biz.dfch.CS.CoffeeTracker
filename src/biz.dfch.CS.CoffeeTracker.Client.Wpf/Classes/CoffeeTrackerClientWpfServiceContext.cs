@@ -15,6 +15,7 @@
  */
 using System;
 using System.Data.Services.Client;
+using System.Diagnostics.Contracts;
 using System.Net;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
@@ -36,6 +37,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 
         private void CheckAndRaiseUnAuthorized(object sender, ReceivingResponseEventArgs args)
         {
+            Contract.Requires(null != args);
+            Contract.Requires(null != args.ResponseMessage);
+
             if (null == OnUnauthorized)
             {
                 return;

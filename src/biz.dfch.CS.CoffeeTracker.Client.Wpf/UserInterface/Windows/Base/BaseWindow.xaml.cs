@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base;
@@ -17,6 +18,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
     /// </summary>
     public partial class BaseWindow : ILoadable
     {
+        private BaseWindowManager baseWindowManager = new BaseWindowManager();
+
         public BaseWindow()
         {
             InitializeComponent();
@@ -61,7 +64,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             }
             else if (panel.ToolTip.ToString().Equals(Wpf.Resources.LanguageResources.Resources.BaseWindow_SideBar_Logout))
             {
-                Logout();
+                baseWindowManager.Logout();
             }
         }
 
@@ -77,14 +80,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             BaseWindowProgressRing.IsActive = false;
         }
 
-        public void Logout()
-        {
-            Contract.Requires(null != BaseWindowSwitcher.BaseWindow);
-
-            ClientContext.DestroySession();
-            StartWindowSwitcher.StartWindow = new StartWindow();
-            StartWindowSwitcher.StartWindow.Show();
-            BaseWindowSwitcher.BaseWindow.Close();
-        }
+        
     }
 }
