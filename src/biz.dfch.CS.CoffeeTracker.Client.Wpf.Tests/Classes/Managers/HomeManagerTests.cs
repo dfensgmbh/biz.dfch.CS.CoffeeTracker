@@ -15,6 +15,7 @@
  */
 
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
@@ -29,7 +30,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
         {
             // Arrange
             const int ARBITRARY_COFFEEID = 1;
-            var mockedContext = Mock.Create<CoffeeTrackerServiceContext>();
+            var mockedContext = Mock.Create<CoffeeTrackerClientWpfServiceContext>();
             var testCoffeeOrder = new CoffeeOrder()
             {
                 CoffeeId = ARBITRARY_COFFEEID,

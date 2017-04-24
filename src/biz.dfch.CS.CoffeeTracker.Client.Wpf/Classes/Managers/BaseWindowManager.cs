@@ -26,26 +26,11 @@ using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
 {
-    public class BaseWindowManager
+    public class BaseWindowManager : BaseManager
     {
-        public BaseWindowManager()
+        public BaseWindowManager(CoffeeTrackerClientWpfServiceContext ctx) 
+            : base(ctx)
         {
-            ClientContext.CoffeeTrackerServiceContext.OnUnauthorized += UnauthorizedEventHandler;
-        }
-
-        private void UnauthorizedEventHandler(object sender, ReceivingResponseEventArgs args)
-        {
-            Logout();
-        }
-
-        public void Logout()
-        {
-            Contract.Requires(null != BaseWindowSwitcher.BaseWindow);
-
-            ClientContext.DestroySession();
-            StartWindowSwitcher.StartWindow = new StartWindow();
-            StartWindowSwitcher.StartWindow.Show();
-            BaseWindowSwitcher.BaseWindow.Close();
         }
     }
 }

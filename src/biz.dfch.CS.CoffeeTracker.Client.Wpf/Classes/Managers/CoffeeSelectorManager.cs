@@ -22,28 +22,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
-    public class CoffeeSelectorManager
+    public class CoffeeSelectorManager : BaseManager
     {
-        private readonly CoffeeTrackerServiceContext context;
         private IEnumerable<Coffee> coffees;
 
-        public CoffeeSelectorManager(CoffeeTrackerServiceContext ctx)
+        public CoffeeSelectorManager(CoffeeTrackerClientWpfServiceContext ctx) 
+            : base(ctx)
         {
-            context = ctx;
-            coffees = context.Coffees.AsEnumerable();
+            coffees = Context.Coffees.AsEnumerable();
         }
 
         public IEnumerable<string> GetCoffeeBrandNames()
         {
             if (coffees.Any())
             {
-                context.Detach(context.Coffees);
+                Context.Detach(Context.Coffees);
             }
 
-            coffees = context.Coffees.ToList();
+            coffees = Context.Coffees.ToList();
             var allBrands = coffees.Select(coffee => coffee.Brand).ToList().Distinct().AsEnumerable();
             return allBrands.ToList();
         }
@@ -52,10 +53,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
         {
             if (coffees.Any())
             {
-                context.Detach(coffees);
+                Context.Detach(coffees);
             }
 
-            coffees = context.Coffees.AsEnumerable();
+            coffees = Context.Coffees.AsEnumerable();
             return coffees;
         }
 

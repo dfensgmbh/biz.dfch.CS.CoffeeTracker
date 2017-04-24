@@ -18,7 +18,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
     /// </summary>
     public partial class BaseWindow : ILoadable
     {
-        private BaseWindowManager baseWindowManager = new BaseWindowManager();
+        private BaseWindowManager baseWindowManager = new BaseWindowManager(ClientContext.CoffeeTrackerServiceContext);
 
         public BaseWindow()
         {
@@ -80,6 +80,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             BaseWindowProgressRing.IsActive = false;
         }
 
-        
+        public void SwitchToStartWindow()
+        {
+            if (null == StartWindowSwitcher.StartWindow)
+            {
+                StartWindowSwitcher.StartWindow = new StartWindow();
+            }
+            StartWindowSwitcher.StartWindow.Show();
+            BaseWindowSwitcher.BaseWindow.Close();
+        }
     }
 }

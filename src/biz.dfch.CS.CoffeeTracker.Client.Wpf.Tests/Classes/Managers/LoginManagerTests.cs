@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
@@ -31,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
         public async Task LoginManagerLoginSucceeds()
         {
             // Arrange
-            var fakeReference = Mock.Create<CoffeeTrackerServiceContext>();
+            var fakeReference = Mock.Create<CoffeeTrackerClientWpfServiceContext>();
             Mock.Arrange(
                 () =>
                     fakeReference.authenticationHelper.ReceiveAndSetToken(SharedTestData.UserWhichExists,
