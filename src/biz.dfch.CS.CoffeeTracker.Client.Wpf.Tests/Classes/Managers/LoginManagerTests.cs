@@ -13,8 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
@@ -22,29 +26,24 @@ using Telerik.JustMock;
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
 {
     [TestClass]
-    public class HomeManagerTests
+    public class LoginManagerTests
     {
         [TestMethod]
-        public void HomeManagerAddOrderSucceeds()
+        public async Task LoginManagerLoginSucceeds()
         {
             // Arrange
-            const int ARBITRARY_COFFEEID = 1;
-            var mockedContext = Mock.Create<CoffeeTrackerServiceContext>();
-            var testCoffeeOrder = new CoffeeOrder()
-            {
-                CoffeeId = ARBITRARY_COFFEEID,
-                UserId = 1,
-                Name = "ArbitraryName"
-            };
-            Mock.Arrange(() => mockedContext.AddToCoffeeOrders(testCoffeeOrder)).DoNothing().MustBeCalled();
-            Mock.Arrange(() => mockedContext.SaveChanges()).DoNothing().MustBeCalled();
+            var fakeReference = Mock.Create<CoffeeTrackerClientWpfServiceContext>();
+            Mock.Arrange(
+                () =>
+                    fakeReference.authenticationHelper.ReceiveAndSetToken(SharedTestData.UserWhichExists,
+                        SharedTestData.PasswordForUserWhichExists)).DoNothing().MustBeCalled("ReceiveAndSetToken was not called");
 
             // Act
-            var sut = new HomeManager(mockedContext);
-            sut.AddCoffeeOrder(ARBITRARY_COFFEEID);
+            var sut = new LoginManager(fakeReference);
+            await sut.Login(SharedTestData.UserWhichExists, SharedTestData.UserNameWhichShouldNotExist);
 
             // Assert
-            Mock.Assert(mockedContext);
+            Mock.Assert(fakeReference);
         }
     }
 }

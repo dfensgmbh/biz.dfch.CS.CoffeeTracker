@@ -20,6 +20,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.Tests;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
@@ -28,10 +29,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
         private static readonly ApiClientConfigurationSection _apiClientConfigurationSection = 
             (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
 
-        public static readonly CoffeeTrackerServiceContext CoffeeTrackerServiceContext = 
-            new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
-
         public static string CurrentUserName = "";
         public static long CurrentUserId = 0;
+
+
+        public static readonly CoffeeTrackerClientWpfServiceContext CoffeeTrackerServiceContext = 
+            new CoffeeTrackerClientWpfServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
+
+        public static void DestroySession()
+        {
+            CurrentUserName = "";
+            CurrentUserId = 0;
+            CoffeeTrackerServiceContext.authenticationHelper.bearerToken = "";
+        }
     }
 }

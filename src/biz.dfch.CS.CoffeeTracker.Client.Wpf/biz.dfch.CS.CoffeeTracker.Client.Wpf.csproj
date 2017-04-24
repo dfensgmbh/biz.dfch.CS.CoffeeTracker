@@ -188,12 +188,15 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Classes\CoffeeTrackerClientWpfServiceContext.cs" />
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Classes\Controls\ClientContext.cs" />
     <Compile Include="Classes\Interfaces\ILoadable.cs" />
     <Compile Include="Classes\Interfaces\IValidatable.cs" />
     <Compile Include="Classes\Logging\Logging.cs" />
+    <Compile Include="Classes\Managers\BaseManager.cs" />
+    <Compile Include="Classes\Managers\BaseWindowManager.cs" />
     <Compile Include="Classes\Managers\CoffeeSelectorManager.cs" />
     <Compile Include="Classes\Managers\HomeManager.cs" />
     <Compile Include="Classes\Managers\LoginManager.cs" />

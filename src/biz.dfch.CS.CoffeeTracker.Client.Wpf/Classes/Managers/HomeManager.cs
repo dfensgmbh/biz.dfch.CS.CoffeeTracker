@@ -20,25 +20,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
-    public class HomeManager
+    public class HomeManager : BaseManager
     {
-        public CoffeeTrackerServiceContext context;
-
-        public HomeManager(CoffeeTrackerServiceContext ctx)
+        public HomeManager(CoffeeTrackerClientWpfServiceContext ctx) 
+            : base(ctx)
         {
             Contract.Requires(null != ctx);
-
-            context = ctx;
         }
 
         public Coffee RefreshCoffee(Coffee coffee)
         {
-            context.Detach(coffee);
-            return context.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
+            Context.Detach(coffee);
+            return Context.Coffees.Where(c => c.Brand == coffee.Brand).Where(x => x.Name == coffee.Name).FirstOrDefault();
         }
 
         public void AddCoffeeOrder(long coffeeId)
@@ -49,9 +48,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
                 UserId = ClientContext.CurrentUserId,
                 CoffeeId = coffeeId
             };
-            context.AddToCoffeeOrders(coffeeOrder);
-            context.SaveChanges();
-            context.Detach(coffeeOrder);
+            Context.AddToCoffeeOrders(coffeeOrder);
+            Context.SaveChanges();
+            Context.Detach(coffeeOrder);
         }
     }
 }

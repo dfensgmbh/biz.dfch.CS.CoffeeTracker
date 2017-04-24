@@ -19,20 +19,21 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
 using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers
 {
-    public class LoginManager
+    public class LoginManager : BaseManager
     {
-        private CoffeeTrackerServiceContext context;
-
-        public LoginManager(CoffeeTrackerServiceContext ctx)
+        public LoginManager(CoffeeTrackerClientWpfServiceContext ctx)
+            : base(ctx)
         {
-            Contract.Requires(null != ctx);
-
-            context = ctx;
         }
 
         public async Task<bool> Login(string email, string password)
