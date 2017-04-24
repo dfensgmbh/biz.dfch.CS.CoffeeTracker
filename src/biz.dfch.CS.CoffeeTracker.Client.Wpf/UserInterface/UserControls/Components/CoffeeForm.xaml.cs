@@ -20,9 +20,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
     /// </summary>
     public partial class CoffeeForm : IValidatable
     {
+        public Brush oldBorderBrush;
+
         public CoffeeForm()
         {
             InitializeComponent();
+            oldBorderBrush = CoffeeFormNameTextBox.BorderBrush;
         }
 
         public bool IsValid()
@@ -30,16 +33,38 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             var priceText = CoffeeFormPriceTextBox.Text;
             decimal priceDecimal;
             var priceValid = decimal.TryParse(priceText, out priceDecimal);
+            CoffeeFormPriceTextBox.BorderBrush = !priceValid ? Brushes.Red : oldBorderBrush;
 
             var stockText = CoffeeFormStockTextBox.Text;
             int stockInt;
             var stockValid = int.TryParse(stockText, out stockInt);
+            CoffeeFormStockTextBox.BorderBrush = !stockValid ? Brushes.Red : oldBorderBrush;
 
             var lastDeliveryText = CoffeeFormDatePicker.Text;
             DateTimeOffset lastDeliveryDateTimeOffset;
             var dateTimeOffsetValid = DateTimeOffset.TryParse(lastDeliveryText, out lastDeliveryDateTimeOffset);
+            CoffeeFormDatePicker.BorderBrush = !dateTimeOffsetValid ? Brushes.Red : oldBorderBrush;
 
             return priceValid && stockValid && dateTimeOffsetValid;
+        }
+
+        public void DisableControls()
+        {
+            SetControlsIsEnabled(false);
+        }
+
+        public void EnableControls()
+        {
+            SetControlsIsEnabled(true);
+        }
+
+        private void SetControlsIsEnabled(bool enabled)
+        {
+            CoffeeFormNameTextBox.IsEnabled = enabled;
+            CoffeeFormBrandTextBox.IsEnabled = enabled;
+            CoffeeFormPriceTextBox.IsEnabled = enabled;
+            CoffeeFormStockTextBox.IsEnabled = enabled;
+            CoffeeFormDatePicker.IsEnabled = enabled;
         }
     }
 }
