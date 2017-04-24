@@ -16,6 +16,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
     public partial class Coffees : UserControl
     {
         private readonly CoffeesManager manager = new CoffeesManager(ClientContext.CoffeeTrackerServiceContext);
+        private Coffee currentlySelectedCoffee;
 
         public Coffees()
         {
@@ -32,10 +33,12 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text = coffee.Brand;
             CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text = coffee.Price.ToString(CultureInfo.CurrentCulture);
             CoffeeCoffeeForm.CoffeeFormStockTextBox.Text = coffee.Stock.ToString();
-            CoffeeCoffeeForm.CoffeeFormLastDeliveryTextBox.Text = coffee.LastDelivery.LocalDateTime.ToLongDateString();
+            CoffeeCoffeeForm.CoffeeFormDatePicker.Text = coffee.LastDelivery.LocalDateTime.ToLongDateString();
+
+            currentlySelectedCoffee = coffee;
         }
 
-        public void Button_OnClick(object sender, EventArgs args)
+        public void AddButton_OnClick(object sender, EventArgs args)
         {
             var isValid = CoffeeCoffeeForm.IsValid();
             if (!isValid)
@@ -49,19 +52,25 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
                 Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text,
                 Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text),
                 Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text),
-                LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormLastDeliveryTextBox.Text)
+                LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text)
             };
 
-            var senderButton = sender as Button;
-            Contract.Assert(null != senderButton);
+            manager.AddCoffee(coffee);
+        }
 
-            if (senderButton.Equals(CoffeesAddButton))
+        public void UpdateButton_OnClick(object sender, EventArgs args)
+        {
+            if (CoffeeCoffeeForm.IsValid())
             {
-                manager.AddCoffee(coffee);
-            }
-            else if (senderButton.Equals(CoffeesUpdateButton))
-            {
-                manager.UpdateCoffee(coffee);
+                var updateCoffee = currentlySelectedCoffee;
+
+                updateCoffee.Name = CoffeeCoffeeForm.CoffeeFormNameTextBox.Text;
+                updateCoffee.Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text;
+                updateCoffee.Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text);
+                updateCoffee.Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text);
+                updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
+
+                manager.UpdateCoffee(updateCoffee);
             }
         }
     }

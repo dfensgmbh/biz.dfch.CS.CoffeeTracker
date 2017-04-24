@@ -35,7 +35,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             int stockInt;
             var stockValid = int.TryParse(stockText, out stockInt);
 
-            var lastDeliveryText = CoffeeFormLastDeliveryTextBox.Text;
+            var lastDeliveryText = CoffeeFormDatePicker.Text;
             DateTimeOffset lastDeliveryDateTimeOffset;
             var dateTimeOffsetValid = DateTimeOffset.TryParse(lastDeliveryText, out lastDeliveryDateTimeOffset);
 

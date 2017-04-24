@@ -28,7 +28,9 @@
             <TextBox Name="CoffeeFormBrandTextBox"/>
             <TextBox Name="CoffeeFormPriceTextBox"/>
             <TextBox Name="CoffeeFormStockTextBox"/>
-            <TextBox Name="CoffeeFormLastDeliveryTextBox"/>
+            <DatePicker 
+                Name="CoffeeFormDatePicker"
+                Style="{DynamicResource {x:Type DatePicker}}"/>
         </StackPanel>
     </Grid>
 </UserControl>

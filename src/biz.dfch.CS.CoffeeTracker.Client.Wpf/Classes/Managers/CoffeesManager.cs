@@ -42,7 +42,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
         public void UpdateCoffee(Coffee coffee)
         {
             Contract.Requires(null != coffee);
-
+            
             Context.UpdateObject(coffee);
             Context.SaveChanges();
         }
