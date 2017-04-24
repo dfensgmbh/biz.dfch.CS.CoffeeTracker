@@ -125,34 +125,25 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
             return isValid;
         }
 
-        private void DisableControls()
+        private void SetControlVisibility(Visibility visibility)
         {
-            RegistrationEmailTextBox.EmailTextBox.IsEnabled = false;
-            RegistrationPasswordPasswordBox.UserControlPasswordBox.IsEnabled = false;
-            RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.IsEnabled = false;
-            RegistrationButton.IsEnabled = false;
-            RegistrationLinkStackPanel.Visibility = Visibility.Collapsed;
-        }
-
-        private void EnableControls()
-        {
-            RegistrationEmailTextBox.EmailTextBox.IsEnabled = true;
-            RegistrationPasswordPasswordBox.UserControlPasswordBox.IsEnabled = true;
-            RegistrationReEnterPasswordPasswordBox.UserControlPasswordBox.IsEnabled = true;
-            RegistrationButton.IsEnabled = true;
-            RegistrationLinkStackPanel.Visibility = Visibility.Visible;
+            RegistrationEmailTextBox.Visibility = visibility;
+            RegistrationPasswordPasswordBox.Visibility = visibility;
+            RegistrationReEnterPasswordPasswordBox.Visibility = visibility;
+            RegistrationButton.Visibility = visibility;
+            RegistrationLinkStackPanel.Visibility = visibility;
         }
 
         private void DisplayLoading()
         {
-            DisableControls();
+            SetControlVisibility(Visibility.Collapsed);
             RegistrationProgressRing.IsActive = true;
         }
 
         private void HideLoading()
         {
+            SetControlVisibility(Visibility.Visible);
             RegistrationProgressRing.IsActive = false;
-            EnableControls();
         }
     }
 }

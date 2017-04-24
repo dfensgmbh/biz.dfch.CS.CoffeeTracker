@@ -21,6 +21,5 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf
     public static class UiConfigs
     {
         public static Brush UiBackgroundColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF444444"));
-        
     }
 }

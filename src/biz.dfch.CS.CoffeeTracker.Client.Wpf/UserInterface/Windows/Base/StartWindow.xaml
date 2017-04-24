@@ -3,17 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="" 
-        Height="400" Width="350"
+        Height="450" Width="350"
         MinHeight="400" MinWidth="350"
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="2">
     <Grid>
         <controls:TransitioningContentControl
             Name="StartWindowContent"
-            Transition="Right"/>
+            Transition="Up"/>
     </Grid>
 </controls:MetroWindow>

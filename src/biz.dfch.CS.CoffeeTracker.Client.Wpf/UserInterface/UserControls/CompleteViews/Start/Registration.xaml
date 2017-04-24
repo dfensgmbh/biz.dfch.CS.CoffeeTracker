@@ -12,62 +12,76 @@
              d:DesignHeight="500" d:DesignWidth="300">
     <Grid Name="RegistrationGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <StackPanel 
-            Name="RegistrationFormStackPanel"
-            Grid.Row="1" Grid.Column="1"
-            Orientation="Vertical">
-            <components:EmailLabeledTextBox
-                x:Name="RegistrationEmailTextBox"
-                ToolTipContent="{x:Static languageResources:Resources.EmailLabeledTextBox_ToolTip_EnterValidMail}"/>
-            <components:PasswordLabeledTextBox
-                x:Name="RegistrationPasswordPasswordBox"
-                ToolTipContent="{x:Static languageResources:Resources.PasswordLabeledPasswordBox_ToolTip_ValidPassword}"/>
-            <components:PasswordLabeledTextBox
-                x:Name="RegistrationReEnterPasswordPasswordBox"
-                ToolTipContent="{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}"/>
-            <Button
-                Style="{DynamicResource MetroCircleButtonStyle}"
-                x:Name="RegistrationButton"
-                Grid.Row="3" Grid.Column="1"
-                Width="40" Height="40"
-                HorizontalAlignment="Right"
-                Click="RegistrationButton_OnClick"
-                IsDefault="True">
-                <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" />
-            </Button>
-        </StackPanel>
-        <controls:ProgressRing 
+        <Grid
+            Background="{DynamicResource AccentBaseColorBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Name="RegistrationFormStackPanel"
+                Grid.Row="1" Grid.Column="1"
+                Orientation="Vertical">
+                <components:EmailLabeledTextBox
+                    x:Name="RegistrationEmailTextBox"
+                    ToolTipContent="{x:Static languageResources:Resources.EmailLabeledTextBox_ToolTip_EnterValidMail}" />
+                <components:PasswordLabeledTextBox
+                    x:Name="RegistrationPasswordPasswordBox"
+                    ToolTipContent="{x:Static languageResources:Resources.PasswordLabeledPasswordBox_ToolTip_ValidPassword}" />
+                <components:PasswordLabeledTextBox
+                    x:Name="RegistrationReEnterPasswordPasswordBox"
+                    ToolTipContent="{x:Static languageResources:Resources.Registration_Tooltip_ReEnterPassword}" />
+                <Button
+                    Style="{DynamicResource MetroCircleButtonStyle}"
+                    x:Name="RegistrationButton"
+                    Click="RegistrationButton_OnClick"
+                    IsDefault="True"
+                    BorderBrush="Black"
+                    Width="40" Height="40"
+                    HorizontalAlignment="Right">
+                    <iconPacks:PackIconFontAwesome Kind="ArrowRight" Background="Transparent" Foreground="White"/>
+                </Button>
+                <TextBlock
+                    Name="RegistrationFailedTextBlock"
+                    TextAlignment="Center"
+                    Text="{x:Static languageResources:Resources.Registration_RegistrationFailed}"
+                    Foreground="Red"
+                    Visibility="Collapsed" />
+            </StackPanel>
+        </Grid>
+        <controls:ProgressRing
             Name="RegistrationProgressRing"
-            Grid.Row="2" Grid.Column="1"
-            IsActive="False"/>
-        <StackPanel
-            Name="RegistrationLinkStackPanel"
-            Orientation="Vertical"
-            Grid.Row="2" Grid.Column="1">
-            <Label
-                Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}" />
-            <Label
-                Name="RegistrationLoginHyperLink"
-                Style="{DynamicResource HyperLinkStyle}"
-                Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
-                MouseLeftButtonUp="SwitchToLogin_Click" />
-        </StackPanel>
-        <TextBlock
-            Name="RegistrationFailedTextBlock"
-            Grid.Row="3" Grid.Column="1"
-            TextAlignment="Center"
-            Text="{x:Static languageResources:Resources.Registration_RegistrationFailed}"
-            Foreground="Red"
-            Visibility="Collapsed" />
+            Grid.Row="0" 
+            IsActive="False"
+            Foreground="White"/>
+        <Grid 
+            Grid.Row="1"
+            Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Name="RegistrationLinkStackPanel"
+                Orientation="Vertical"
+                Grid.Row="0" Grid.Column="1">
+                <Label
+                    Content="{x:Static languageResources:Resources.Registration_Label_AlreadyHaveAccount}" />
+                <Label
+                    Name="RegistrationLoginHyperLink"
+                    Style="{DynamicResource HyperLinkStyle}"
+                    Content="{x:Static languageResources:Resources.Registration_Label_GoToLogin}"
+                    MouseLeftButtonUp="SwitchToLogin_Click" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

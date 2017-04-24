@@ -53,10 +53,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         private void DisplayLoading()
         {
             // disable all controls
-            LoginEmail.IsEnabled = false;
-            LoginButton.IsEnabled = false;
-            LoginPassword.IsEnabled = false;
-            LoginRegistrationStackPanel.Visibility = Visibility.Collapsed;
+            SetControlsVisibility(Visibility.Collapsed);
 
             // display loading sequence
             ProgressRing.IsActive = true;
@@ -65,13 +62,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Start
         private void HideLoading()
         {
             // enable all controls
-            LoginEmail.IsEnabled = true;
-            LoginButton.IsEnabled = true;
-            LoginPassword.IsEnabled = true;
-            LoginRegistrationStackPanel.Visibility = Visibility.Visible;
+            SetControlsVisibility(Visibility.Visible);
 
             // hide loading sequence
             ProgressRing.IsActive = false;
+        }
+
+        private void SetControlsVisibility(Visibility visibility)
+        {
+            LoginEmail.Visibility = visibility;
+            LoginButton.Visibility = visibility;
+            LoginPassword.Visibility = visibility;
+            LoginRegistrationStackPanel.Visibility = visibility;
         }
 
         public bool ValidateInputs()
