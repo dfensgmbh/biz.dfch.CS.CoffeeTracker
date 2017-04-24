@@ -48,17 +48,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             return priceValid && stockValid && dateTimeOffsetValid;
         }
 
-        public void DisableControls()
-        {
-            SetControlsIsEnabled(false);
-        }
-
-        public void EnableControls()
-        {
-            SetControlsIsEnabled(true);
-        }
-
-        private void SetControlsIsEnabled(bool enabled)
+        public void SetEnabled(bool enabled)
         {
             CoffeeFormNameTextBox.IsEnabled = enabled;
             CoffeeFormBrandTextBox.IsEnabled = enabled;

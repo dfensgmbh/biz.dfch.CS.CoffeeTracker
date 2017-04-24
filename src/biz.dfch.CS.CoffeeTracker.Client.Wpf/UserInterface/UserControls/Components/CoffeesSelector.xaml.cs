@@ -78,17 +78,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             worker.RunWorkerAsync();
         }
 
-        public void EnableAll()
-        {
-            SetEnabled(true);
-        }
-
-        public void DisableAll()
-        {
-            SetEnabled(true);
-        }
-
-        private void SetEnabled(bool enabled)
+        public void SetEnabled(bool enabled)
         {
             CoffeeSelectorCoffeeSplitButton.IsEnabled = enabled;
             CoffeeSelectorBrandSplitButton.IsEnabled = enabled;
@@ -96,7 +86,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
 
         public void DisplayLoading()
         {
-            DisableAll();
+            DisableControls();
             CoffeeSelectorProgressRing.IsActive = true;
         }
 
