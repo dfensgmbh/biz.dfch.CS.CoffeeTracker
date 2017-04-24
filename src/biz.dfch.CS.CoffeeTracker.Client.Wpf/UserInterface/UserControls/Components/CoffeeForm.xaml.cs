@@ -27,7 +27,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
 
         public bool IsValid()
         {
-            throw new NotImplementedException();
+            var priceText = CoffeeFormPriceTextBox.Text;
+            decimal priceDecimal;
+            var priceValid = decimal.TryParse(priceText, out priceDecimal);
+
+            var stockText = CoffeeFormStockTextBox.Text;
+            int stockInt;
+            var stockValid = int.TryParse(stockText, out stockInt);
+
+            var lastDeliveryText = CoffeeFormLastDeliveryTextBox.Text;
+            DateTimeOffset lastDeliveryDateTimeOffset;
+            var dateTimeOffsetValid = DateTimeOffset.TryParse(lastDeliveryText, out lastDeliveryDateTimeOffset);
+
+            return priceValid && stockValid && dateTimeOffsetValid;
         }
     }
 }
