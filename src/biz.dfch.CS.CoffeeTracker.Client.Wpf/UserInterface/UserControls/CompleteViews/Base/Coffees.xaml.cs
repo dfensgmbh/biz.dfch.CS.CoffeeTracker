@@ -2,18 +2,23 @@
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 {
     /// <summary>
     /// Interaction logic for Coffees.xaml
     /// </summary>
-    public partial class Coffees : UserControl
+    public partial class Coffees : ILoadable
     {
         private readonly CoffeesManager manager = new CoffeesManager(ClientContext.CoffeeTrackerServiceContext);
         private Coffee currentlySelectedCoffee;
@@ -60,18 +65,38 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
 
         public void UpdateButton_OnClick(object sender, EventArgs args)
         {
-            if (CoffeeCoffeeForm.IsValid())
+            if (!CoffeeCoffeeForm.IsValid())
             {
-                var updateCoffee = currentlySelectedCoffee;
-
-                updateCoffee.Name = CoffeeCoffeeForm.CoffeeFormNameTextBox.Text;
-                updateCoffee.Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text;
-                updateCoffee.Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text);
-                updateCoffee.Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text);
-                updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
-
-                manager.UpdateCoffee(updateCoffee);
+                return;
             }
+
+            var updateCoffee = currentlySelectedCoffee;
+
+            updateCoffee.Name = CoffeeCoffeeForm.CoffeeFormNameTextBox.Text;
+            updateCoffee.Brand = CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text;
+            updateCoffee.Price = decimal.Parse(CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text);
+            updateCoffee.Stock = int.Parse(CoffeeCoffeeForm.CoffeeFormStockTextBox.Text);
+            updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
+
+            manager.UpdateCoffee(updateCoffee);
+        }
+
+        public void DisplayLoading()
+        {
+            SetEnabled(false);
+            CoffeesProgressRing.IsActive = true;
+        }
+
+        public void HideLoading()
+        {
+            SetEnabled(true);
+            CoffeesProgressRing.IsActive = false;
+        }
+
+        private void SetEnabled(bool enabled)
+        {
+            CoffeeCoffeeForm.SetEnabled(enabled);
+            CoffeeCoffeeSelector.SetEnabled(enabled);
         }
     }
 }

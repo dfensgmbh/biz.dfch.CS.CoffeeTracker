@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base"
              xmlns:components="clr-namespace:biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Components"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -26,6 +27,13 @@
             <components:CoffeeForm
                 Grid.Column="1"
                 x:Name="CoffeeCoffeeForm"/>
+
+            <controls:ProgressRing
+                Name="CoffeesProgressRing"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsActive="False" 
+                Margin="0 50 0 0"/>
         </Grid>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
