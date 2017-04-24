@@ -25,13 +25,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls
 {
     public static class ClientContext
     {
-        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection = 
-            (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
-
         public static readonly CoffeeTrackerServiceContext CoffeeTrackerServiceContext = 
             new CoffeeTrackerServiceContext(_apiClientConfigurationSection.ApiBaseUri.AbsoluteUri);
 
         public static string CurrentUserName = "";
         public static long CurrentUserId = 0;
+
+        private static readonly ApiClientConfigurationSection _apiClientConfigurationSection = 
+            (ApiClientConfigurationSection) ConfigurationManager.GetSection("apiClientConfiguration");
+
+        public static void DestroySession()
+        {
+            CurrentUserName = "";
+            CurrentUserId = 0;
+            CoffeeTrackerServiceContext.authenticationHelper.bearerToken = "";
+        }
     }
 }
