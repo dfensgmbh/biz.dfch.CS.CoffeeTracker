@@ -32,7 +32,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
             CoffeeCoffeeForm.CoffeeFormBrandTextBox.Text = coffee.Brand;
             CoffeeCoffeeForm.CoffeeFormPriceTextBox.Text = coffee.Price.ToString(CultureInfo.CurrentCulture);
             CoffeeCoffeeForm.CoffeeFormStockTextBox.Text = coffee.Stock.ToString();
-            CoffeeCoffeeForm.CoffeeFormLastDeliveryTextBox.Text = coffee.LastDelivery.ToString(CultureInfo.CurrentCulture);
+            CoffeeCoffeeForm.CoffeeFormLastDeliveryTextBox.Text = coffee.LastDelivery.LocalDateTime.ToLongDateString();
         }
 
         public void Button_OnClick(object sender, EventArgs args)
