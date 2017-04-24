@@ -15,9 +15,11 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
 {
@@ -27,6 +29,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
             : base(ctx)
         {
             
+        }
+
+        public void AddCoffee(Coffee coffee)
+        {
+            Contract.Requires(null != coffee);
+
+            Context.AddToCoffees(coffee);
+            Context.SaveChanges();
         }
     }
 }
