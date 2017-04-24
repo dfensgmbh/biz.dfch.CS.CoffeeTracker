@@ -15,12 +15,13 @@
  */
 using System;
 using System.Data.Services.Client;
+using System.Net;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 {
     public class CoffeeTrackerClientWpfServiceContext : CoffeeTrackerServiceContext
     {
-        public event EventHandler<ReceivingResponseEventArgs> UnAuthorizedThrown;
+        public event EventHandler<ReceivingResponseEventArgs> OnUnauthorized;
 
         public CoffeeTrackerClientWpfServiceContext(string hostUri) 
             : base(hostUri)
@@ -35,11 +36,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 
         private void CheckAndRaiseUnAuthorized(object sender, ReceivingResponseEventArgs args)
         {
-            if (null == UnAuthorizedThrown)
+            if (null == OnUnauthorized)
             {
                 return;
             }
-            UnAuthorizedThrown.Invoke(this, args);
+
+            var receivedStatusCode = (HttpStatusCode) args.ResponseMessage.StatusCode;
+            if (HttpStatusCode.Unauthorized == receivedStatusCode)
+            {
+                OnUnauthorized.Invoke(this, args);
+            }
         }
     }
 }
