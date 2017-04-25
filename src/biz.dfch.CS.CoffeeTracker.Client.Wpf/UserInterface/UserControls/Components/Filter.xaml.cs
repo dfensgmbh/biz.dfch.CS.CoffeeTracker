@@ -18,11 +18,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
     /// <summary>
     /// Interaction logic for Filter.xaml
     /// </summary>
-    public partial class Filter : UserControl
+    public partial class Filter : IValidatable
     {
         public Filter()
         {
             InitializeComponent();
+        }
+
+        public bool IsValid()
+        {
+            return FilterDetermineTimePicker.IsValid();
         }
     }
 }
