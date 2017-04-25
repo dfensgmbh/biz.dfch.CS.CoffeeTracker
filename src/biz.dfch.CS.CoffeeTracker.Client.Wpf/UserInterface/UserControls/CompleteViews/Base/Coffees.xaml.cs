@@ -95,33 +95,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
                 updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
             });
 
-            try
-            {
-                manager.UpdateCoffee(updateCoffee);
-            }
-            catch (Exception e)
-            {
-                Logger.Get(Logging.Logging.TraceSourceName.WPF_RUNNING).TraceException(e);
-                Console.WriteLine(e);
-                var dataServiceClientException = e.InnerException as DataServiceClientException;
-                if (null != dataServiceClientException)
-                {
-                    Dispatcher.Invoke(
-                        () => { HandleStatusCodes((HttpStatusCode) dataServiceClientException.StatusCode); });
-                }
-            }
-        }
+            manager.UpdateCoffee(updateCoffee);
 
-        private void HandleStatusCodes(HttpStatusCode statusCode)
-        {
-            if (HttpStatusCode.Forbidden == statusCode)
-            {
-                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_Forbidden);
-            }
-            else if (HttpStatusCode.BadGateway == statusCode)
-            {
-                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
-            }
         }
 
         public void DisplayLoading()

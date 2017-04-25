@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
@@ -25,6 +27,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             InitializeComponent();
             BaseWindowSwitcher.BaseWindow = this;
             BaseWindowSwitcher.Switch(new Home());
+            ClientContext.CoffeeTrackerServiceContext.OnExceptionalStatusCode += HandleStatusCode;
         }
 
         private void OnButtonClicked(object sender, EventArgs e)
@@ -88,6 +91,20 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             }
             StartWindowSwitcher.StartWindow.Show();
             BaseWindowSwitcher.BaseWindow.Close();
+        }
+
+        public void HandleStatusCode(object sender, StatusCodeEventArgs args)
+        {
+            var httpStatusCode = args.StatusCode;
+
+            if (HttpStatusCode.Forbidden == httpStatusCode)
+            {
+                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_Forbidden);
+            }
+            else if (HttpStatusCode.BadGateway == httpStatusCode && HttpStatusCode.InternalServerError == httpStatusCode)
+            {
+                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
+            }
         }
     }
 }
