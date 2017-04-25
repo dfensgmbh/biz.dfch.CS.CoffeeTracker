@@ -37,6 +37,7 @@
             Grid.Column="1"
             VerticalAlignment="Bottom"/>
         <controls:Tile
+            Click="RaiseApplyFilterEvent"
             Grid.Row="1"
             Grid.Column="2"
             Height="32pt"

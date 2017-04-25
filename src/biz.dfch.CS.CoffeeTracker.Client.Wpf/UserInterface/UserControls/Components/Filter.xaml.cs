@@ -20,6 +20,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
     /// </summary>
     public partial class Filter : IValidatable
     {
+        public event EventHandler OnApplyChanges;
+
         public Filter()
         {
             InitializeComponent();
@@ -28,6 +30,16 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
         public bool IsValid()
         {
             return FilterDetermineTimePicker.IsValid();
+        }
+
+        private void RaiseApplyFilterEvent(object sender, RoutedEventArgs e)
+        {
+            if (null == OnApplyChanges)
+            {
+                return;
+            }
+
+            OnApplyChanges.Invoke(sender, e);
         }
     }
 }
