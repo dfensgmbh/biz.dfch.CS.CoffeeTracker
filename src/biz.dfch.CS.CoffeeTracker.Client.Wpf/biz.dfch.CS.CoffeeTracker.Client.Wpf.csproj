@@ -192,6 +192,7 @@
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Classes\Controls\ClientContext.cs" />
+    <Compile Include="Classes\CustomEvents\StatusCodeEventArgs.cs" />
     <Compile Include="Classes\Interfaces\ILoadable.cs" />
     <Compile Include="Classes\Interfaces\IValidatable.cs" />
     <Compile Include="Classes\Logging\Logging.cs" />
