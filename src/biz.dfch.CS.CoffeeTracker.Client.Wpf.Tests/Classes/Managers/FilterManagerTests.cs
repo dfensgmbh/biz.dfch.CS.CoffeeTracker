@@ -20,12 +20,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Telerik.JustMock.Helpers;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes.Managers
 {
     [TestClass]
-    public class FilterManager
+    public class FilterManagerTests
     {
         #region Test related data
 
@@ -117,8 +119,28 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes.Managers
         [TestMethod]
         public void FilterManagerApplyUserReturnsListOfCoffeeOrdersWithSpecifiedUser()
         {
+            // Arrange
+            var coffeeOrders = GetCoffeeOrdersExample();
+            var sut = new FilterManager(coffeeOrders);
 
+            // Act
+            var result = sut.ApplyUserFilter(ExampleApplicationUser);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.All(c => c.ApplicationUser == ExampleApplicationUser));
         }
 
+        [TestMethod]
+        public void FilterManagerApplyTimeReturnsListOfSpecifiedTime()
+        {
+            // Arrange
+
+
+            // Act
+
+            // Assert
+
+        }
     }
 }
