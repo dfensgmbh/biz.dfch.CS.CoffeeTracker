@@ -19,6 +19,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
         public event EventHandler<CoffeeSelectedEventArgs> CoffeeSelected;
         private ObservableCollection<string> brands;
         private readonly CoffeeSelectorManager manager;
+        public Coffee SelectedCoffee;
 
         public CoffeesSelector()
         {
@@ -118,6 +119,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             }
             var coffee = CoffeeSelectorCoffeeSplitButton.SelectedItem as Coffee;
             var eventArgs = new CoffeeSelectedEventArgs(coffee);
+            SelectedCoffee = coffee;
             CoffeeSelected(this, eventArgs);
         }
     }
