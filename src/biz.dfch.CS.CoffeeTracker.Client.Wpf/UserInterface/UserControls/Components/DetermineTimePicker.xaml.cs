@@ -30,8 +30,8 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
 
             var nowBeforeThreeMonths = DateTimeOffset.Now.AddMonths(-3);
             var now = DateTimeOffset.Now;
-            DetermineTimePickerFromDateTimePicker.DisplayDate = nowBeforeThreeMonths.DateTime;
-            DetermineTimePickerUntilDateTimePicker.DisplayDate = now.DateTime;
+            DetermineTimePickerFromDateTimePicker.SelectedDate = nowBeforeThreeMonths.DateTime;
+            DetermineTimePickerUntilDateTimePicker.SelectedDate = now.DateTime;
         }
 
         public bool IsValid()
