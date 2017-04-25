@@ -403,6 +403,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The action you tried to execute is forbidden.
+        /// </summary>
+        public static string Shared_Forbidden {
+            get {
+                return ResourceManager.GetString("Shared_Forbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ******.
         /// </summary>
         public static string Shared_Password_Example {

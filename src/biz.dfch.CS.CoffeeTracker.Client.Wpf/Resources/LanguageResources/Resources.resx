@@ -231,6 +231,9 @@
   <data name="Shared_Email_Example" xml:space="preserve">
     <value>email@example.com</value>
   </data>
+  <data name="Shared_Forbidden" xml:space="preserve">
+    <value>The action you tried to execute is forbidden</value>
+  </data>
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>
   </data>
