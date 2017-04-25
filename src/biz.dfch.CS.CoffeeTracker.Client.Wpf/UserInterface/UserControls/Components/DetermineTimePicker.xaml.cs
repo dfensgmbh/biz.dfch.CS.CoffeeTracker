@@ -18,11 +18,28 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
     /// <summary>
     /// Interaction logic for DetermineTimePicker.xaml
     /// </summary>
-    public partial class DetermineTimePicker : UserControl
+    public partial class DetermineTimePicker : IValidatable
     {
         public DetermineTimePicker()
         {
             InitializeComponent();
+            var nowBeforeThreeMonths = DateTimeOffset.Now.AddMonths(-3);
+            var now = DateTimeOffset.Now;
+            DetermineTimePickerFromDateTimePicker.DisplayDate = nowBeforeThreeMonths.DateTime;
+            DetermineTimePickerUntilDateTimePicker.DisplayDate = now.DateTime;
+        }
+
+        public bool IsValid()
+        {
+            if (!DetermineTimePickerFromDateTimePicker.DisplayDate.HasValue ||
+                !DetermineTimePickerUntilDateTimePicker.DisplayDate.HasValue)
+            {
+                return false;
+            }
+
+            var from = DetermineTimePickerFromDateTimePicker.DisplayDate.Value;
+            var until = DetermineTimePickerUntilDateTimePicker.DisplayDate.Value;
+            return from <= until;
         }
     }
 }
