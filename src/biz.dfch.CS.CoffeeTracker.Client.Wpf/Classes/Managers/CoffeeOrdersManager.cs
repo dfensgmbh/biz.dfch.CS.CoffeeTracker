@@ -34,26 +34,9 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
         {
         }
 
-        private IEnumerable<CoffeeOrder> ApplyUserFilter(params ApplicationUser[] users)
+        public void GetCoffeeOrdersWithCurrentFilter()
         {
-            Contract.Requires(0 < users.Length);
-            Contract.Requires(null != users[0]);
-
-            IEnumerable<CoffeeOrder> filterdEnumerable = null;
-
-            foreach (var applicationUser in users)
-            {
-                filterdEnumerable = coffeeOrders.Where(u => u.Name.Equals(applicationUser.Name)).AsEnumerable();
-            }
-
-            return filterdEnumerable;
-        }
-
-        private IEnumerable<CoffeeOrder> ApplyTimeFilter(DateTimeOffset from, DateTimeOffset until)
-        {
-            Contract.Requires(null != from);
-            Contract.Requires(null != until);
-            Contract.Requires(from <= until);
+            
         }
     }
 }

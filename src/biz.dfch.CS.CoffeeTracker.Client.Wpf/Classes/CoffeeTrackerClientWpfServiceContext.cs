@@ -31,7 +31,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
         public CoffeeTrackerClientWpfServiceContext(string hostUri)
             : base(hostUri)
         {
-            ReceivingResponse += (sender, args) => CheckAndRaiseExceptionFromServer(sender, args);
+            ReceivingResponse += CheckAndRaiseExceptionFromServer;
         }
 
         public CoffeeTrackerClientWpfServiceContext(string hostUri, string userName, string password)
