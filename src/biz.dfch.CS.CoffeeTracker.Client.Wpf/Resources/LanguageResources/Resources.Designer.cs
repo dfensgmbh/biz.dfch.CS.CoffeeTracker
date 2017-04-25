@@ -322,7 +322,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid email/password cimbination.
+        ///   Looks up a localized string similar to Invalid email/password combination.
         /// </summary>
         public static string Login_TextBox_InvalidCredentials {
             get {
