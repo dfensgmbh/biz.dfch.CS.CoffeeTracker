@@ -27,7 +27,27 @@
             </controls:SplitButton.Icon>
         </controls:SplitButton>
         <local:CoffeesSelector
+            x:Name="FilterCoffeesSelector"
             Grid.Row="1"
             Grid.Column="0"/>
+        
+        <local:DetermineTimePicker
+            x:Name="FilterDetermineTimePicker"
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Bottom"/>
+        <controls:Tile
+            Grid.Row="1"
+            Grid.Column="2"
+            Height="32pt"
+            VerticalAlignment="Bottom"
+            Title="Apply Filter"
+            VerticalTitleAlignment="Center"
+            HorizontalContentAlignment="Right">
+            <iconPacks:PackIconFontAwesome
+                Kind="ArrowRight"
+                VerticalAlignment="Center"
+                Margin="0 0 10 0"/>
+        </controls:Tile>
     </Grid>
 </UserControl>
