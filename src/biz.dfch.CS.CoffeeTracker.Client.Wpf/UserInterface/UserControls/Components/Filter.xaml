@@ -20,6 +20,7 @@
         </Grid.ColumnDefinitions>
         
         <controls:SplitButton
+            Name="FilterUserSplitButton"
             Grid.ColumnSpan="3"
             HorizontalContentAlignment="Left">
             <controls:SplitButton.Icon>
