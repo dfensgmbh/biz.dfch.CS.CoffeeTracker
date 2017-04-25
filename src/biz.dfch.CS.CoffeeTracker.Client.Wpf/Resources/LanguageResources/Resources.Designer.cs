@@ -115,6 +115,51 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Brand.
+        /// </summary>
+        public static string Coffees_Label_Brand {
+            get {
+                return ResourceManager.GetString("Coffees_Label_Brand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Delivery.
+        /// </summary>
+        public static string Coffees_Label_LastDelivery {
+            get {
+                return ResourceManager.GetString("Coffees_Label_LastDelivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Coffees_Label_Name {
+            get {
+                return ResourceManager.GetString("Coffees_Label_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price.
+        /// </summary>
+        public static string Coffees_Label_Price {
+            get {
+                return ResourceManager.GetString("Coffees_Label_Price", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string Coffees_Label_Stock {
+            get {
+                return ResourceManager.GetString("Coffees_Label_Stock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Coffees.
         /// </summary>
         public static string Coffees_Title {
@@ -354,6 +399,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         public static string Shared_Email_Example {
             get {
                 return ResourceManager.GetString("Shared_Email_Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The action you tried to execute is forbidden.
+        /// </summary>
+        public static string Shared_Forbidden {
+            get {
+                return ResourceManager.GetString("Shared_Forbidden", resourceCulture);
             }
         }
         

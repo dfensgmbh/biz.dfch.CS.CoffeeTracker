@@ -13,38 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 using System;
 using System.Collections.Generic;
-using System.Data.Services.Client;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.CustomEvents;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
-using biz.dfch.CS.CoffeeTracker.Client.Wpf.Windows.Base;
+using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
 {
-    public abstract class BaseManager
+    public class CoffeesManager : BaseManager
     {
-        protected CoffeeTrackerClientWpfServiceContext Context;
-
-        protected BaseManager(CoffeeTrackerClientWpfServiceContext ctx)
+        public CoffeesManager(CoffeeTrackerClientWpfServiceContext ctx) 
+            : base(ctx)
         {
-            Context = ctx;
+            
         }
 
-        public void Logout()
+        public void AddCoffee(Coffee coffee)
         {
-            Contract.Requires(null != BaseWindowSwitcher.BaseWindow);
+            Contract.Requires(null != coffee);
 
-            ClientContext.DestroySession();
-            BaseWindowSwitcher.BaseWindow.SwitchToStartWindow();
+            Context.AddToCoffees(coffee);
+            Context.SaveChanges();
+        }
+
+        public void UpdateCoffee(Coffee coffee)
+        {
+            Contract.Requires(null != coffee);
+            
+            Context.UpdateObject(coffee);
+            Context.SaveChanges();
         }
     }
 }

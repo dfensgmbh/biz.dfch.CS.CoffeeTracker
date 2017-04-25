@@ -29,6 +29,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             {
                 return;
             }
+
             DisplayLoading();
             manager = new CoffeeSelectorManager(ClientContext.CoffeeTrackerServiceContext);
             RefreshCoffeeBrandsOnUi();
@@ -77,10 +78,15 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
             worker.RunWorkerAsync();
         }
 
+        public void SetEnabled(bool enabled)
+        {
+            CoffeeSelectorCoffeeSplitButton.IsEnabled = enabled;
+            CoffeeSelectorBrandSplitButton.IsEnabled = enabled;
+        }
+
         public void DisplayLoading()
         {
-            CoffeeSelectorCoffeeSplitButton.IsEnabled = false;
-            CoffeeSelectorBrandSplitButton.IsEnabled = false;
+            SetEnabled(false);
             CoffeeSelectorProgressRing.IsActive = true;
         }
 

@@ -138,6 +138,21 @@
   <data name="CoffeesSelector_Label_SelectCoffee" xml:space="preserve">
     <value>Select a Coffee</value>
   </data>
+  <data name="Coffees_Label_Brand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="Coffees_Label_LastDelivery" xml:space="preserve">
+    <value>Last Delivery</value>
+  </data>
+  <data name="Coffees_Label_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Coffees_Label_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Coffees_Label_Stock" xml:space="preserve">
+    <value>Stock</value>
+  </data>
   <data name="Coffees_Title" xml:space="preserve">
     <value>Coffees</value>
   </data>
@@ -215,6 +230,9 @@
   </data>
   <data name="Shared_Email_Example" xml:space="preserve">
     <value>email@example.com</value>
+  </data>
+  <data name="Shared_Forbidden" xml:space="preserve">
+    <value>The action you tried to execute is forbidden</value>
   </data>
   <data name="Shared_Password_Example" xml:space="preserve">
     <value>******</value>

@@ -13,43 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Data.Services.Client;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Net;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.CustomEvents;
+using biz.dfch.CS.Commons.Diagnostics;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 {
     public class CoffeeTrackerClientWpfServiceContext : CoffeeTrackerServiceContext
     {
-        public event EventHandler<ReceivingResponseEventArgs> OnUnauthorized;
+        public event EventHandler<StatusCodeEventArgs> OnExceptionalStatusCode;
 
-        public CoffeeTrackerClientWpfServiceContext(string hostUri) 
+        public CoffeeTrackerClientWpfServiceContext(string hostUri)
             : base(hostUri)
         {
-            ReceivingResponse += CheckAndRaiseUnAuthorized;
+            ReceivingResponse += (sender, args) => CheckAndRaiseExceptionFromServer(sender, args);
         }
 
-        public CoffeeTrackerClientWpfServiceContext(string hostUri, string userName, string password) 
+        public CoffeeTrackerClientWpfServiceContext(string hostUri, string userName, string password)
             : base(hostUri, userName, password)
         {
         }
 
-        private void CheckAndRaiseUnAuthorized(object sender, ReceivingResponseEventArgs args)
+        private void CheckAndRaiseExceptionFromServer(object sender, ReceivingResponseEventArgs args)
         {
             Contract.Requires(null != args);
             Contract.Requires(null != args.ResponseMessage);
+            Logger.Get(Logging.Logging.TraceSourceName.WPF_GENERAL)
+                .TraceEvent(TraceEventType.Error, (int) Logging.Logging.EventId.Exception,
+                    args.ResponseMessage.ToString());
 
-            if (null == OnUnauthorized)
+            if (null == OnExceptionalStatusCode)
+            {
+                return;
+            }
+
+            if (400 > args.ResponseMessage.StatusCode)
             {
                 return;
             }
 
             var receivedStatusCode = (HttpStatusCode) args.ResponseMessage.StatusCode;
-            if (HttpStatusCode.Unauthorized == receivedStatusCode)
-            {
-                OnUnauthorized.Invoke(this, args);
-            }
+            var statusCodeEventArgs = new StatusCodeEventArgs(receivedStatusCode);
+            OnExceptionalStatusCode.Invoke(this, statusCodeEventArgs);
         }
     }
 }

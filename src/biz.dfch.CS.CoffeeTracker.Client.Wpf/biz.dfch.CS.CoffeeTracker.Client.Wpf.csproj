@@ -192,12 +192,14 @@
     <Compile Include="Classes\Constants.cs" />
     <Compile Include="Classes\Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Classes\Controls\ClientContext.cs" />
+    <Compile Include="Classes\CustomEvents\StatusCodeEventArgs.cs" />
     <Compile Include="Classes\Interfaces\ILoadable.cs" />
     <Compile Include="Classes\Interfaces\IValidatable.cs" />
     <Compile Include="Classes\Logging\Logging.cs" />
     <Compile Include="Classes\Managers\BaseManager.cs" />
     <Compile Include="Classes\Managers\BaseWindowManager.cs" />
     <Compile Include="Classes\Managers\CoffeeSelectorManager.cs" />
+    <Compile Include="Classes\Managers\CoffeesManager.cs" />
     <Compile Include="Classes\Managers\HomeManager.cs" />
     <Compile Include="Classes\Managers\LoginManager.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
@@ -226,6 +228,9 @@
     </Compile>
     <Compile Include="UserInterface\UserControls\CompleteViews\Start\Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\UserControls\Components\CoffeeForm.xaml.cs">
+      <DependentUpon>CoffeeForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\UserControls\Components\CoffeesSelector.xaml.cs">
       <DependentUpon>CoffeesSelector.xaml</DependentUpon>
@@ -282,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserInterface\UserControls\CompleteViews\Start\Registration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserInterface\UserControls\Components\CoffeeForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

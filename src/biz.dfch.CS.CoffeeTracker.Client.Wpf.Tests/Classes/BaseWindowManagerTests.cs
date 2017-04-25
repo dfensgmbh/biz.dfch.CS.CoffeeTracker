@@ -46,7 +46,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes
             });
             
             // arrange events
-            //client.OnUnauthorized += sut.UnauthorizedEventHandler;
+            //client.OnExceptionalStatusCode += sut.UnauthorizedEventHandler;
 
             // Act
             // send request and get unauthorized since it has no bearer token
