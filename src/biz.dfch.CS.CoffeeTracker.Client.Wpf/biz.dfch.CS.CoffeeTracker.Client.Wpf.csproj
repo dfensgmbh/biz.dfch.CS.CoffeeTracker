@@ -193,15 +193,16 @@
     <Compile Include="Classes\Controls\ApiClientConfigurationSection.cs" />
     <Compile Include="Classes\Controls\ClientContext.cs" />
     <Compile Include="Classes\CustomEvents\StatusCodeEventArgs.cs" />
+    <Compile Include="Classes\FilterConfigurations.cs" />
     <Compile Include="Classes\Interfaces\ILoadable.cs" />
     <Compile Include="Classes\Interfaces\IValidatable.cs" />
     <Compile Include="Classes\Logging\Logging.cs" />
     <Compile Include="Classes\Managers\BaseManager.cs" />
     <Compile Include="Classes\Managers\BaseWindowManager.cs" />
+    <Compile Include="Classes\CoffeeOrderEnumerableExtensions.cs" />
     <Compile Include="Classes\Managers\CoffeeOrdersManager.cs" />
     <Compile Include="Classes\Managers\CoffeeSelectorManager.cs" />
     <Compile Include="Classes\Managers\CoffeesManager.cs" />
-    <Compile Include="Classes\Managers\FilterManager.cs" />
     <Compile Include="Classes\Managers\HomeManager.cs" />
     <Compile Include="Classes\Managers\LoginManager.cs" />
     <Compile Include="Resources\LanguageResources\Resources.Designer.cs">
