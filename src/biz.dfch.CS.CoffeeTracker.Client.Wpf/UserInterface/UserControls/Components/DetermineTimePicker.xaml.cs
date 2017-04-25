@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Components
 {
@@ -20,9 +21,13 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
     /// </summary>
     public partial class DetermineTimePicker : IValidatable
     {
+        private Brush oldBorderBrush;
+
         public DetermineTimePicker()
         {
             InitializeComponent();
+            oldBorderBrush = DetermineTimePickerFromDateTimePicker.BorderBrush;
+
             var nowBeforeThreeMonths = DateTimeOffset.Now.AddMonths(-3);
             var now = DateTimeOffset.Now;
             DetermineTimePickerFromDateTimePicker.DisplayDate = nowBeforeThreeMonths.DateTime;
@@ -39,7 +44,28 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.UserControls.Compon
 
             var from = DetermineTimePickerFromDateTimePicker.DisplayDate.Value;
             var until = DetermineTimePickerUntilDateTimePicker.DisplayDate.Value;
-            return from <= until;
+            var isValid = from <= until;
+            
+            if (!isValid)
+            {
+                TurnInvalid(DetermineTimePickerUntilDateTimePicker);
+            }
+            else
+            {
+                TurnValid(DetermineTimePickerUntilDateTimePicker);
+            }
+
+            return isValid;
+        }
+
+        private void TurnInvalid(Control picker)
+        {
+            picker.BorderBrush = Brushes.Red;
+        }
+
+        private void TurnValid(Control picker)
+        {
+            picker.BorderBrush = oldBorderBrush;
         }
     }
 }
