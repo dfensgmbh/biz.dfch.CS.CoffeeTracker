@@ -12,6 +12,12 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-        <components:Filter/>
+        <components:Filter
+            Grid.Row="0"/>
+        <DataGrid
+            Grid.Row="1">
+            
+        </DataGrid>
+        
     </Grid>
 </UserControl>
