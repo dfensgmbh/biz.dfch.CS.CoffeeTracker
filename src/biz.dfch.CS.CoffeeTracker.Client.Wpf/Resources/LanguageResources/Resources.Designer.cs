@@ -178,6 +178,24 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string DetermineTimePicker_From {
+            get {
+                return ResourceManager.GetString("DetermineTimePicker_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Until.
+        /// </summary>
+        public static string DetermineTimePicker_Until {
+            get {
+                return ResourceManager.GetString("DetermineTimePicker_Until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter a valid Email address.
         /// </summary>
         public static string EmailLabeledTextBox_ToolTip_EnterValidMail {

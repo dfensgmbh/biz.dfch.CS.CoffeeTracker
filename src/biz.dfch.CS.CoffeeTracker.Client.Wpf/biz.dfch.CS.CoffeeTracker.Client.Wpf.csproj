@@ -238,11 +238,17 @@
     <Compile Include="UserInterface\UserControls\Components\EmailLabeledTextBox.xaml.cs">
       <DependentUpon>EmailLabeledTextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserInterface\UserControls\Components\Filter.xaml.cs">
+      <DependentUpon>Filter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserInterface\UserControls\Components\PasswordLabeledTextBox.xaml.cs">
       <DependentUpon>PasswordLabeledTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\UserControls\Components\SideBar.xaml.cs">
       <DependentUpon>SideBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInterface\UserControls\Components\DetermineTimePicker.xaml.cs">
+      <DependentUpon>DetermineTimePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInterface\Windows\Base\BaseWindow.xaml.cs">
       <DependentUpon>BaseWindow.xaml</DependentUpon>
@@ -302,11 +308,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserInterface\UserControls\Components\Filter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserInterface\UserControls\Components\PasswordLabeledTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserInterface\UserControls\Components\SideBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserInterface\UserControls\Components\DetermineTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
