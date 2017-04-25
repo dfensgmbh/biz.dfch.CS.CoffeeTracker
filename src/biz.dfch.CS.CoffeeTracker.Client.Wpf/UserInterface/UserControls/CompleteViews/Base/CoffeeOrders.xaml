@@ -13,6 +13,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
         <components:Filter
+            x:Name="CoffeeOrdersFilter"
             Grid.Row="0"/>
         <DataGrid
             Grid.Row="1">
