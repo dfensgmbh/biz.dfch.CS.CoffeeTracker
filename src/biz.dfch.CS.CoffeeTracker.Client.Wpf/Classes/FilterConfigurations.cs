@@ -15,6 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -25,9 +26,22 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 {
     public class FilterConfigurations
     {
-        public ApplicationUser user;
+        public ApplicationUser User;
         public DateTimeOffset From;
         public DateTimeOffset Until;
         public Coffee Coffee;
+
+        public FilterConfigurations(ApplicationUser user, DateTimeOffset from, DateTimeOffset until, Coffee coffee)
+        {
+            Contract.Requires(null != User);
+            Contract.Requires(null != from);
+            Contract.Requires(null != until);
+            Contract.Requires(null != coffee);
+
+            User = user;
+            From = from;
+            Until = until;
+            Coffee = coffee;
+        }
     }
 }
