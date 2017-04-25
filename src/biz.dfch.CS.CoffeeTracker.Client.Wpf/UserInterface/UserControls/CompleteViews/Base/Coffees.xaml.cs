@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Data.Services.Client;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,8 +12,11 @@ using biz.dfch.CS.CoffeeTracker.Client.CoffeeTrackerService;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Interfaces;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.CustomEvents;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Resources.LanguageResources;
+using biz.dfch.CS.Commons.Diagnostics;
 using MahApps.Metro.Controls;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
@@ -90,7 +95,33 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserControls.CompleteViews.Base
                 updateCoffee.LastDelivery = DateTimeOffset.Parse(CoffeeCoffeeForm.CoffeeFormDatePicker.Text);
             });
 
-            manager.UpdateCoffee(updateCoffee);
+            try
+            {
+                manager.UpdateCoffee(updateCoffee);
+            }
+            catch (Exception e)
+            {
+                Logger.Get(Logging.Logging.TraceSourceName.WPF_RUNNING).TraceException(e);
+                Console.WriteLine(e);
+                var dataServiceClientException = e.InnerException as DataServiceClientException;
+                if (null != dataServiceClientException)
+                {
+                    Dispatcher.Invoke(
+                        () => { HandleStatusCodes((HttpStatusCode) dataServiceClientException.StatusCode); });
+                }
+            }
+        }
+
+        private void HandleStatusCodes(HttpStatusCode statusCode)
+        {
+            if (HttpStatusCode.Forbidden == statusCode)
+            {
+                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_Forbidden);
+            }
+            else if (HttpStatusCode.BadGateway == statusCode)
+            {
+                BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
+            }
         }
 
         public void DisplayLoading()
