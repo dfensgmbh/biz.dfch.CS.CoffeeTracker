@@ -20,14 +20,14 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
     /// </summary>
     public partial class BaseWindow : ILoadable
     {
-        private BaseWindowManager baseWindowManager = new BaseWindowManager(ClientContext.CoffeeTrackerServiceContext);
+        private readonly BaseWindowManager baseWindowManager = new BaseWindowManager(ClientContext.CoffeeTrackerServiceContext);
 
         public BaseWindow()
         {
             InitializeComponent();
             BaseWindowSwitcher.BaseWindow = this;
             BaseWindowSwitcher.Switch(new Home());
-            ClientContext.CoffeeTrackerServiceContext.OnExceptionalStatusCode += HandleStatusCode;
+            ClientContext.CoffeeTrackerServiceContext.OnExceptionalStatusCode += DisplayStatusCodeError;
         }
 
         private void OnButtonClicked(object sender, EventArgs e)
@@ -93,7 +93,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             BaseWindowSwitcher.BaseWindow.Close();
         }
 
-        public void HandleStatusCode(object sender, StatusCodeEventArgs args)
+        public void DisplayStatusCodeError(object sender, StatusCodeEventArgs args)
         {
             var httpStatusCode = args.StatusCode;
 
@@ -104,6 +104,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base
             else if (HttpStatusCode.BadGateway == httpStatusCode && HttpStatusCode.InternalServerError == httpStatusCode)
             {
                 BaseWindowSwitcher.DisplayError(Wpf.Resources.LanguageResources.Resources.Shared_ServiceNotAvailable);
+            }
+            else if (HttpStatusCode.Unauthorized == httpStatusCode)
+            {
+                baseWindowManager.Logout();
             }
         }
     }

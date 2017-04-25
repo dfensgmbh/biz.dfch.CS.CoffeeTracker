@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
@@ -21,6 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.CustomEvents;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Switcher;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Controls;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.UserInterface.Windows.Base;
@@ -35,12 +37,6 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers
         protected BaseManager(CoffeeTrackerClientWpfServiceContext ctx)
         {
             Context = ctx;
-            Context.OnUnauthorized += UnauthorizedEventHandler;
-        }
-
-        private void UnauthorizedEventHandler(object sender, ReceivingResponseEventArgs args)
-        {
-            BaseWindowSwitcher.BaseWindow.Dispatcher.Invoke(Logout);
         }
 
         public void Logout()
