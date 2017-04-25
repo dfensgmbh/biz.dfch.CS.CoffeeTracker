@@ -33,10 +33,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes
 
         public FilterConfigurations(ApplicationUser user, DateTimeOffset from, DateTimeOffset until, Coffee coffee)
         {
-            Contract.Requires(null != User);
             Contract.Requires(null != from);
             Contract.Requires(null != until);
-            Contract.Requires(null != coffee);
+            // no null != coffee check because all coffees should be returned if no coffee is specified
+            // no null != users check because all users should be returned if no user is specified
 
             User = user;
             From = from;
