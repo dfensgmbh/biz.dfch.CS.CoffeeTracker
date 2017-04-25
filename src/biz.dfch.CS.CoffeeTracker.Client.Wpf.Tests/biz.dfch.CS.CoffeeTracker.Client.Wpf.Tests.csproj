@@ -191,6 +191,7 @@
     <Compile Include="Classes\Managers\LoginManagerTests.cs" />
     <Compile Include="SharedTestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserInterface\UserControls\CompleteViews\Base\CoffeeTest.cs" />
     <Compile Include="UserInterface\UserControls\CompleteViews\Base\HomeTests.cs" />
     <Compile Include="UserInterface\UserControls\CompleteViews\Start\LoginTests.cs" />
     <Compile Include="UserInterface\UserControls\CompleteViews\Start\RegistrationTests.cs" />
