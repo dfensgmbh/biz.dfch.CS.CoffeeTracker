@@ -59,10 +59,19 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes
         public void ExtensionCoffeeOrdersApplyTimeReturnsCoffeeOrdersCreatedInSpecifiedTimeLineOnly()
         {
             // Arrange
+            // Must contain at least 10 entries
+            var coffeeOrders = SharedTestData.GetCoffeeOrdersExample();
 
             // Act
+            var coffeeOrdersAsList = coffeeOrders.ToList();
+            var from = coffeeOrdersAsList[2].Created;
+            var until = coffeeOrdersAsList[9].Created;
+
+            var result = coffeeOrders.ApplyTimeFilter(from, until);
 
             // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.All( c => c.Created >= from && c.Created <= until));
         }
     }
 }
