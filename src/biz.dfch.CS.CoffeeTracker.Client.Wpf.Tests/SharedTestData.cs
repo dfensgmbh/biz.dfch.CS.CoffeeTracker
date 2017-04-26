@@ -95,20 +95,18 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests
                 if (i % 2 == 0)
                 {
                     coffeeOrder.ApplicationUser = ExampleApplicationUser;
-                    coffeeOrder.UserId = coffeeOrder.ApplicationUser.Id;
                     coffeeOrder.Coffee = ExampleCoffee;
-                    coffeeOrder.CoffeeId = coffeeOrder.Coffee.Id;
-                    coffeeOrder.Id = i;
                 }
                 else
                 {
                     coffeeOrder.ApplicationUser = SecondExampleApplicationUser;
-                    coffeeOrder.UserId = coffeeOrder.ApplicationUser.Id;
                     coffeeOrder.Coffee = SecondExampleCoffee;
-                    coffeeOrder.CoffeeId = coffeeOrder.Coffee.Id;
-                    coffeeOrder.Id = i;
                 }
 
+                coffeeOrder.UserId = coffeeOrder.ApplicationUser.Id;
+                coffeeOrder.CoffeeId = coffeeOrder.Coffee.Id;
+                coffeeOrder.Id = i + 1; // i = 0 at the beginnig, which is an invalid id
+                coffeeOrder.Created = DateTimeOffset.Now;
                 coffeeOrders.Add(coffeeOrder);
             }
 
@@ -118,7 +116,7 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests
         #endregion
 
         public static readonly string InvalidPassword = "InvPa";
-            //InvPa = InvalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
+        //InvPa = InvalidPassword, it contains 5 characters while the password needs at least 6, so it's invalid
 
         public static string ExecutablePath
         {
