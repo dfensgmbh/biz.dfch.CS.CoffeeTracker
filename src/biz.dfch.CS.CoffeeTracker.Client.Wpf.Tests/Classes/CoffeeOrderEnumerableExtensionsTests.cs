@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes
@@ -32,9 +33,36 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes
             var coffeeOrders = SharedTestData.GetCoffeeOrdersExample();
 
             // Act
+            var result = coffeeOrders.ApplyUserFilter(SharedTestData.ExampleApplicationUser);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.All(c => c.ApplicationUser.Name.Equals(SharedTestData.ExampleApplicationUser.Name)));
+        }
+
+        [TestMethod]
+        public void ExtensionCoffeeOrdersApplyCoffeeReturnsListWithSpecifiedCoffeeOnly()
+        {
+            // Arrange
+            var coffeeOrders = SharedTestData.GetCoffeeOrdersExample();
+
+            // Act
+            var result = coffeeOrders.ApplyCoffeeFilter(SharedTestData.ExampleCoffee);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.All(c => c.Coffee.Name.Equals(SharedTestData.ExampleCoffee.Name)));
+            Assert.IsTrue(result.All(c => c.Coffee.Brand.Equals(SharedTestData.ExampleCoffee.Brand)));
+        }
+
+        [TestMethod]
+        public void ExtensionCoffeeOrdersApplyTimeReturnsCoffeeOrdersCreatedInSpecifiedTimeLineOnly()
+        {
+            // Arrange
+
+            // Act
 
             // Assert
         }
-
     }
 }
