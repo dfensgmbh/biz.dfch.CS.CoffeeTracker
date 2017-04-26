@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Classes;
 using biz.dfch.CS.CoffeeTracker.Client.Wpf.Managers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
 
-namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
+namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Classes.Managers
 {
     [TestClass]
     public class LoginManagerTests
@@ -34,9 +32,10 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
             // Arrange
             var fakeReference = Mock.Create<CoffeeTrackerClientWpfServiceContext>();
             Mock.Arrange(
-                () =>
-                    fakeReference.authenticationHelper.ReceiveAndSetToken(SharedTestData.UserWhichExists,
-                        SharedTestData.PasswordForUserWhichExists)).DoNothing().MustBeCalled("ReceiveAndSetToken was not called");
+                    () =>
+                        fakeReference.authenticationHelper.ReceiveAndSetToken(Arg.AnyString, Arg.AnyString))
+                .DoNothing()
+                .MustBeCalled("ReceiveAndSetToken was not called");
 
             // Act
             var sut = new LoginManager(fakeReference);
@@ -44,6 +43,27 @@ namespace biz.dfch.CS.CoffeeTracker.Client.Wpf.Tests.Managers
 
             // Assert
             Mock.Assert(fakeReference);
+        }
+
+        [TestMethod]
+        public async Task LoginManagerOnLoginFailedReturnsFalse()
+        {
+            // Arrange
+            var mockedReference = Mock.Create<CoffeeTrackerClientWpfServiceContext>();
+            Mock.Arrange(
+                    () =>
+                        mockedReference.authenticationHelper.ReceiveAndSetToken(Arg.AnyString, Arg.AnyString))
+                .Throws(new Exception())
+                .OccursOnce();
+
+            var sut = new LoginManager(mockedReference);
+
+            // Act
+            var result = await sut.Login(SharedTestData.UserWhichExists, SharedTestData.PasswordForUserWhichExists);
+
+            // Assert
+            Assert.IsFalse(result);
+            Mock.Assert(mockedReference);
         }
     }
 }
